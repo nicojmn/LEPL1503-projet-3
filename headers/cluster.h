@@ -2,8 +2,19 @@
 #ifndef CLUSTER_H
 #define CLUSTER_H
 
+#include "point.h"
 typedef struct {
-    // TODO
+    point_t **points;
+    point_t *centroid;
 } cluster_t;
 
+
+/**
+ *
+ * @param cluster : a pointer to the cluster to reset
+ *
+ * @return : nothing
+ *
+ */
+void emptyCluster(cluster_t *cluster);
 #endif //CLUSTER_H
