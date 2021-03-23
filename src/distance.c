@@ -2,8 +2,8 @@
 #include "../headers/distance.h"
 
 int64_t absVal(int64_t x) {
-    if (x < 0) return -x;
-    return x;
+    if (x < 0) return (int64_t) - x;
+    return (int64_t) x;
 }
 
 int64_t squared_manhattan_distance(const point_t *p1, const point_t *p2) {
