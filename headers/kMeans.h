@@ -6,8 +6,8 @@
 typedef struct {
     cluster_t *clusters;
     point_t **points;
-    uint32_t dimension;
-    uint32_t size;
+    u_int32_t dimension;
+    int64_t size;
 } k_means_t;
 
 #endif //K_MEANS
