@@ -13,11 +13,11 @@ clean:
 	rm -f src/*.o
 	rm -f kmeans
 	rm -f *.o
-	rm -f tests/distanceTest
+	rm -f tests/*.o
 
 tests: tests/distanceTest.c
-	$(CC) tests/distanceTest.c -o tests/distanceTest -lcunit $(CFLAGS)
-	./tests/distanceTest
+	$(CC) tests/distanceTest.c -o tests/distanceTest.o -lcunit $(CFLAGS)
+	./tests/distanceTest.o
 
 
 # a .PHONY target forces make to execute the command even if the target already exists
