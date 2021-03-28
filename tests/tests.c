@@ -23,7 +23,7 @@ point_t *d = NULL;
 point_t *e = NULL;
 point_t *f = NULL;
 
-int setup(void) {
+int distanceSetup(void) {
     kMeansDim1 = (k_means_t *) malloc(sizeof(k_means_t));
     if (kMeansDim1 == NULL) return -1;
     kMeansDim1->dimension = (uint32_t) 1;
@@ -92,7 +92,7 @@ int setup(void) {
     return 0;
 }
 
-int teardown(void) {
+int distanceTeardown(void) {
     free(a->vector);
     free(a);
     free(b->vector);
@@ -135,23 +135,23 @@ void testEuclidean(void) {
 
 int main() {
 
-    CU_pSuite pSuite = NULL;
+    CU_pSuite distanceSuite = NULL;
 
     /** initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry())
         return CU_get_error();
 
     /** add a suite to the registry */
-    pSuite = CU_add_suite("Suite_1", setup, teardown);
-    if (NULL == pSuite) {
+    distanceSuite = CU_add_suite("distance tests", distanceSetup, distanceTeardown);
+    if (NULL == distanceSuite) {
         CU_cleanup_registry();
         return CU_get_error();
     }
 
     /** add the tests to the suite */
     /** NOTE - ORDER IS IMPORTANT - MUST TEST fread() AFTER fprintf() */
-    if ((NULL == CU_add_test(pSuite, "test of squared_manhattan_distance()", testManhattan)) ||
-        (NULL == CU_add_test(pSuite, "test of squared_euclidean_distance()", testEuclidean))) {
+    if ((NULL == CU_add_test(distanceSuite, "squared manhattan distance", testManhattan)) ||
+        (NULL == CU_add_test(distanceSuite, "squared euclidean distance", testEuclidean))) {
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -162,5 +162,3 @@ int main() {
     CU_cleanup_registry();
     return CU_get_error();
 }
-
-
