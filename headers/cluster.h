@@ -18,4 +18,15 @@ typedef struct {
  *
  */
 void emptyCluster(cluster_t *cluster);
+
+/** Be careful this has not been tested yet */
+// TODO : write docstring
+/**
+ *
+ * @param clusters
+ * @param clusterNumber
+ * @param dimension
+ */
+void updateCentroids(cluster_t *clusters, uint32_t clustersNumber, int32_t dimension);
+
 #endif //CLUSTER_H
