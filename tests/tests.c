@@ -26,19 +26,19 @@ point_t *f = NULL;
 int distanceSetup(void) {
     kMeansDim1 = (k_means_t *) malloc(sizeof(k_means_t));
     if (kMeansDim1 == NULL) return -1;
-    kMeansDim1->dimension = (uint32_t) 1;
+    kMeansDim1->dimension = (int32_t) 1;
     kMeansDim1->points = (point_t **) (point_t *) malloc(1 * sizeof(point_t));
     if (kMeansDim1->points == NULL) return -1;
 
     kMeansDim2 = (k_means_t *) malloc(sizeof(k_means_t));
     if (kMeansDim2 == NULL) return -1;
-    kMeansDim2->dimension = (uint32_t) 2;
+    kMeansDim2->dimension = (int32_t) 2;
     kMeansDim2->points = (point_t **) (point_t *) malloc(2 * sizeof(point_t));
     if (kMeansDim2->points == NULL) return -1;
 
     kMeansDim3 = (k_means_t *) malloc(sizeof(k_means_t));
     if (kMeansDim3 == NULL) return -1;
-    kMeansDim3->dimension = (uint32_t) 3;
+    kMeansDim3->dimension = (int32_t) 3;
     kMeansDim3->points = (point_t **) (point_t *) malloc(3 * sizeof(point_t));
     if (kMeansDim3->points == NULL) return -1;
 
