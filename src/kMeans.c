@@ -55,9 +55,14 @@ int32_t assignVectorsToCentroids(k_means_t *kMeans,
     for (int i = 0; i < kMeans->size; ++i) {
         // Let's find the closest centroid
         for (int j = 0; j < kMeans->k; ++j) {
-            int64_t oldDistance = (int64_t) distanceFunction(&(kMeans->points)[i],
-                                                             &(kMeans->centroids)[((kMeans->points)[i]).nearestCentroidID],
-                                                             kMeans->dimension);
+
+            // If it's the first time this function is used
+            int64_t oldDistance = INT64_MAX;
+            if (((kMeans->points)[i]).nearestCentroidID != -1) {
+                oldDistance = (int64_t) distanceFunction(&(kMeans->points)[i],
+                                                         &(kMeans->centroids)[((kMeans->points)[i]).nearestCentroidID],
+                                                         kMeans->dimension);
+            }
             int64_t newDistance = (int64_t) distanceFunction(&(kMeans->points)[i], &(kMeans->centroids)[j],
                                                              kMeans->dimension);
             if (oldDistance > newDistance){
