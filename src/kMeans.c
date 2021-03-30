@@ -1,4 +1,4 @@
-#include "../headers/cluster.h"
+#include "../headers/kMeans.h"
 #include "../headers/distance.h"
 
 #include <stdlib.h>
