@@ -8,7 +8,7 @@
 /** Be careful this has not been tested yet */
 void updateCentroids(k_means_t *kMeans) {
 
-    // Initialisation of all centroid coord to 0
+    // Initialisation of all centroid coordinates to 0
     for (int i = 0; i < kMeans->k; ++i) {
         for (int j = 0; j < kMeans->dimension; ++j) {
             ((kMeans->centroids)[i].vector)[j] = (int64_t) 0;
@@ -45,6 +45,8 @@ void updateCentroids(k_means_t *kMeans) {
 }
 
 // TODO : write test for this function
+
+/** Be careful this hasn't been tested */
 int32_t assignVectorsToCentroids(k_means_t *kMeans,
                                  int64_t *distanceFunction(const point_t *, const point_t *, int32_t)) {
 

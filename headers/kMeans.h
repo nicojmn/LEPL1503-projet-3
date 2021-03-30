@@ -12,13 +12,9 @@ typedef struct {
 } k_means_t;
 
 
-/** Be careful this has not been tested yet */
-// TODO : write docstring
 /**
- *
- * @param clusters
- * @param clusterNumber
- * @param dimension
+ * @param kMeans: pointer to the instance of our problem
+ *        It assigns each point to its closest cluster
  */
 void updateCentroids(k_means_t *kMeans);
 
@@ -26,7 +22,8 @@ void updateCentroids(k_means_t *kMeans);
 /**
  *
  * @param kMeans : the instance of the problem
- * @param distanceFunction : generic function to determine if we want manhattan or euclidean distance
+ * @param distanceFunction : generic function which correspond to manhattan or euclidean distance function
+ *                           depending on the choice of the user
  *
  * @return true if the assignation has changed from the last iteration
  *          + assigns the points to the closest cluster
