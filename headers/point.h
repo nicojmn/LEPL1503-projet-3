@@ -6,7 +6,7 @@
 
 typedef struct point {
     int64_t *vector;
-    int32_t clusterID;
+    int32_t nearestCentroidID;
 } point_t;
 
 typedef struct centroid{

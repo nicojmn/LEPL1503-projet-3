@@ -6,21 +6,42 @@
 #include <string.h>
 
 /** Be careful this has not been tested yet */
-void updateCentroids(cluster_t *clusters, uint32_t clusterNumber, int32_t dimension) {
+void updateCentroids(k_means_t *kMeans) {
 
-    for (int i = 0; i < clusterNumber; ++i) {
-        for (int j = 0; j < dimension; ++j) {
-            clusters[i].centroid->vector[j] = (int64_t) 0;
-            for (int k = 0; k < clusters[i].size; ++k) {
-                clusters[i].centroid->vector[j] += clusters[i].points[k].vector[j];
-            }
-            /** Comments from the python scripts
+    // Initialisation of all centroid coord to 0
+    for (int i = 0; i < kMeans->k; ++i) {
+        for (int j = 0; j < kMeans->dimension; ++j) {
+            ((kMeans->centroids)[i].vector)[j] = (int64_t) 0;
+        }
+    }
+
+    int64_t *clustersSize = (int64_t*) malloc((kMeans->k) * sizeof(int64_t));
+    if (clustersSize == NULL) return;
+    for (int i = 0; i < kMeans->k; ++i) {
+        clustersSize[i] = (int64_t) 0;
+    }
+
+    // Sum
+    for (int i = 0; i < kMeans->size; ++i) {
+        int centroidID = (kMeans->points)[i].nearestCentroidID;
+        for (int j = 0; j < kMeans->dimension; ++j) {
+            ((kMeans->centroids)[centroidID].vector)[j] += ((kMeans->points)[i].vector)[j];
+        }
+        clustersSize[centroidID]++;
+    }
+
+    // Average
+    for (int i = 0; i < kMeans->k; ++i) {
+        for (int j = 0; j < kMeans->dimension; ++j) {
+            /** Comments from the python script:
             /!\ we here use int(a/b) instead of a//b because // implements the floor division and with negative
              # numbers this is not an integer division as it rounds the result down
             */
-            clusters[i].centroid->vector[j] = (int64_t) (clusters[i].centroid->vector[j] / clusters[i].size);
+            ((kMeans->centroids)[i].vector)[j] = (int64_t) (((kMeans->centroids)[i].vector)[j]
+                                                            /clustersSize[i]);
         }
     }
+    free(clustersSize);
 }
 
 // TODO : write test for function

@@ -20,7 +20,7 @@ typedef struct {
  * @param clusterNumber
  * @param dimension
  */
-void updateCentroids(centroid_t *centroids, uint32_t k, uint32_t dimension);
+void updateCentroids(k_means_t *kMeans);
 
 
 /**
