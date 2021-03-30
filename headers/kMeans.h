@@ -25,16 +25,14 @@ void updateCentroids(k_means_t *kMeans);
 
 /**
  *
- * @param clusters : array of clusters
- * @param clustersSize : size of clusters
+ * @param kMeans : the instance of the problem
  * @param distanceFunction : generic function to determine if we want manhattan or euclidean distance
- * @param distanceMode : a string which contains "manhattan" or "euclidean"
  *
  * @return true if the assignation has changed from the last iteration
+ *          + assigns the points to the closest cluster
  */
-int32_t assignVectorsToCentroids(centroid_t *centroids, uint32_t k,
-                                 int64_t *distanceFunction(const point_t *, const point_t *, int32_t),
-                                 char *distanceMode);
+int32_t assignVectorsToCentroids(k_means_t *kMeans,
+                                 int64_t *distanceFunction(const point_t *, const point_t *, int32_t));
 
 
 #endif //K_MEANS
