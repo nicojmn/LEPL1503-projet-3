@@ -4,9 +4,9 @@
 
 #include <stdint.h>
 
-typedef struct {
+typedef struct point {
     int64_t *vector;
-    int32_t dimension;
+    struct point *next;
 } point_t;
 
 #endif //POINT_H

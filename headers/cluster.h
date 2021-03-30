@@ -7,7 +7,8 @@
 #include <stdint.h>
 
 typedef struct {
-    point_t *points;
+    point_t *firstPoint;
+    point_t *lastPoint;
     point_t *centroid;
     int64_t size;
 } cluster_t;
