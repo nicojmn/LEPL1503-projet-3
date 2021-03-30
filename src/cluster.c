@@ -29,7 +29,7 @@ int32_t assignVectorsToCentroids(cluster_t *clusters, int64_t clustersSize,
                                  char *distanceMode) {
     // Initialise variable
     cluster_t *newClusters = (cluster_t *) malloc(sizeof(cluster_t) * clustersSize);
-    if (newClusters == NULL) return 1;
+    if (newClusters == NULL) return 0;
     int32_t unchanged = 0;
 
     // Select distance
