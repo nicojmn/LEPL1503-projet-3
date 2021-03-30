@@ -4,7 +4,7 @@
 #include "point.h"
 
 typedef struct {
-    centroid_t *centroids;
+    point_t *centroids;
     uint32_t k;
     point_t *points;
     uint32_t dimension;

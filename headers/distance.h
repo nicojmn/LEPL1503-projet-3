@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include "point.h"
+#include "kMeans.h"
 
 /**
  * This typedef below defines the distance_func_t type, a function pointer type that groups all
@@ -48,8 +49,8 @@ int64_t absVal(int64_t x);
  * @param generic_func : generic function to determine if we want manhattan or euclidean distance
  * @return distortionSum : the total distortion between all the clusters
  */
-int64_t distortion(centroid_t *centroids, uint32_t k, uint32_t dimension,
-                   squared_distance_func_t generic_func(const point_t *p1, const point_t *p2, int32_t dimension));
+int64_t distortion(k_means_t *kMeans,
+                   squared_distance_func_t *distanceFunction(const point_t *p1, const point_t *p2, int32_t dimension));
 
 
 #endif //DISTANCE_H
