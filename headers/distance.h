@@ -50,7 +50,7 @@ int64_t absVal(int64_t x);
  * @return distortionSum : the total distortion between all the clusters
  */
 int64_t distortion(k_means_t *kMeans,
-                   squared_distance_func_t *distanceFunction(const point_t *p1, const point_t *p2, int32_t dimension));
+                   squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2, int32_t dimension));
 
 
 #endif //DISTANCE_H
