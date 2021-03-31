@@ -17,7 +17,7 @@ k_means_t *kMeansDim1 = NULL;
 k_means_t *kMeansDim2 = NULL;
 k_means_t *kMeansDim3 = NULL;
 
-int setup(void) {
+int32_t setup(void) {
     kMeansDim1 = (k_means_t *) malloc(sizeof(k_means_t));
     if (kMeansDim1 == NULL) return -1;
     kMeansDim1->dimension = (int32_t) 1;
@@ -90,15 +90,23 @@ int setup(void) {
     return 0;
 }
 
-int teardown(void) {
-    free((kMeansDim1->points)[0].vector); free((kMeansDim1->points)[1].vector);
-    free(kMeansDim1->points); free(kMeansDim1);
-    free((kMeansDim2->points)[0].vector); free((kMeansDim2->points)[1].vector);
+int32_t teardown(void) {
+    free((kMeansDim1->points)[0].vector);
+    free((kMeansDim1->points)[1].vector);
+    free(kMeansDim1->points);
+    free(kMeansDim1);
+    free((kMeansDim2->points)[0].vector);
+    free((kMeansDim2->points)[1].vector);
     free((kMeansDim2->points)[2].vector);
-    free((kMeansDim2->centroids)[0].vector); free((kMeansDim2->centroids)[1].vector);
-    free(kMeansDim2->points); free(kMeansDim2->centroids); free(kMeansDim2);
-    free((kMeansDim3->points)[0].vector); free((kMeansDim3->points)[1].vector);
-    free(kMeansDim3->points); free(kMeansDim3);
+    free((kMeansDim2->centroids)[0].vector);
+    free((kMeansDim2->centroids)[1].vector);
+    free(kMeansDim2->points);
+    free(kMeansDim2->centroids);
+    free(kMeansDim2);
+    free((kMeansDim3->points)[0].vector);
+    free((kMeansDim3->points)[1].vector);
+    free(kMeansDim3->points);
+    free(kMeansDim3);
     return 0;
 }
 
@@ -127,13 +135,15 @@ void testDistortion(void) {
     squared_distance_func_t generic_func = squared_euclidean_distance;
     CU_ASSERT_EQUAL(distortion(kMeansDim2,
                                (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func),
-                        10);
+                    10);
     generic_func = squared_manhattan_distance;
     CU_ASSERT_EQUAL(distortion(kMeansDim2,
                                (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func),
                     20);
 
 }
+
+
 
 // We've used the corresponding python function to get the correct value
 void testUpdateCentroids(void) {
