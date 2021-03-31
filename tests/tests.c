@@ -153,7 +153,7 @@ void testUpdateCentroids(void) {
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[1], (int64_t) 10);
 }
 
-//TODO Nico test in coming
+/** We've used the corresponding python function to get the correct value */
 void testAssignVectorToCentroids(void) {
     (kMeansDim2->points)[1].nearestCentroidID = 1;
 
