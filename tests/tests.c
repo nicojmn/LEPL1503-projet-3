@@ -144,7 +144,6 @@ void testDistortion(void) {
 }
 
 
-
 // We've used the corresponding python function to get the correct value
 void testUpdateCentroids(void) {
     updateCentroids(kMeansDim2);
@@ -153,6 +152,8 @@ void testUpdateCentroids(void) {
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[0], (int64_t) -4);
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[1], (int64_t) 10);
 }
+
+//TODO Nico test in coming
 
 int main() {
 
