@@ -135,29 +135,42 @@ void testDistortion(void) {
 
 }
 
+// We've used the corresponding python function to get the correct value
+void testUpdateCentroids(void) {
+    updateCentroids(kMeansDim2);
+    CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[0], (int64_t) 0);
+    CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[1], (int64_t) 3);
+    CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[0], (int64_t) -4);
+    CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[1], (int64_t) 10);
+}
+
 int main() {
 
-    CU_pSuite distanceSuite = NULL;
-    CU_pSuite distortionSuite = NULL;
+    CU_pSuite distanceTestSuite = NULL;
+    CU_pSuite distortionTestSuite = NULL;
+    CU_pSuite updateCentroidsTestSuite = NULL;
 
     /** initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry())
         return CU_get_error();
 
     /** add a suite to the registry */
-    distanceSuite = CU_add_suite("distance tests", setup, teardown);
-    distortionSuite = CU_add_suite("distortion test", setup, teardown);
+    distanceTestSuite = CU_add_suite("distance tests", setup, teardown);
+    distortionTestSuite = CU_add_suite("distortion test", setup, teardown);
+    updateCentroidsTestSuite = CU_add_suite("updateCentroids test", setup, teardown);
 
-    if (distanceSuite == NULL || distortionSuite == NULL) {
+    if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
+        updateCentroidsTestSuite == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
 
     /** add the tests to the suite */
     /** NOTE - ORDER IS IMPORTANT */
-    if ((NULL == CU_add_test(distanceSuite, "squared manhattan distance", testManhattan)) ||
-        (NULL == CU_add_test(distanceSuite, "squared euclidean distance", testEuclidean)) ||
-        (NULL == CU_add_test(distortionSuite, "distortion", testDistortion))) {
+    if ((NULL == CU_add_test(distanceTestSuite, "squared manhattan distance", testManhattan)) ||
+        (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
+        (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion)) ||
+        (NULL == CU_add_test(updateCentroidsTestSuite, "updateCentroids", testUpdateCentroids))){
         CU_cleanup_registry();
         return CU_get_error();
     }

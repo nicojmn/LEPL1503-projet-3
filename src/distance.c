@@ -25,7 +25,6 @@ int64_t squared_euclidean_distance(const point_t *p1, const point_t *p2, int32_t
     return result;
 }
 
-/** Function not tested yet */
 int64_t distortion(k_means_t *kMeans, squared_distance_func_t
                     distanceFunction(const point_t *p1, const point_t *p2, int32_t dimension)){
 

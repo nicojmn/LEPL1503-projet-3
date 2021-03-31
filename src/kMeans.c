@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <string.h>
 
-/** Be careful this has not been tested yet */
 void updateCentroids(k_means_t *kMeans) {
 
     // Initialisation of all centroid coordinates to 0
