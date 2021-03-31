@@ -153,7 +153,7 @@ void testUpdateCentroids(void) {
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[1], (int64_t) 10);
 }
 
-
+/** We've used the corresponding python function to get the correct value */
 void testNormalAssignVectorToCentroids(void) {
     (kMeansDim2->points)[1].nearestCentroidID = 1;
 
@@ -167,6 +167,7 @@ void testNormalAssignVectorToCentroids(void) {
     CU_ASSERT_EQUAL((kMeansDim2->points)[2].nearestCentroidID, 1);
 }
 
+/** We've used the corresponding python function to get the correct value */
 void testFirstAssignVectorToCentroids(void) {
     (kMeansDim2->points)[0].nearestCentroidID = -1;
     (kMeansDim2->points)[1].nearestCentroidID = -1;
