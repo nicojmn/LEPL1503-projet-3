@@ -153,9 +153,24 @@ void testUpdateCentroids(void) {
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[1], (int64_t) 10);
 }
 
-//TODO Nico test in coming
-void testAssignVectorToCentroids(void) {
+
+void testNormalAssignVectorToCentroids(void) {
     (kMeansDim2->points)[1].nearestCentroidID = 1;
+
+    squared_distance_func_t generic_func = squared_euclidean_distance;
+    CU_ASSERT_TRUE(assignVectorsToCentroids(kMeansDim2,
+                                            (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                                         int32_t)) generic_func));
+
+    CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 0);
+    CU_ASSERT_EQUAL((kMeansDim2->points)[1].nearestCentroidID, 0);
+    CU_ASSERT_EQUAL((kMeansDim2->points)[2].nearestCentroidID, 1);
+}
+
+void testFirstAssignVectorToCentroids(void) {
+    (kMeansDim2->points)[0].nearestCentroidID = -1;
+    (kMeansDim2->points)[1].nearestCentroidID = -1;
+    (kMeansDim2->points)[2].nearestCentroidID = -1;
 
     squared_distance_func_t generic_func = squared_euclidean_distance;
     CU_ASSERT_TRUE(assignVectorsToCentroids(kMeansDim2,
@@ -197,7 +212,8 @@ int main() {
         (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
         (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion)) ||
         (NULL == CU_add_test(updateCentroidsTestSuite, "updateCentroids", testUpdateCentroids)) ||
-        (NULL == CU_add_test(assignVectorSuite, "assign vector", testAssignVectorToCentroids))) {
+        (NULL == CU_add_test(assignVectorSuite, "assign vector normal", testNormalAssignVectorToCentroids)) ||
+        (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids))) {
         CU_cleanup_registry();
         return CU_get_error();
     }
