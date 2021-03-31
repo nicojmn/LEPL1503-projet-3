@@ -19,6 +19,7 @@ typedef struct {
  */
 void updateCentroids(k_means_t *kMeans);
 
+typedef int64_t (*squared_distance_func_t)(const point_t *, const point_t *, int32_t);
 
 /**
  *
