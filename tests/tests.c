@@ -12,7 +12,7 @@
 #include "../src/kMeans.c"
 
 
-// Testing with different dimensions
+/** Testing with different dimensions */
 k_means_t *kMeansDim1 = NULL;
 k_means_t *kMeansDim2 = NULL;
 k_means_t *kMeansDim3 = NULL;
@@ -110,7 +110,7 @@ int32_t teardown(void) {
     return 0;
 }
 
-// We've used the corresponding python function to get the corrects values
+/** We've used the corresponding python function to get the corrects values */
 void testManhattan(void) {
     CU_ASSERT_EQUAL(squared_manhattan_distance(&kMeansDim1->points[0], &kMeansDim1->points[1],
                                                kMeansDim1->dimension), 1);
@@ -120,7 +120,7 @@ void testManhattan(void) {
                                                kMeansDim3->dimension), 121);
 }
 
-// We've used the corresponding python function to get the corrects values
+/** We've used the corresponding python function to get the corrects values */
 void testEuclidean(void) {
     CU_ASSERT_EQUAL(squared_euclidean_distance(&kMeansDim1->points[0], &kMeansDim1->points[1],
                                                kMeansDim1->dimension), 1);
@@ -130,7 +130,7 @@ void testEuclidean(void) {
                                                kMeansDim3->dimension), 61);
 }
 
-// We've used the corresponding python function to get the correct value
+/** We've used the corresponding python function to get the correct value */
 void testDistortion(void) {
     squared_distance_func_t generic_func = squared_euclidean_distance;
     CU_ASSERT_EQUAL(distortion(kMeansDim2,
@@ -144,7 +144,7 @@ void testDistortion(void) {
 }
 
 
-// We've used the corresponding python function to get the correct value
+/** We've used the corresponding python function to get the correct value */
 void testUpdateCentroids(void) {
     updateCentroids(kMeansDim2);
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[0], (int64_t) 0);
@@ -154,24 +154,39 @@ void testUpdateCentroids(void) {
 }
 
 //TODO Nico test in coming
+void testAssignVectorToCentroids(void) {
+    (kMeansDim2->points)[1].nearestCentroidID = 1;
+
+    squared_distance_func_t generic_func = squared_euclidean_distance;
+    CU_ASSERT_TRUE(assignVectorsToCentroids(kMeansDim2,
+                                            (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                                         int32_t)) generic_func));
+
+    //CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 0);
+    //CU_ASSERT_EQUAL((kMeansDim2->points)[1].nearestCentroidID, 0);
+    //CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 1);
+}
 
 int main() {
 
     CU_pSuite distanceTestSuite = NULL;
     CU_pSuite distortionTestSuite = NULL;
     CU_pSuite updateCentroidsTestSuite = NULL;
+    CU_pSuite assignVectorSuite = NULL;
 
     /** initialize the CUnit test registry */
-    if (CUE_SUCCESS != CU_initialize_registry())
+    if (CUE_SUCCESS != CU_initialize_registry()) {
         return CU_get_error();
+    }
 
     /** add a suite to the registry */
     distanceTestSuite = CU_add_suite("distance tests", setup, teardown);
     distortionTestSuite = CU_add_suite("distortion test", setup, teardown);
     updateCentroidsTestSuite = CU_add_suite("updateCentroids test", setup, teardown);
+    assignVectorSuite = CU_add_suite("Assign vector", setup, teardown);
 
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
-        updateCentroidsTestSuite == NULL) {
+        updateCentroidsTestSuite == NULL || assignVectorSuite == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -181,7 +196,8 @@ int main() {
     if ((NULL == CU_add_test(distanceTestSuite, "squared manhattan distance", testManhattan)) ||
         (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
         (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion)) ||
-        (NULL == CU_add_test(updateCentroidsTestSuite, "updateCentroids", testUpdateCentroids))){
+        (NULL == CU_add_test(updateCentroidsTestSuite, "updateCentroids", testUpdateCentroids)) ||
+        (NULL == CU_add_test(assignVectorSuite, "assign vector", testAssignVectorToCentroids))) {
         CU_cleanup_registry();
         return CU_get_error();
     }

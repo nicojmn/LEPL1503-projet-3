@@ -2,6 +2,7 @@
 #define K_MEANS
 
 #include "point.h"
+#include "../headers/distance.h"
 
 typedef struct {
     point_t *centroids;
@@ -29,7 +30,8 @@ void updateCentroids(k_means_t *kMeans);
  *          + assigns the points to the closest cluster
  */
 int32_t assignVectorsToCentroids(k_means_t *kMeans,
-                                 int64_t *distanceFunction(const point_t *, const point_t *, int32_t));
+                                 squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
+                                                                          int32_t dimension));
 
 
 #endif //K_MEANS

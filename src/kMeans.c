@@ -1,5 +1,4 @@
 #include "../headers/kMeans.h"
-#include "../headers/distance.h"
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -47,7 +46,8 @@ void updateCentroids(k_means_t *kMeans) {
 
 /** Be careful this hasn't been tested */
 int32_t assignVectorsToCentroids(k_means_t *kMeans,
-                                 int64_t *distanceFunction(const point_t *, const point_t *, int32_t)) {
+                                 squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
+                                                                          int32_t dimension)) {
 
     int32_t unchanged = 1;
 
