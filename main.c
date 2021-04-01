@@ -7,14 +7,7 @@
 #include <errno.h>
 #include <inttypes.h>
 #include "headers/distance.h"
-#include "headers/kMeans.h"
-#include "headers/point.h"
-#include "headers/generateStartingCentroids.h"
 
-
-int64_t **vectors;
-int32_t dimension;
-int64_t size;
 
 typedef struct {
     FILE *input_stream;
@@ -130,11 +123,6 @@ int main(int argc, char *argv[]) {
 
     // TODO: parse the binary input file, compute the k-means solutions and write the output in a csv
 
-    int32_t n = program_arguments.n_first_initialization_points;
-    int32_t k = program_arguments.k;
-    int64_t iterationNumber = (int64_t) factorial(n) / (factorial(k) * factorial(n - k));
-
-    point_t **startingCentroidsID = (point_t **) malloc(iterationNumber * sizeof(point_t *));
 
 
 
