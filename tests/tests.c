@@ -165,6 +165,10 @@ void testNormalAssignVectorToCentroids(void) {
     CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 0);
     CU_ASSERT_EQUAL((kMeansDim2->points)[1].nearestCentroidID, 0);
     CU_ASSERT_EQUAL((kMeansDim2->points)[2].nearestCentroidID, 1);
+
+    CU_ASSERT_FALSE(assignVectorsToCentroids(kMeansDim2,
+                                             (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                                          int32_t)) generic_func));
 }
 
 /** We've used the corresponding python function to get the correct value */
@@ -181,6 +185,10 @@ void testFirstAssignVectorToCentroids(void) {
     CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 0);
     CU_ASSERT_EQUAL((kMeansDim2->points)[1].nearestCentroidID, 0);
     CU_ASSERT_EQUAL((kMeansDim2->points)[2].nearestCentroidID, 1);
+
+    CU_ASSERT_FALSE(assignVectorsToCentroids(kMeansDim2,
+                                             (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                                          int32_t)) generic_func));
 }
 
 int main() {
