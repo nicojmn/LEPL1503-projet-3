@@ -11,5 +11,8 @@ int64_t factorial(int64_t x) {
 
 
 void generate(point_t **startingCentroidsID, int64_t **vectors, int32_t k, int32_t n) {
-
+    // Starting indexes
+    for (int i = 0; i < k; ++i) {
+        startingCentroidsID[0][i].vector = vectors[i];
+    }
 }

@@ -133,6 +133,17 @@ int main(int argc, char *argv[]) {
     int32_t n = program_arguments.n_first_initialization_points;
     int32_t iterationNUmber = (int32_t) factorial(n) / (factorial(k) * factorial(n - k));
 
+    point_t **startingCentroids = (point_t **) malloc(iterationNUmber * sizeof(point_t *));
+    for (int i = 0; i < iterationNUmber; ++i) {
+        startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
+    }
+
+
+    for (int i = 0; i < iterationNUmber; ++i) {
+        free(startingCentroids[i]);
+    }
+    free(startingCentroids);
+
 
 
     // close the files opened by parse_args
