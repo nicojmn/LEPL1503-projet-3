@@ -191,12 +191,31 @@ void testFirstAssignVectorToCentroids(void) {
                                                                           int32_t)) generic_func));
 }
 
+void testKmeans(void) {
+    squared_distance_func_t generic_func = squared_euclidean_distance;
+    k_means(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                     int32_t)) generic_func);
+
+    //centroid
+    CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[0], (int64_t) 0);
+    CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[1], (int64_t) 3);
+    CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[0], (int64_t) -4);
+    CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[1], (int64_t) 10);
+
+    //cluster
+    CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 0);
+    CU_ASSERT_EQUAL((kMeansDim2->points)[1].nearestCentroidID, 0);
+    CU_ASSERT_EQUAL((kMeansDim2->points)[2].nearestCentroidID, 1);
+}
+
+
 int main() {
 
     CU_pSuite distanceTestSuite = NULL;
     CU_pSuite distortionTestSuite = NULL;
     CU_pSuite updateCentroidsTestSuite = NULL;
     CU_pSuite assignVectorSuite = NULL;
+    CU_pSuite kmeansSuite = NULL;
 
     /** initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry()) {
@@ -208,9 +227,10 @@ int main() {
     distortionTestSuite = CU_add_suite("distortion test", setup, teardown);
     updateCentroidsTestSuite = CU_add_suite("updateCentroids test", setup, teardown);
     assignVectorSuite = CU_add_suite("Assign vector", setup, teardown);
+    kmeansSuite = CU_add_suite("Kmeans test", setup, teardown);
 
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
-        updateCentroidsTestSuite == NULL || assignVectorSuite == NULL) {
+        updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kmeansSuite == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -222,7 +242,8 @@ int main() {
         (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion)) ||
         (NULL == CU_add_test(updateCentroidsTestSuite, "updateCentroids", testUpdateCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector normal", testNormalAssignVectorToCentroids)) ||
-        (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids))) {
+        (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids)) ||
+        (NULL == CU_add_test(kmeansSuite, "Kmeans", testKmeans))) {
         CU_cleanup_registry();
         return CU_get_error();
     }
