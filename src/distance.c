@@ -37,3 +37,5 @@ int64_t distortion(k_means_t *kMeans, squared_distance_func_t
     return distortionSum;
 }
 
+
+

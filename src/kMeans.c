@@ -49,7 +49,7 @@ int32_t assignVectorsToCentroids(k_means_t *kMeans,
                                  squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
                                                                           int32_t dimension)) {
 
-    int32_t unchanged = 1;
+    int32_t hasChanged = 0;
 
     for (int i = 0; i < kMeans->size; ++i) {
         // Let's find the closest centroid
@@ -65,10 +65,23 @@ int32_t assignVectorsToCentroids(k_means_t *kMeans,
             int64_t newDistance = (int64_t) distanceFunction(&(kMeans->points)[i], &(kMeans->centroids)[j],
                                                              kMeans->dimension);
             if (oldDistance > newDistance){
-                unchanged = 0;
+                hasChanged = 1;
                 (kMeans->points)[i].nearestCentroidID = (int32_t) j;
             }
         }
     }
-    return !unchanged;
+    return hasChanged;
 }
+void k_means(k_means_t *kMeans,
+             squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
+                                                      int32_t dimension)){
+
+    //TODO : make distanceFunction as a global function ( if possible :D)
+
+    int32_t hasChanged = 1;
+    while (hasChanged == 1){
+        hasChanged = assignVectorsToCentroids(kMeans,distanceFunction);
+        updateCentroids(kMeans);
+    }
+}
+
