@@ -7,7 +7,14 @@
 #include <errno.h>
 #include <inttypes.h>
 #include "headers/distance.h"
+#include "headers/kMeans.h"
+#include "headers/point.h"
+#include "headers/generateStartingCentroids.h"
 
+
+int64_t **vectors;
+int32_t dimension;
+int64_t size;
 
 typedef struct {
     FILE *input_stream;
@@ -111,14 +118,23 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     // the following fprintf (and every code already present in this skeleton) can be removed, it is just an example to show you how to use the program arguments
-    fprintf(stderr, "\tnumber of threads executing the LLoyd's algoprithm in parallel: %" PRIu32 "\n", program_arguments.n_threads);
+    fprintf(stderr, "\tnumber of threads executing the LLoyd's algoprithm in parallel: %" PRIu32 "\n",
+            program_arguments.n_threads);
     fprintf(stderr, "\tnumber of clusters (k): %" PRIu32 "\n", program_arguments.k);
-    fprintf(stderr, "\twe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n", program_arguments.n_first_initialization_points);
+    fprintf(stderr,
+            "\twe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n",
+            program_arguments.n_first_initialization_points);
     fprintf(stderr, "\tquiet mode: %s\n", program_arguments.quiet ? "enabled" : "disabled");
-    fprintf(stderr, "\tsquared distance function: %s\n", program_arguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
+    fprintf(stderr, "\tsquared distance function: %s\n",
+            program_arguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
 
     // TODO: parse the binary input file, compute the k-means solutions and write the output in a csv
 
+    int32_t n = program_arguments.n_first_initialization_points;
+    int32_t k = program_arguments.k;
+    int64_t iterationNumber = (int64_t) factorial(n) / (factorial(k) * factorial(n - k));
+
+    point_t **startingCentroidsID = (point_t **) malloc(iterationNumber * sizeof(point_t *));
 
 
 
