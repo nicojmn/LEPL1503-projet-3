@@ -1,6 +1,5 @@
 #ifndef GENERATESTARTINGCENTROIDS_H
 #define GENERATESTARTINGCENTROIDS_H
-
 #include <stdint.h>
 #include "point.h"
 
