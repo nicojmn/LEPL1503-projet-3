@@ -42,9 +42,6 @@ void updateCentroids(k_means_t *kMeans) {
     free(clustersSize);
 }
 
-// TODO : write test for this function
-
-/** Be careful this hasn't been tested */
 int32_t assignVectorsToCentroids(k_means_t *kMeans,
                                  squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
                                                                           int32_t dimension)) {
