@@ -13,10 +13,8 @@ void updateCentroids(k_means_t *kMeans) {
         }
     }
 
-    int64_t *clustersSize = (int64_t*) malloc((kMeans->k) * sizeof(int64_t));
-    if (clustersSize == NULL) return;
     for (int i = 0; i < kMeans->k; ++i) {
-        clustersSize[i] = (int64_t) 0;
+        (kMeans->clustersSize)[i] = (int64_t) 0;
     }
 
     // Sum
@@ -25,7 +23,7 @@ void updateCentroids(k_means_t *kMeans) {
         for (int j = 0; j < kMeans->dimension; ++j) {
             ((kMeans->centroids)[centroidID].vector)[j] += ((kMeans->points)[i].vector)[j];
         }
-        clustersSize[centroidID]++;
+        (kMeans->clustersSize)[centroidID]++;
     }
 
     // Average
@@ -36,10 +34,9 @@ void updateCentroids(k_means_t *kMeans) {
              # numbers this is not an integer division as it rounds the result down
             */
             ((kMeans->centroids)[i].vector)[j] = (int64_t) (((kMeans->centroids)[i].vector)[j]
-                                                            /clustersSize[i]);
+                                                            / (kMeans->clustersSize)[i]);
         }
     }
-    free(clustersSize);
 }
 
 int32_t assignVectorsToCentroids(k_means_t *kMeans,
