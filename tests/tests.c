@@ -11,6 +11,8 @@
 #include "../src/distance.c"
 #include "../src/kMeans.c"
 #include "../src/generateStartingCentroids.c"
+#include "../headers/binaryFile.h"
+#include "../src/binaryFile.c"
 
 
 /** Testing with different dimensions */
@@ -171,6 +173,35 @@ int32_t teardown(void) {
     return 0;
 }
 
+/** Testing input file */
+int64_t **vectors;
+int32_t *dimension;
+int64_t *size;
+
+int32_t setupBinaryFile(void) {
+    return 0;
+}
+
+int32_t teardownBinaryFile(void) {
+    for (int32_t i = 0; i < *size; i++) {
+        free(vectors[i]);
+    }
+    free(vectors);
+    free(dimension);
+    free(size);
+    return 0;
+}
+
+void testbinary(void) {
+    char *filename = "/home/gilles/Documents/P3_CMake/tests/example.bin";
+
+    writeFromBinaryFile(filename, dimension, vectors, size);
+    /**CU_ASSERT_EQUAL(*dimension, 2);
+    CU_ASSERT_EQUAL(*size, 7);
+    CU_ASSERT_EQUAL(vectors[0][0], 1);
+    CU_ASSERT_EQUAL(vectors[0][1], 1);*/
+}
+
 /** We've used the corresponding python function to get the corrects values */
 void testManhattan(void) {
     CU_ASSERT_EQUAL(squared_manhattan_distance(&kMeansDim1->points[0], &kMeansDim1->points[1],
@@ -321,6 +352,7 @@ int main() {
     CU_pSuite updateCentroidsTestSuite = NULL;
     CU_pSuite assignVectorSuite = NULL;
     CU_pSuite kmeansSuite = NULL;
+    CU_pSuite binaryFileSuite = NULL;
 
     /** initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry()) {
@@ -333,9 +365,11 @@ int main() {
     updateCentroidsTestSuite = CU_add_suite("updateCentroids test", setup, teardown);
     assignVectorSuite = CU_add_suite("Assign vector", setup, teardown);
     kmeansSuite = CU_add_suite("Kmeans test", setup, teardown);
+    binaryFileSuite = CU_add_suite("binary file test", setupBinaryFile, teardownBinaryFile);
 
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
-        updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kmeansSuite == NULL) {
+        updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kmeansSuite == NULL
+        || binaryFileSuite == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -349,7 +383,8 @@ int main() {
         (NULL == CU_add_test(assignVectorSuite, "assign vector normal", testNormalAssignVectorToCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids)) ||
         (NULL == CU_add_test(kmeansSuite, "One iteration of Kmeans", testKmeansDimension2)) ||
-        NULL == CU_add_test(kmeansSuite, "Two iterations of Kmeans with dimension 3", testKmeansDimension3)) {
+        NULL == CU_add_test(kmeansSuite, "Two iterations of Kmeans with dimension 3", testKmeansDimension3) ||
+        NULL == CU_add_test(binaryFileSuite, "Test de binary file", testbinary)) {
         CU_cleanup_registry();
         return CU_get_error();
     }
