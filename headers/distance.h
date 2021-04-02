@@ -11,7 +11,7 @@
  *
  *      int64_t function_name(const point_t *, const point_t *, int32_t)
  *
- * So basically, once you've implemented squared_manhatan_distance and squared_euclidean_distance,
+ * So basically, once you've implemented squared_manhattan_distance and squared_euclidean_distance,
  * you can do the following if you want:
  *
  *      squared_distance_func_t generic_func;
@@ -46,7 +46,8 @@ int64_t absVal(int64_t x);
  * @param clusters : array of clusters
  * @param k : number of clusters
  * @param dimension : dimension of the points to compare
- * @param generic_func : generic function to determine if we want manhattan or euclidean distance
+ * @param generic_func : generic function which correspond to manhattan or euclidean distance function
+ *                           depending on the choice of the user
  * @return distortionSum : the total distortion between all the clusters
  */
 int64_t distortion(k_means_t *kMeans,
