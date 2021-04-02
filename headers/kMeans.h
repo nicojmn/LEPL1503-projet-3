@@ -36,7 +36,13 @@ int32_t assignVectorsToCentroids(k_means_t *kMeans,
                                  squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
                                                                           int32_t dimension));
 
-
+/**
+ *
+ * @param kMeans : the instance of the problem
+ * @param distanceFunction : generic function which correspond to manhattan or euclidean distance function
+ *                           depending on the choice of the user
+ *        It updates each cluster to match witch the nearest centroid
+ */
 
 void k_means(k_means_t *kMeans,
              squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
