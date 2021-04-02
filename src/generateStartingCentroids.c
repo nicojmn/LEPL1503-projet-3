@@ -9,10 +9,28 @@ int64_t factorial(int64_t x) {
     return result;
 }
 
+void generateSetOfStartingCentroids(point_t **startingCentroidsID, int64_t **vectors,
+                                    int32_t k, int32_t n, int32_t iterationNbr) {
 
-void generate(point_t **startingCentroidsID, int64_t **vectors, int32_t k, int32_t n) {
-    // Starting indexes
+    int32_t indices[k];
+
+    // First set of centroids
     for (int i = 0; i < k; ++i) {
-        startingCentroidsID[0][i].vector = vectors[i];
+        indices[i] = i;
+    }
+
+    for (int i = 0; i < iterationNbr; ++i) {
+        // Creating the set of centroids
+        for (int j = 0; j < k; ++j) {
+            startingCentroidsID[i][j].vector = vectors[indices[j]];
+        }
+        int j = k - 1;
+        while (indices[j] == n - 1 || indices[j] == indices[j + 1] - 1) {
+            j--;
+        }
+        indices[j]++;
+        for (int l = j + 1; l < k; ++l) {
+            indices[l] = indices[l - 1] + 1;
+        }
     }
 }

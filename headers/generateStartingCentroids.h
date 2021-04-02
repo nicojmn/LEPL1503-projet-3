@@ -13,7 +13,8 @@ int64_t factorial(int64_t x);
  * @param k : Number of centroid
  * @param n : The n first points which will be used for the combination
  */
-void generate(point_t **startingCentroidsID, int64_t **vectors, int32_t k, int32_t n);
+void generateSetOfStartingCentroids(point_t **startingCentroidsID, int64_t **vectors,
+                                    int32_t k, int32_t n, int32_t iterationNbr);
 
 
 #endif //GENERATESTARTINGCENTROIDS_H
