@@ -10,6 +10,7 @@
 #include "../headers/kMeans.h"
 #include "../src/distance.c"
 #include "../src/kMeans.c"
+#include "../src/generateStartingCentroids.c"
 
 
 /** Testing with different dimensions */
@@ -283,6 +284,24 @@ void testKmeansDimension3(void) {
     CU_ASSERT_EQUAL((kMeansDim3->points)[3].nearestCentroidID, 1);
     CU_ASSERT_EQUAL((kMeansDim3->points)[4].nearestCentroidID, 0);
     CU_ASSERT_EQUAL((kMeansDim3->points)[5].nearestCentroidID, 1);
+
+}
+
+void testGenerateStartingCentroids(void) {
+
+    /*
+    tentative d initialisation de centroid
+    (kMeansDim2->points)[0].nearestCentroidID = ?;
+    startingCentroidsID[?][?].vector = vectors[?];
+
+    CU_ASSERT_EQUAL(generateSetOfStartingCentroids(argument1, argument2 , 4, 4, 1), returned)
+    - argument1 c'est le centroide du point qui va être initialisé
+    - argument2 c'est le vecteur associé
+    - returned c'est j'imagine genre une mini liste du genre [0 1 2 3] dans ce cas ci
+
+     -> reste à comprendre comment initialisé tout ça  (voir tentative au dessus)
+     -> est ce que j'ai l'air de bégayé avec les tests ? oui totalement
+     */
 
 }
 

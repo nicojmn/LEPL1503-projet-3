@@ -12,6 +12,8 @@ int64_t factorial(int64_t x);
  * @param vectors : the points of the simulation
  * @param k : number of centroid
  * @param n : the n first points which will be used for the combination
+ * @param iterationNbr : #TODO
+ *        //What does it do #TODO
  */
 void generateSetOfStartingCentroids(point_t **startingCentroidsID, int64_t **vectors,
                                     int32_t k, int32_t n, int32_t iterationNbr);
