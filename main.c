@@ -129,6 +129,8 @@ int main(int argc, char *argv[]) {
 
     // TODO: parse the binary input file, compute the k-means solutions and write the output in a csv
 
+    // TODO: Loading data: Gilles
+
     int32_t k = program_arguments.k;
     int32_t n = program_arguments.n_first_initialization_points;
     int32_t iterationNUmber = (int32_t) factorial(n) / (factorial(k) * factorial(n - k));
@@ -136,6 +138,15 @@ int main(int argc, char *argv[]) {
     point_t **startingCentroids = (point_t **) malloc(iterationNUmber * sizeof(point_t *));
     for (int i = 0; i < iterationNUmber; ++i) {
         startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
+    }
+    generateSetOfStartingCentroids(startingCentroids, vectors, k, n, iterationNUmber);
+
+    for (int i = 0; i < iterationNUmber; ++i) {
+        // TODO: create kMeans_t
+
+        // TODO: run kMeans
+
+        // TODO: write kMeans in the csv file: Pierre
     }
 
 
