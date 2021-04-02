@@ -17,7 +17,7 @@ typedef struct {
 
 /**
  * @param kMeans: pointer to the instance of our problem
- *        It assigns each point to its closest cluster
+ *        It assigns each point to its closest cluster and update the size of each cluster
  */
 void updateCentroids(k_means_t *kMeans);
 
@@ -48,5 +48,8 @@ int32_t assignVectorsToCentroids(k_means_t *kMeans,
 void k_means(k_means_t *kMeans,
              squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
                                                       int32_t dimension));
+
+k_means_t *produce(int64_t **vectors, point_t **startingCentroidsID, int32_t index, int32_t k,
+                   int64_t size, uint32_t dimension);
 
 #endif //K_MEANS

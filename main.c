@@ -14,7 +14,6 @@ int64_t **vectors;
 int32_t dimension;
 int64_t size;
 
-
 typedef struct {
     FILE *input_stream;
     FILE *output_stream;
@@ -131,6 +130,8 @@ int main(int argc, char *argv[]) {
 
     // TODO: Loading data: Gilles
 
+    squared_distance_func_t generic_func = program_arguments.squared_distance_func;
+
     int32_t k = program_arguments.k;
     int32_t n = program_arguments.n_first_initialization_points;
     int32_t iterationNUmber = (int32_t) factorial(n) / (factorial(k) * factorial(n - k));
@@ -142,20 +143,19 @@ int main(int argc, char *argv[]) {
     generateSetOfStartingCentroids(startingCentroids, vectors, k, n, iterationNUmber);
 
     for (int i = 0; i < iterationNUmber; ++i) {
-        // TODO: create kMeans_t
+        k_means_t *kMeansSimulation = produce(vectors, startingCentroids, i, k, size, dimension);
 
-        // TODO: run kMeans
+        k_means(kMeansSimulation,
+                (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
 
         // TODO: write kMeans in the csv file: Pierre
     }
 
-
+    // TODO: Be careful everything must be freed
     for (int i = 0; i < iterationNUmber; ++i) {
         free(startingCentroids[i]);
     }
     free(startingCentroids);
-
-
 
     // close the files opened by parse_args
     if (program_arguments.input_stream != stdin) {
