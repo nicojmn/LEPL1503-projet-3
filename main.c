@@ -9,6 +9,7 @@
 #include "headers/distance.h"
 #include "headers/generateStartingCentroids.h"
 #include "headers/kMeans.h"
+#include "headers/createOutputFile.h"
 
 int64_t **vectors;
 int32_t dimension;
@@ -107,62 +108,64 @@ int parse_args(args_t *args, int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-    args_t program_arguments;   // allocate the args on the stack
-    parse_args(&program_arguments, argc, argv);
+    args_t programArguments;   // allocate the args on the stack
+    parse_args(&programArguments, argc, argv);
 
-    if (program_arguments.n_first_initialization_points < program_arguments.k) {
+    if (programArguments.n_first_initialization_points < programArguments.k) {
         fprintf(stderr, "Cannot generate an instance of k-means with less initialization points than needed clusters: %"PRIu32" < %"PRIu32"\n",
-                program_arguments.n_first_initialization_points, program_arguments.k);
+                programArguments.n_first_initialization_points, programArguments.k);
         return -1;
     }
     // the following fprintf (and every code already present in this skeleton) can be removed, it is just an example to show you how to use the program arguments
     fprintf(stderr, "\tnumber of threads executing the LLoyd's algoprithm in parallel: %" PRIu32 "\n",
-            program_arguments.n_threads);
-    fprintf(stderr, "\tnumber of clusters (k): %" PRIu32 "\n", program_arguments.k);
+            programArguments.n_threads);
+    fprintf(stderr, "\tnumber of clusters (k): %" PRIu32 "\n", programArguments.k);
     fprintf(stderr,
             "\twe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n",
-            program_arguments.n_first_initialization_points);
-    fprintf(stderr, "\tquiet mode: %s\n", program_arguments.quiet ? "enabled" : "disabled");
+            programArguments.n_first_initialization_points);
+    fprintf(stderr, "\tquiet mode: %s\n", programArguments.quiet ? "enabled" : "disabled");
     fprintf(stderr, "\tsquared distance function: %s\n",
-            program_arguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
+            programArguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
 
     // TODO: parse the binary input file, compute the k-means solutions and write the output in a csv
 
     // TODO: Loading data: Gilles
 
-    squared_distance_func_t generic_func = program_arguments.squared_distance_func;
+    squared_distance_func_t generic_func = programArguments.squared_distance_func;
 
-    int32_t k = program_arguments.k;
-    int32_t n = program_arguments.n_first_initialization_points;
-    int32_t iterationNUmber = (int32_t) factorial(n) / (factorial(k) * factorial(n - k));
+    int32_t k = programArguments.k;
+    int32_t n = programArguments.n_first_initialization_points;
+    int32_t iterationNumber = (int32_t) factorial(n) / (factorial(k) * factorial(n - k));
 
-    point_t **startingCentroids = (point_t **) malloc(iterationNUmber * sizeof(point_t *));
-    for (int i = 0; i < iterationNUmber; ++i) {
+    point_t **startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
+    for (int i = 0; i < iterationNumber; ++i) {
         startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
     }
-    generateSetOfStartingCentroids(startingCentroids, vectors, k, n, iterationNUmber);
+    generateSetOfStartingCentroids(startingCentroids, vectors, k, n, iterationNumber);
 
-    for (int i = 0; i < iterationNUmber; ++i) {
+    csvFileHeadline(programArguments.quiet, programArguments.output_stream);
+
+    for (int i = 0; i < iterationNumber; ++i) {
         k_means_t *kMeansSimulation = produce(vectors, startingCentroids, i, k, size, dimension);
 
         k_means(kMeansSimulation,
                 (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
 
-        // TODO: write kMeans in the csv file: Pierre
+        writeOneKmeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream, startingCentroids[i], iterationNumber);
     }
 
     // TODO: Be careful everything must be freed
-    for (int i = 0; i < iterationNUmber; ++i) {
+    for (int i = 0; i < iterationNumber; ++i) {
         free(startingCentroids[i]);
     }
     free(startingCentroids);
 
     // close the files opened by parse_args
-    if (program_arguments.input_stream != stdin) {
-        fclose(program_arguments.input_stream);
+    if (programArguments.input_stream != stdin) {
+        fclose(programArguments.input_stream);
     }
-    if (program_arguments.output_stream != stdout) {
-        fclose(program_arguments.output_stream);
+    if (programArguments.output_stream != stdout) {
+        fclose(programArguments.output_stream);
     }
     return 0;
 }
