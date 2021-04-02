@@ -11,9 +11,7 @@
 #include "headers/kMeans.h"
 #include "headers/createOutputFile.h"
 
-int64_t **vectors;
-int32_t dimension;
-int64_t size;
+data_t *generalData;
 
 typedef struct {
     FILE *input_stream;
@@ -97,7 +95,7 @@ int parse_args(args_t *args, int argc, char *argv[]) {
     if (optind == argc) {
         args->input_stream = stdin;
     } else {
-        args->input_stream = fopen(argv[optind], "r");
+        args->input_stream = fopen(argv[optind], "rb");  // I've changed "r" to "rb"
         if (!args->input_stream) {
             fprintf(stderr, "could not open file %s: %s\n", argv[optind], strerror(errno));
             return -1;

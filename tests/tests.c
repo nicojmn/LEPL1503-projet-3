@@ -174,32 +174,38 @@ int32_t teardown(void) {
 }
 
 /** Testing input file */
-int64_t **vectors;
-int32_t *dimension;
-int64_t *size;
+FILE *fileForTest;
+data_t *dataTest;
 
 int32_t setupBinaryFile(void) {
+    fileForTest = fopen("input_binary/example.bin", "r");
+    if (fileForTest == NULL) return -1;
+
+    dataTest = (data_t *) malloc(sizeof(data_t));
+    if (dataTest == NULL) return -1;
+
     return 0;
 }
 
 int32_t teardownBinaryFile(void) {
-    for (int32_t i = 0; i < *size; i++) {
-        free(vectors[i]);
+    if (0 != fclose(fileForTest)) return -1;
+    for (uint64_t i = 0; i < dataTest->size; i++) {
+        free((dataTest->vectors)[i]);
     }
-    free(vectors);
-    free(dimension);
-    free(size);
+    free(dataTest->vectors);
+    free(dataTest);
+
     return 0;
 }
 
-void testbinary(void) {
-    char *filename = "/home/gilles/Documents/P3_CMake/tests/example.bin";
+void testReadBinaryFile(void) {
 
-    writeFromBinaryFile(filename, dimension, vectors, size);
-    /**CU_ASSERT_EQUAL(*dimension, 2);
-    CU_ASSERT_EQUAL(*size, 7);
-    CU_ASSERT_EQUAL(vectors[0][0], 1);
-    CU_ASSERT_EQUAL(vectors[0][1], 1);*/
+    loadData(fileForTest, dataTest);
+
+    CU_ASSERT_EQUAL(dataTest->dimension, 2);
+    CU_ASSERT_EQUAL(dataTest->size, 7);
+    CU_ASSERT_EQUAL((dataTest->vectors)[0][0], 1);
+    CU_ASSERT_EQUAL((dataTest->vectors)[0][1], 1);
 }
 
 /** We've used the corresponding python function to get the corrects values */
@@ -365,7 +371,7 @@ int main() {
     updateCentroidsTestSuite = CU_add_suite("updateCentroids test", setup, teardown);
     assignVectorSuite = CU_add_suite("Assign vector", setup, teardown);
     kmeansSuite = CU_add_suite("Kmeans test", setup, teardown);
-    binaryFileSuite = CU_add_suite("binary file test", setupBinaryFile, teardownBinaryFile);
+    binaryFileSuite = CU_add_suite("binary file loading test", setupBinaryFile, teardownBinaryFile);
 
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
         updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kmeansSuite == NULL
@@ -384,7 +390,7 @@ int main() {
         (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids)) ||
         (NULL == CU_add_test(kmeansSuite, "One iteration of Kmeans", testKmeansDimension2)) ||
         NULL == CU_add_test(kmeansSuite, "Two iterations of Kmeans with dimension 3", testKmeansDimension3) ||
-        NULL == CU_add_test(binaryFileSuite, "Test de binary file", testbinary)) {
+        NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile)) {
         CU_cleanup_registry();
         return CU_get_error();
     }

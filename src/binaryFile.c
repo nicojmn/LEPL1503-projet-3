@@ -1,65 +1,43 @@
 #include <stdio.h>
 #include "../headers/binaryFile.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <limits.h>
 
-int64_t writeFromBinaryFile (char *filename, int32_t *dimension, int64_t **vectors, int64_t *size) {
-    int file = open(filename, O_RDONLY, S_IRUSR);
-    if (file == -1) {
-        return -1;
-    }
 
-    struct stat buf;
-    if (fstat(file, &buf)) {
-        close(file);
-        return -1;
-    }
+int32_t loadData(FILE *file, data_t *data) {
 
-    int64_t *addr = (int64_t *) mmap(NULL, buf.st_size, PROT_READ, MAP_SHARED, file, 0);
-    if (addr == MAP_FAILED) {
-        close(file);
-        return -1;
-    }
+    uint32_t *dimension = (uint32_t *) malloc(sizeof(uint32_t));
+    if (dimension == NULL) return -1;
+    fread(dimension, 4 * sizeof(char), 1, file);
+    data->dimension = (int32_t) be32toh(*dimension);
 
-    dimension = (int32_t *) malloc(sizeof(int32_t));
-    if (dimension == NULL) {
-        return -1;
-    }
-    *dimension = *addr;
+    fseek(file, 4, SEEK_SET);
 
-    size = (int64_t *) malloc(sizeof(int64_t));
-    if (size == NULL) {
-        return -1;
-    }
-    *size = 11;
+    uint64_t *size = (uint64_t *) malloc(sizeof(uint64_t));
+    if (size == NULL) return -1;
+    fread(size, 8 * sizeof(char), 1, file);
+    data->size = (uint64_t) be64toh(*size);
 
-    vectors = (int64_t **) malloc(sizeof(int64_t *)*(*size));
-    if (vectors == NULL) {
-        return -1;
-    }
+    fseek(file, 12, SEEK_SET);
 
-    printf("%ld %d fin" ,*size, *dimension);
-    int counter = 0;
-    for (int32_t i = 0; i < *size; i++) {
-        vectors[i] = (int64_t *) malloc(sizeof(int64_t)*(*dimension));
-        if (vectors[i] == NULL) {
-            return -1;
+    int64_t *buffer = (int64_t *) malloc((data->dimension) * (data->size) * sizeof(int64_t));
+    if (buffer == NULL) return -1;
+
+    fread(buffer, 8 * sizeof(char), (data->dimension) * (data->size), file);
+
+    data->vectors = (int64_t **) malloc(data->size * sizeof(int64_t * ));
+    for (int64_t i = 0; i < data->size; i++) {
+
+        (data->vectors)[i] = (int64_t *) malloc((data->dimension) * sizeof(int64_t));
+        if ((data->vectors)[i] == NULL) return -1;
+
+        for (uint32_t j = 0; j < (data->dimension); j++) {
+            (data->vectors)[i][j] = (int64_t) be64toh(buffer[i * (data->dimension) + j]);
         }
-        for (int32_t j = 0; j < *dimension; j++) {
-            vectors[i][j] = addr[2 + i + j];
-            counter++;
-        }
-
     }
-    printf("yolo");
-
-    if (close(file) == -1) {
-        munmap(addr, buf.st_size);
-        return -1;
-    }
-
-    int ferm = munmap(addr, buf.st_size);
-    if (ferm == -1) {
-        return -1;
-    }
-
+    free(dimension);
+    free(size);
+    free(buffer);
     return 0;
 }

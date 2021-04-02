@@ -8,6 +8,6 @@
 #include <ftw.h>
 #include <stdlib.h>
 #include "../headers/kMeans.h"
-int64_t writeFromBinaryFile (char *filename, int32_t *dimension, int64_t **vectors, int64_t *size);
+int32_t loadData(FILE *file, data_t *data);
 
 #endif //BINARYFILE_H

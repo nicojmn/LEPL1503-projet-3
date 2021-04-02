@@ -11,9 +11,15 @@ typedef struct {
     uint32_t k;
     point_t *points;
     uint32_t dimension;
-    int64_t size;
+    uint64_t size;
 
 } k_means_t;
+
+typedef struct {
+    int64_t **vectors;
+    uint32_t dimension;
+    uint64_t size;
+} data_t;
 
 /**
  * @param kMeans: pointer to the instance of our problem
