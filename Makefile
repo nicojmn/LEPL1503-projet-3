@@ -29,7 +29,7 @@ valgrind:
 ## filePath : the .c path to file to perform test
 ## example : make valgrind level=full log=yes file=tests/tests.c
 ## ----------------------------------------------------------------------
-	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -c $(filePath) -o tests/$(notdir $(basename $(filePath))).o $(LIBS)
+	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) $(filePath) -o tests/$(notdir $(basename $(filePath))).o $(LIBS)
 	chmod 777 ./tests/$(notdir $(basename $(filePath))).o
 ifeq ($(level), full)
 ifeq ($(log), yes)
