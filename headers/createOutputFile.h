@@ -14,11 +14,14 @@
 /*
  * Writes in the output file the names of the data that will be added later
  */
-void csvFileHeadline(bool quiet, FILE *outputPath);
+int32_t csvFileHeadline(bool quiet, FILE *outputPath);
 
 /*
  * Adds to outputPath the following data on one line :
  */
-void writeOneKmeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids, int32_t iterationNumber);
+int32_t
+writeOneKmeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids, int32_t iterationNumber);
+
+char *formatVectorList(point_t *listOfVectors, uint64_t size, uint32_t dimension, uint32_t k);
 
 #endif //CREATEOUTPUTFILE_H
