@@ -45,6 +45,7 @@ else
 	$(VALGRIND_MEM_MED) tests/$(notdir $(basename $(filePath))).o $(LIBS)
 endif
 endif
+	rm -f tests/$(notdir $(basename $(filePath))).o
 
 # a .PHONY target forces make to execute the command even if the target already exists
 .PHONY: clean tests
