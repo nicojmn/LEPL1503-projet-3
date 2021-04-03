@@ -8,9 +8,9 @@ int32_t csvFileHeadline(bool quiet, FILE *outputPath) {
     fprintf(outputPath, "%s", dataNames);
 
     if (!quiet) {
-        char *suppDataNames = malloc(9 * sizeof(char));
+        char *suppDataNames = malloc(10 * sizeof(char));
         if (suppDataNames == NULL) return -1;
-        suppDataNames = ",clusters";
+        suppDataNames = ",clusters\0";
         fprintf(outputPath, "%s", suppDataNames);
         free(suppDataNames);
     }
@@ -19,21 +19,23 @@ int32_t csvFileHeadline(bool quiet, FILE *outputPath) {
     return 0;
 }
 
+// TODO : make tests
+int32_t writeVectorList(point_t *listOfVectors, uint64_t size, uint32_t dimension, uint32_t k, FILE *outputFile) {
+    if (fprintf(outputFile, "\"[") < 0) return -1;
+    for (int vectors = 0; vectors < k; ++vectors) {
+        if (fprintf(outputFile, "(") < 0) return -1;
+        if (vectors != 0) fprintf(outputFile, ", ");
+        for (int values = 0; values < dimension; ++values) {
+            if (fprintf(outputFile, "%li", listOfVectors[vectors].vector[values]) < 0) return -1;
+        }
+        if (fprintf(outputFile, ")") < 0) return -1;
+    }
+    if (fprintf(outputFile, "]\"") < 0) return -1;
+}
+
 //TODO make tests for writeOneKmeans function
 int32_t
 writeOneKmeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids, int32_t iterationNumber) {
-    int64_t **startingCentroids = malloc(sizeof(int64_t) * (kMeans->dimension) * (kMeans->k));
-    for (int i = 0; i < kMeans->k; ++i) {
-        char *vector = malloc();
-        for (int j = 0; j < kMeans->dimension; ++j) {
-
-        }
-    }
-    fprintf(outputPath, "\"[(1, 1), (2, 2)]\",",);
-
-    //TODO malloc all elements to write, format and write them
-
-    fprintf(outputPath,"\n");
-
-    free(toWrite);
+    fprintf(outputPath, "\n");
+    // TODO : make function
 }
