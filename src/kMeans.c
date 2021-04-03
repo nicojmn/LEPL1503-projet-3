@@ -83,8 +83,6 @@ k_means_t *produce(int64_t **vectors, point_t **startingCentroidsID, int32_t ind
                    int64_t size, uint32_t dimension) {
     k_means_t *kMeans = (k_means_t *) malloc(sizeof(k_means_t));
     if (kMeans == NULL) return NULL;
-    kMeans->centroids = (point_t *) malloc(k * sizeof(point_t));
-    if (kMeans->centroids == NULL) return NULL;
     kMeans->clustersSize = (int64_t *) malloc(k * sizeof(int64_t));
     if (kMeans->clustersSize == NULL) return NULL;
     kMeans->points = (point_t *) malloc(size * sizeof(point_t));
@@ -105,3 +103,10 @@ k_means_t *produce(int64_t **vectors, point_t **startingCentroidsID, int32_t ind
     return kMeans;
 }
 
+void clean(k_means_t *kMeans) {
+    free(kMeans->centroids);
+    free(kMeans->clustersSize);
+    free(kMeans->points);
+    // Vectors of points are intentionally not freed
+    free(kMeans);
+}

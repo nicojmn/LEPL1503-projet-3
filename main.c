@@ -10,6 +10,7 @@
 #include "headers/generateStartingCentroids.h"
 #include "headers/kMeans.h"
 #include "headers/createOutputFile.h"
+#include "headers/binaryFile.h"
 
 data_t *generalData;
 
@@ -95,7 +96,7 @@ int parse_args(args_t *args, int argc, char *argv[]) {
     if (optind == argc) {
         args->input_stream = stdin;
     } else {
-        args->input_stream = fopen(argv[optind], "rb");  // I've changed "r" to "rb"
+        args->input_stream = fopen(argv[optind], "r");
         if (!args->input_stream) {
             fprintf(stderr, "could not open file %s: %s\n", argv[optind], strerror(errno));
             return -1;
@@ -127,7 +128,7 @@ int main(int argc, char *argv[]) {
 
     // TODO: parse the binary input file, compute the k-means solutions and write the output in a csv
 
-    // TODO: Loading data: Gilles
+    loadData(programArguments.input_stream, generalData);
 
     squared_distance_func_t generic_func = programArguments.squared_distance_func;
 
@@ -139,23 +140,23 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < iterationNumber; ++i) {
         startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
     }
-    generateSetOfStartingCentroids(startingCentroids, vectors, k, n, iterationNumber);
+    generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber);
 
     csvFileHeadline(programArguments.quiet, programArguments.output_stream);
 
     for (int i = 0; i < iterationNumber; ++i) {
-        k_means_t *kMeansSimulation = produce(vectors, startingCentroids, i, k, size, dimension);
+        k_means_t *kMeansSimulation = produce(generalData->vectors, startingCentroids, i, k,
+                                              generalData->size, generalData->dimension);
 
         k_means(kMeansSimulation,
                 (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
 
-        writeOneKmeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream, startingCentroids[i], iterationNumber);
+        writeOneKmeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream, startingCentroids[i],
+                       iterationNumber);
+        clean(kMeansSimulation);
     }
 
     // TODO: Be careful everything must be freed
-    for (int i = 0; i < iterationNumber; ++i) {
-        free(startingCentroids[i]);
-    }
     free(startingCentroids);
 
     // close the files opened by parse_args
