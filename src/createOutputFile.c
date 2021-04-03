@@ -55,7 +55,7 @@ int64_t writeOneKmeansBis(bool quiet) {
 
     fgets(onVerification, sizeof(onVerification), fpt);
 
-    if (!strcmp(onVerification, dataNames)) {
+    if (!strcmp(onVerification, dataNames)) { /* ici on vérifie au cas où le fichier vient d'être créé la première ligne et si non on fait les headers*/
         fprintf(fpt, "%s", dataNames);
         if (!quiet) {
             char *suppDataNames = malloc(9*sizeof(char));
@@ -66,5 +66,8 @@ int64_t writeOneKmeansBis(bool quiet) {
     }
     free(dataNames);
 
-
+    /**
+     * initialization est faite, il faut faire l'ajout des différents Kmeans
+     *
+     */
 }
