@@ -21,28 +21,28 @@ tests: tests/tests.c
 	$(CC) tests/tests.c -o tests/tests.o $(LIBS) $(CFLAGS)
 	./tests/tests.o
 
-valgrind: tests/tests.c
+valgrind:
 ## ----------------------------------------------------------------------
-##  valgrind tests
-## DON'T FORGET TO ADD ALL FILE WHICH USE MALLOC
+## Perform a valgrind test on a selected file
 ## level : med or full (the level of inspection, medium or full)
 ## log : yes or no (if the result should be logged in tests/valgrind-log)
-## example : make valgrind level=full log=yes
+## filePath : the .c path to file to perform test
+## example : make valgrind level=full log=yes file=tests/tests.c
 ## ----------------------------------------------------------------------
-
-	make tests
+	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -c $(filePath) -o tests/$(notdir $(basename $(filePath))).o $(LIBS)
+	chmod 777 ./tests/$(notdir $(basename $(filePath))).o
 ifeq ($(level), full)
 ifeq ($(log), yes)
-	$(VALGRIND_MEM_FULL) --log-file=./tests/valgrind-log/tests2.txt ./tests/tests.o $(LIBS)
+	$(VALGRIND_MEM_FULL) --log-file=tests/valgrind-log/$(notdir $(basename $(filePath))).txt tests/$(notdir $(basename $(filePath))).o $(LIBS)
 else
-	$(VALGRIND_MEM_FULL) ./tests/tests.o $(LIBS)
+	$(VALGRIND_MEM_FULL) tests/$(notdir $(basename $(filePath))).o $(LIBS)
 endif
 endif
 ifeq ($(level), med)
 ifeq ($(log),yes)
-	$(VALGRIND_MEM_MED) --log-file=./tests/valgrind-log/tests2.txt ./tests/tests.o $(LIBS)
+	$(VALGRIND_MEM_MED) --log-file=tests/valgrind-log/$(notdir $(basename $(filePath))).txt tests/$(notdir $(basename $(filePath))).o $(LIBS)
 else
-	$(VALGRIND_MEM_MED) ./tests/tests.o $(LIBS)
+	$(VALGRIND_MEM_MED) tests/$(notdir $(basename $(filePath))).o $(LIBS)
 endif
 endif
 
