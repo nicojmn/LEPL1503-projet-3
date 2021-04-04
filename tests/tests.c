@@ -13,6 +13,7 @@
 #include "../src/generateStartingCentroids.c"
 #include "../headers/binaryFile.h"
 #include "../src/binaryFile.c"
+#include "../src/createOutputFile.c"
 
 
 /** Testing with different dimensions */
@@ -170,6 +171,96 @@ int32_t teardown(void) {
     free((kMeansDim3->centroids));
     free(kMeansDim3->clustersSize);
     free(kMeansDim3);
+    return 0;
+}
+
+int32_t setupCreateOutputfile(void) {
+    kMeansDim2 = (k_means_t *) malloc(sizeof(k_means_t));
+    if (kMeansDim2 == NULL) return -1;
+    kMeansDim2->dimension = (int32_t) 2;
+    kMeansDim2->points = (point_t *) malloc(7 * sizeof(point_t));
+    kMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
+    if (kMeansDim2->points == NULL) return -1;
+    kMeansDim2->size = 7;
+    kMeansDim2->k = 2;
+    kMeansDim2->clustersSize = (int64_t *) malloc(2 * sizeof(int64_t *));
+    if (kMeansDim2->clustersSize == NULL) return -1;
+
+    (kMeansDim2->points)[0].vector = malloc(2 * sizeof(int64_t));
+    if ((kMeansDim2->points)[0].vector == NULL) return -1;
+    ((kMeansDim2->points)[0].vector)[0] = (int64_t) 1;
+    ((kMeansDim2->points)[0].vector)[1] = (int64_t) 1;
+    (kMeansDim2->points)[0].nearestCentroidID = 0;
+
+
+    (kMeansDim2->points)[1].vector = malloc(2 * sizeof(int64_t));
+    if ((kMeansDim2->points)[1].vector == NULL) return -1;
+    ((kMeansDim2->points)[1].vector)[0] = (int64_t) 2;
+    ((kMeansDim2->points)[1].vector)[1] = (int64_t) 2;
+    (kMeansDim2->points)[1].nearestCentroidID = 1;
+
+    (kMeansDim2->points)[2].vector = malloc(2 * sizeof(int64_t));
+    if ((kMeansDim2->points)[2].vector == NULL) return -1;
+    ((kMeansDim2->points)[2].vector)[0] = (int64_t) 3;
+    ((kMeansDim2->points)[2].vector)[1] = (int64_t) 4;
+    (kMeansDim2->points)[2].nearestCentroidID = -1;
+
+    (kMeansDim2->points)[3].vector = malloc(2 * sizeof(int64_t));
+    if ((kMeansDim2->points)[3].vector == NULL) return -1;
+    ((kMeansDim2->points)[3].vector)[0] = (int64_t) 5;
+    ((kMeansDim2->points)[3].vector)[1] = (int64_t) 7;
+    (kMeansDim2->points)[3].nearestCentroidID = -1;
+
+
+    (kMeansDim2->points)[4].vector = malloc(2 * sizeof(int64_t));
+    if ((kMeansDim2->points)[4].vector == NULL) return -1;
+    ((kMeansDim2->points)[4].vector)[0] = (int64_t) 3;
+    ((kMeansDim2->points)[4].vector)[1] = (int64_t) 5;
+    (kMeansDim2->points)[4].nearestCentroidID = -1;
+
+    (kMeansDim2->points)[5].vector = malloc(2 * sizeof(int64_t));
+    if ((kMeansDim2->points)[5].vector == NULL) return -1;
+    ((kMeansDim2->points)[5].vector)[0] = (int64_t) 5;
+    ((kMeansDim2->points)[5].vector)[1] = (int64_t) 5;
+    (kMeansDim2->points)[5].nearestCentroidID = -1;
+
+    (kMeansDim2->points)[6].vector = malloc(2 * sizeof(int64_t));
+    if ((kMeansDim2->points)[6].vector == NULL) return -1;
+    ((kMeansDim2->points)[6].vector)[0] = (int64_t) 4;
+    ((kMeansDim2->points)[6].vector)[1] = (int64_t) 5;
+    (kMeansDim2->points)[6].nearestCentroidID = -1;
+
+
+    (kMeansDim2->centroids)[0].vector = malloc(2 * sizeof(int64_t));
+    if ((kMeansDim2->centroids)[0].vector == NULL) return -1;
+    ((kMeansDim2->centroids)[0].vector)[0] = (int64_t) 1;
+    ((kMeansDim2->centroids)[0].vector)[1] = (int64_t) 1;
+
+    (kMeansDim2->centroids)[1].vector = malloc(2 * sizeof(int64_t));
+    if ((kMeansDim2->centroids)[1].vector == NULL) return -1;
+    ((kMeansDim2->centroids)[1].vector)[0] = (int64_t) 2;
+    ((kMeansDim2->centroids)[1].vector)[1] = (int64_t) 2;
+
+
+    return 0;
+
+}
+
+int32_t teardownCreateOutputFile(void) {
+    free((kMeansDim2->points)[0].vector);
+    free((kMeansDim2->points)[1].vector);
+    free((kMeansDim2->points)[2].vector);
+    free((kMeansDim2->points)[3].vector);
+    free((kMeansDim2->points)[4].vector);
+    free((kMeansDim2->points)[5].vector);
+    free((kMeansDim2->points)[6].vector);
+
+    free((kMeansDim2->centroids)[0].vector);
+    free((kMeansDim2->centroids)[1].vector);
+    free(kMeansDim2->points);
+    free(kMeansDim2->centroids);
+    free(kMeansDim2->clustersSize);
+    free(kMeansDim2);
     return 0;
 }
 
@@ -354,7 +445,57 @@ void testKmeansDimension3(void) {
     CU_ASSERT_EQUAL((kMeansDim3->points)[4].nearestCentroidID, 0);
     CU_ASSERT_EQUAL((kMeansDim3->points)[5].nearestCentroidID, 1);
 
+    CU_ASSERT_EQUAL(kMeansDim3->clustersSize[0], 3);
+    CU_ASSERT_EQUAL(kMeansDim3->clustersSize[1], 3);
+
 }
+
+void test_createOutputFileDimension3(void) {
+    squared_distance_func_t generic_func = squared_euclidean_distance;
+    FILE *outputFile = NULL;
+    outputFile = fopen("test.csv", "a+");
+    k_means_t *startingCentroids = (k_means_t *) malloc(sizeof(point_t));
+
+    startingCentroids->centroids = (point_t *) malloc(sizeof(point_t) * 2);
+    startingCentroids->centroids[0].vector = malloc(sizeof(int64_t) * 3);
+
+    startingCentroids->centroids[0].vector[0] = (int64_t) -2;
+    startingCentroids->centroids[0].vector[1] = (int64_t) 4;
+    startingCentroids->centroids[0].vector[2] = (int64_t) 3;
+
+    startingCentroids->centroids[1].vector = malloc(sizeof(point_t) * 3);
+
+    startingCentroids->centroids[1].vector[0] = (int64_t) 6;
+    startingCentroids->centroids[1].vector[1] = (int64_t) 2;
+    startingCentroids->centroids[1].vector[2] = (int64_t) 1;
+
+    writeOneKmeans(kMeansDim3, false, outputFile, startingCentroids->centroids,
+                   (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
+
+}
+
+void test_createOutputFileDimension2(void) {
+    squared_distance_func_t generic_func = squared_euclidean_distance;
+    FILE *outputFile = NULL;
+    outputFile = fopen("createOutputFile2.csv", "a+");
+    k_means_t *startingCentroids = (k_means_t *) malloc(sizeof(point_t));
+    k_means(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
+
+    startingCentroids->centroids = (point_t *) malloc(sizeof(point_t) * 2);
+    startingCentroids->centroids[0].vector = malloc(sizeof(int64_t) * 2);
+
+    startingCentroids->centroids[0].vector[0] = (int64_t) 1;
+    startingCentroids->centroids[0].vector[1] = (int64_t) 1;
+
+    startingCentroids->centroids[1].vector = malloc(sizeof(point_t) * 2);
+
+    startingCentroids->centroids[1].vector[0] = (int64_t) 2;
+    startingCentroids->centroids[1].vector[1] = (int64_t) 2;
+
+    writeOneKmeans(kMeansDim2, false, outputFile, startingCentroids->centroids,
+                   (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
+}
+
 
 void testGenerateStartingCentroids(void) {
 
@@ -383,6 +524,7 @@ int main() {
     CU_pSuite assignVectorSuite = NULL;
     CU_pSuite kmeansSuite = NULL;
     CU_pSuite binaryFileSuite = NULL;
+    CU_pSuite csvFileSuite = NULL;
 
     /** initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry()) {
@@ -396,10 +538,11 @@ int main() {
     assignVectorSuite = CU_add_suite("Assign vector", setup, teardown);
     kmeansSuite = CU_add_suite("Kmeans test", setup, teardown);
     binaryFileSuite = CU_add_suite("binary file loading test", setupBinaryFile, teardownBinaryFile);
+    csvFileSuite = CU_add_suite("writing into csv file", setupCreateOutputfile, teardownCreateOutputFile);
 
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
         updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kmeansSuite == NULL
-        || binaryFileSuite == NULL) {
+        || binaryFileSuite == NULL || csvFileSuite == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -414,7 +557,9 @@ int main() {
         (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids)) ||
         (NULL == CU_add_test(kmeansSuite, "One iteration of Kmeans", testKmeansDimension2)) ||
         NULL == CU_add_test(kmeansSuite, "Two iterations of Kmeans with dimension 3", testKmeansDimension3) ||
-        NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile)) {
+        NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile) ||
+        /*NULL == CU_add_test(csvFileSuite,"test of writing into csv",test_createOutputFileDimension3)||*/
+        NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2)) {
         CU_cleanup_registry();
         return CU_get_error();
     }

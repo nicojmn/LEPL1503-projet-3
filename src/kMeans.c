@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 
 void updateCentroids(k_means_t *kMeans) {
 
@@ -71,11 +72,11 @@ void k_means(k_means_t *kMeans,
                                                       int32_t dimension)) {
 
     //TODO : make distanceFunction as a global function ( if possible :D)
-
     int32_t hasChanged = 1;
     while (hasChanged == 1) {
         hasChanged = assignVectorsToCentroids(kMeans, distanceFunction);
         updateCentroids(kMeans);
+
     }
 }
 

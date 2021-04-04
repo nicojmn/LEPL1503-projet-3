@@ -152,7 +152,8 @@ int main(int argc, char *argv[]) {
                 (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
 
         writeOneKmeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream, startingCentroids[i],
-                       iterationNumber);
+                       (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                    int32_t)) squared_euclidean_distance);
         clean(kMeansSimulation);
     }
 
