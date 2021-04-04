@@ -11,6 +11,11 @@
 #include "headers/kMeans.h"
 #include "headers/createOutputFile.h"
 #include "headers/binaryFile.h"
+#include "src/distance.c"
+#include "src/generateStartingCentroids.c"
+#include "src/kMeans.c"
+#include "src/createOutputFile.c"
+#include "src/binaryFile.c"
 
 data_t *generalData;
 
@@ -116,7 +121,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     // the following fprintf (and every code already present in this skeleton) can be removed, it is just an example to show you how to use the program arguments
-    fprintf(stderr, "\tnumber of threads executing the LLoyd's algoprithm in parallel: %" PRIu32 "\n",
+    fprintf(stderr, "\tnumber of threads executing the LLoyd's algorithm in parallel: %" PRIu32 "\n",
             programArguments.n_threads);
     fprintf(stderr, "\tnumber of clusters (k): %" PRIu32 "\n", programArguments.k);
     fprintf(stderr,
@@ -126,10 +131,11 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "\tsquared distance function: %s\n",
             programArguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
 
-    // TODO: parse the binary input file, compute the k-means solutions and write the output in a csv
 
+    generalData = (data_t *) malloc(sizeof(data_t));
+    if (generalData == NULL) return -1;
     loadData(programArguments.input_stream, generalData);
-
+    printf("load data ok\n");
     squared_distance_func_t generic_func = programArguments.squared_distance_func;
 
     int32_t k = programArguments.k;
@@ -141,9 +147,9 @@ int main(int argc, char *argv[]) {
         startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
     }
     generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber);
-
+    printf("We made it");
     csvFileHeadline(programArguments.quiet, programArguments.output_stream);
-
+    printf("YEs");
     for (int i = 0; i < iterationNumber; ++i) {
         k_means_t *kMeansSimulation = produce(generalData->vectors, startingCentroids, i, k,
                                               generalData->size, generalData->dimension);

@@ -10,8 +10,7 @@ int32_t loadData(FILE *file, data_t *data) {
     uint32_t *dimension = (uint32_t *) malloc(sizeof(uint32_t));
     if (dimension == NULL) return -1;
     fread(dimension, 4 * sizeof(char), 1, file);
-    data->dimension = (int32_t) be32toh(*dimension);
-
+    data->dimension = (uint32_t) be32toh(*dimension);
     fseek(file, 4, SEEK_SET);
 
     uint64_t *size = (uint64_t *) malloc(sizeof(uint64_t));
