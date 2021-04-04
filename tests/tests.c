@@ -475,7 +475,7 @@ void test_createOutputFileDimension3(void) {
 }
 
 void test_createOutputFileDimension2(void) {
-    squared_distance_func_t generic_func = squared_euclidean_distance;
+    squared_distance_func_t generic_func = squared_manhattan_distance;
     FILE *outputFile = NULL;
     outputFile = fopen("createOutputFile2.csv", "a+");
     k_means_t *startingCentroids = (k_means_t *) malloc(sizeof(point_t));

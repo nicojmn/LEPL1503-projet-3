@@ -21,6 +21,7 @@ int32_t csvFileHeadline(bool quiet, FILE *outputPath) {
 
 // TODO : make tests
 int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t size, FILE *outputFile) {
+
     for (int vectors = 0; vectors < size; ++vectors) {
         if (fprintf(outputFile, "(") < 0) return -1;
         for (int values = 0; values < dimension; ++values) {
