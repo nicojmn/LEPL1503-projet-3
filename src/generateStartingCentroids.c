@@ -21,8 +21,8 @@ void generateSetOfStartingCentroids(point_t **startingCentroidsID, int64_t **vec
 
     for (int i = 0; i < iterationNbr; ++i) {
         // Creating the set of centroids
-        for (int j = 0; j < k; ++j) {
-            startingCentroidsID[i][j].vector = vectors[indices[j]];
+        for (int l = 0; l < k; ++l) {
+            startingCentroidsID[i][l].vector = vectors[indices[l]];
         }
         int j = k - 1;
         while (indices[j] == n - 1 || indices[j] == indices[j + 1] - 1) {

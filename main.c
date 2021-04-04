@@ -139,7 +139,9 @@ int main(int argc, char *argv[]) {
 
     int32_t k = programArguments.k;
     int32_t n = programArguments.n_first_initialization_points;
+    if (n > generalData->size) return -1;
     int32_t iterationNumber = (int32_t) factorial(n) / (factorial(k) * factorial(n - k));
+
     point_t **startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
     for (int i = 0; i < iterationNumber; ++i) {
         startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
@@ -149,18 +151,22 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < iterationNumber; ++i) {
         k_means_t *kMeansSimulation = produce(generalData->vectors, startingCentroids, i, k,
                                               generalData->size, generalData->dimension);
-
         k_means(kMeansSimulation,
                 (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
-
         writeOneKmeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream, startingCentroids[i],
-                       (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                    int32_t)) squared_euclidean_distance);
+                       (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
         clean(kMeansSimulation);
     }
 
     // TODO: Be careful everything must be freed
-    // TODO: free generalData
+    for (int i = 0; i < generalData->size; ++i) {
+        free(generalData->vectors[i]);
+    }
+    free(generalData->vectors);
+    free(generalData);
+    for (int i = 0; i < iterationNumber; ++i) {
+        free(startingCentroids[i]);
+    }
     free(startingCentroids);
 
     // close the files opened by parse_args

@@ -91,9 +91,16 @@ k_means_t *produce(int64_t **vectors, point_t **startingCentroidsID, int32_t ind
     kMeans->k = k;
     kMeans->size = size;
     kMeans->dimension = dimension;
-
     // setup centroids
-    kMeans->centroids = startingCentroidsID[index];
+    kMeans->centroids = (point_t *) malloc(k * sizeof(point_t));
+    if (kMeans->centroids == NULL) return NULL;
+    for (int i = 0; i < k; ++i) {
+        (kMeans->centroids)[i].vector = (int64_t *) malloc(dimension * sizeof(int64_t));
+        if ((kMeans->centroids)[i].vector == NULL) return NULL;
+        for (int j = 0; j < dimension; ++j) {
+            (kMeans->centroids)[i].vector[j] = (startingCentroidsID[index][i].vector)[j];
+        }
+    }
 
     // setup points
     for (int i = 0; i < size; ++i) {
