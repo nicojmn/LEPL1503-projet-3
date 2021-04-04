@@ -1,4 +1,6 @@
 #include "../headers/createOutputFile.h"
+#include <sys/types.h>
+#include <unistd.h>
 
 //TODO make tests for csvFileHeadline function
 int32_t csvFileHeadline(bool quiet, FILE *outputPath) {
@@ -43,6 +45,7 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t siz
 int32_t writeOneKmeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
                        squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
                                                                 int32_t dimension)) {
+    //TODO add function csvFileHeadline for first line
     if (fprintf(outputPath, "\n") < 0) return -1;
     if (fprintf(outputPath, "\"[") < 0) return -1;
     if (writeVectorList(startingCentroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;

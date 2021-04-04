@@ -137,15 +137,19 @@ int main(int argc, char *argv[]) {
     loadData(programArguments.input_stream, generalData);
     printf("load data ok\n");
     squared_distance_func_t generic_func = programArguments.squared_distance_func;
+    printf("distance function ok");
 
     int32_t k = programArguments.k;
+    printf("k ok");
     int32_t n = programArguments.n_first_initialization_points;
+    printf("initialization points ok");
     int32_t iterationNumber = (int32_t) factorial(n) / (factorial(k) * factorial(n - k));
-
+    printf("before malloc starting centroids");
     point_t **startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
     for (int i = 0; i < iterationNumber; ++i) {
         startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
     }
+    printf("before generate");
     generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber);
     printf("We made it");
     csvFileHeadline(programArguments.quiet, programArguments.output_stream);
