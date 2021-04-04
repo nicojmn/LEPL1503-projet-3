@@ -1,6 +1,5 @@
 
 #include "../headers/distance.h"
-#include "../headers/kMeans.h"
 
 
 int64_t absVal(int64_t x) {
