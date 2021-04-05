@@ -38,8 +38,6 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t siz
 int32_t writeOneKmeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
                        squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
                                                                 int32_t dimension)) {
-    //TODO add function csvFileHeadline for first line
-
     if (fprintf(outputPath, "\n") < 0) return -1;
     if (fprintf(outputPath, "\"[") < 0) return -1;
     if (writeVectorList(startingCentroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;
@@ -51,26 +49,32 @@ int32_t writeOneKmeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t 
     if (fprintf(outputPath, ",") < 0) return -1;
     if (!quiet) {
         if (fprintf(outputPath, "\"[") < 0) return -1;
+        point_t **listOfVector = malloc(sizeof(point_t) * kMeans->k);
+        if (listOfVector == NULL) return -1;
 
+        uint64_t *listOfIndexes = malloc(sizeof(uint64_t) * kMeans->k);
         for (int64_t clusterNbr = 0; clusterNbr < kMeans->k; clusterNbr++) {
-            point_t *listOfVector = malloc(sizeof(point_t) * kMeans->clustersSize[clusterNbr]);
-            if (listOfVector == NULL) return -1;
-            int index = 0;
-            for (int i = 0; i < kMeans->size; i++) {
-                if (kMeans->points[i].nearestCentroidID == clusterNbr) {
-                    listOfVector[index] = kMeans->points[i];
-                    index++;
-                }
-            }
+            listOfVector[clusterNbr] = malloc(sizeof(point_t) * kMeans->clustersSize[clusterNbr]);
+            if (listOfVector[clusterNbr] == NULL) return -1;
+            listOfIndexes[clusterNbr] = 0;
+        }
+        for (int i = 0; i < kMeans->size; i++) {
+            int32_t ID = kMeans->points[i].nearestCentroidID;
+            listOfVector[ID][listOfIndexes[ID]] = kMeans->points[i];
+            listOfIndexes[ID]++;
+        }
+        for (int i = 0; i < kMeans->k; i++) {
             if (fprintf(outputPath, "[") < 0) return -1;
-            writeVectorList(listOfVector, kMeans->dimension, kMeans->clustersSize[clusterNbr], outputPath);
-            free(listOfVector);
+            writeVectorList(listOfVector[i], kMeans->dimension, kMeans->clustersSize[i], outputPath);
             if (fprintf(outputPath, "]") < 0) return -1;
-            if (clusterNbr != kMeans->k - 1) {
+            if (i != kMeans->k - 1) {
                 if (fprintf(outputPath, ", ") < 0) return -1;
             }
         }
         if (fprintf(outputPath, "]\"") < 0) return -1;
+
+        // TODO free listOfVector
+
     }
     return 0;
 }

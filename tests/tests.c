@@ -528,11 +528,14 @@ void testKmeansDimension3(void) {
 }
 
 void test_createOutputFileDimension3(void) {
-    squared_distance_func_t generic_func = squared_euclidean_distance;
     FILE *outputFile = NULL;
-    outputFile = fopen("test.csv", "a+");
-    k_means(kMeansDim3, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
+    outputFile = fopen("output_csv/dimension3.csv", "w");
+    printf("file opened\n");
     k_means_t *startingCentroids = (k_means_t *) malloc(sizeof(point_t));
+    squared_distance_func_t generic_func = squared_euclidean_distance;
+    printf("\n%lu\n", kMeansDim3->points[0].vector[0]);
+    k_means(kMeansDim3, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);;
+    printf("kmeans ok\n");
 
     startingCentroids->centroids = (point_t *) malloc(sizeof(point_t) * 2);
     startingCentroids->centroids[0].vector = malloc(sizeof(int64_t) * 3);
@@ -546,16 +549,20 @@ void test_createOutputFileDimension3(void) {
     startingCentroids->centroids[1].vector[0] = (int64_t) 6;
     startingCentroids->centroids[1].vector[1] = (int64_t) 2;
     startingCentroids->centroids[1].vector[2] = (int64_t) 1;
+    printf("malloced everything\n");
+    csvFileHeadline(false, outputFile);
+    printf("headline ok\n");
 
     writeOneKmeans(kMeansDim3, false, outputFile, startingCentroids->centroids,
                    (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
+    printf("kmeans ok\n");
 
 }
 
 void test_createOutputFileDimension2(void) {
     squared_distance_func_t generic_func = squared_manhattan_distance;
     FILE *outputFile = NULL;
-    outputFile = fopen("output_csv/ex1.csv", "a+");
+    outputFile = fopen("output_csv/ex1.csv", "w");
     k_means_t *startingCentroids = (k_means_t *) malloc(sizeof(point_t));
     k_means(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
 
@@ -570,6 +577,7 @@ void test_createOutputFileDimension2(void) {
     startingCentroids->centroids[1].vector[0] = (int64_t) 2;
     startingCentroids->centroids[1].vector[1] = (int64_t) 2;
 
+    csvFileHeadline(false, outputFile);
     writeOneKmeans(kMeansDim2, false, outputFile, startingCentroids->centroids,
                    (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
 }
