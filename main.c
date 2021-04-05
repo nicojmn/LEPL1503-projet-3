@@ -137,12 +137,14 @@ int main(int argc, char *argv[]) {
     loadData(programArguments.input_stream, generalData);
     squared_distance_func_t generic_func = programArguments.squared_distance_func;
 
-    int32_t k = programArguments.k;
-    int32_t n = programArguments.n_first_initialization_points;
+    uint32_t k = programArguments.k;
+    uint32_t n = programArguments.n_first_initialization_points;
     if (n > generalData->size) return -1;
-    uint64_t iterationNumber = factorial(n) / (factorial(k) * factorial(n - k));
+    // We use a special function for numerical stability
+    // It won't overflow for close big number k and n
+    uint64_t iterationNumber = combinatorial(n, k);
     point_t **startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    for (int i = 0; i < iterationNumber; ++i) {
+    for (uint64_t i = 0; i < iterationNumber; ++i) {
         startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
     }
     generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber);

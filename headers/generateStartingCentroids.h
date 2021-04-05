@@ -1,10 +1,13 @@
 #ifndef GENERATESTARTINGCENTROIDS_H
 #define GENERATESTARTINGCENTROIDS_H
+
 #include <stdint.h>
 #include "point.h"
 
-uint64_t factorial(int64_t x);
+uint64_t factorial(uint32_t x);
 
+
+uint64_t combinatorial(uint32_t n, uint32_t x);
 
 /**
  *

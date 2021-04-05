@@ -1,12 +1,35 @@
 #include "../headers/generateStartingCentroids.h"
 
-uint64_t factorial(int64_t x) {
-    int64_t result = 1;
+uint64_t factorial(uint32_t x) {
+    uint64_t result = 1;
     while (x > 1) {
         result *= x;
         x--;
     }
     return result;
+}
+
+uint64_t combinatorial(uint32_t n, uint32_t k) {
+    uint64_t denominator1 = k;
+    uint64_t denominator2 = n - k;
+    uint64_t result = 1;
+    if (denominator1 > denominator2) {
+        uint32_t iterationNbr = n - denominator1;
+        while (iterationNbr > 0) {
+            result *= n;
+            n--;
+            iterationNbr--;
+        }
+        return result / factorial(denominator2);
+    } else {
+        uint32_t iterationNbr = n - denominator2;
+        while (iterationNbr > 0) {
+            result *= n;
+            n--;
+            iterationNbr--;
+        }
+        return result / factorial(denominator1);
+    }
 }
 
 void generateSetOfStartingCentroids(point_t **startingCentroidsID, int64_t **vectors,
