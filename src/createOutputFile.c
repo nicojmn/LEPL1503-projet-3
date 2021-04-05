@@ -34,8 +34,8 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t siz
     return 0;
 }
 
-//TODO make tests for writeOneKmeans function
-int32_t writeOneKmeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
+//TODO make tests for writeOneKMeans function
+int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
                        squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
                                                                 int32_t dimension)) {
     if (fprintf(outputPath, "\n") < 0) return -1;
@@ -52,16 +52,16 @@ int32_t writeOneKmeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t 
         point_t **listOfVector = malloc(sizeof(point_t) * kMeans->k);
         if (listOfVector == NULL) return -1;
 
-        uint64_t *listOfIndexes = malloc(sizeof(uint64_t) * kMeans->k);
+        uint64_t *listOfSizes = malloc(sizeof(uint64_t) * kMeans->k);
         for (int64_t clusterNbr = 0; clusterNbr < kMeans->k; clusterNbr++) {
             listOfVector[clusterNbr] = malloc(sizeof(point_t) * kMeans->clustersSize[clusterNbr]);
             if (listOfVector[clusterNbr] == NULL) return -1;
-            listOfIndexes[clusterNbr] = 0;
+            listOfSizes[clusterNbr] = 0;
         }
         for (int i = 0; i < kMeans->size; i++) {
             int32_t ID = kMeans->points[i].nearestCentroidID;
-            listOfVector[ID][listOfIndexes[ID]] = kMeans->points[i];
-            listOfIndexes[ID]++;
+            listOfVector[ID][listOfSizes[ID]] = kMeans->points[i];
+            listOfSizes[ID]++;
         }
         for (int i = 0; i < kMeans->k; i++) {
             if (fprintf(outputPath, "[") < 0) return -1;
@@ -73,8 +73,11 @@ int32_t writeOneKmeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t 
         }
         if (fprintf(outputPath, "]\"") < 0) return -1;
 
-        // TODO free listOfVector
-
+        free(listOfSizes);
+        for (int i = 0; i < kMeans->k; ++i) {
+            free(listOfVector[i]);
+        }
+        free(listOfVector);
     }
     return 0;
 }

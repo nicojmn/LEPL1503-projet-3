@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../headers/binaryFile.h"
+#include "../headers/readBinaryFile.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <limits.h>

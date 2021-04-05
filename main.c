@@ -10,12 +10,12 @@
 #include "headers/generateStartingCentroids.h"
 #include "headers/kMeans.h"
 #include "headers/createOutputFile.h"
-#include "headers/binaryFile.h"
+#include "headers/readBinaryFile.h"
 #include "src/distance.c"
 #include "src/generateStartingCentroids.c"
 #include "src/kMeans.c"
 #include "src/createOutputFile.c"
-#include "src/binaryFile.c"
+#include "src/readBinaryFile.c"
 
 data_t *generalData;
 
@@ -139,8 +139,7 @@ int main(int argc, char *argv[]) {
 
     uint32_t k = programArguments.k;
     uint32_t n = programArguments.n_first_initialization_points;
-    if (n > generalData->size) return -1;
-    // We use a special function for numerical stability
+    // We use a special function for numerical consideration
     // It won't overflow for close big number k and n
     uint64_t iterationNumber = combinatorial(n, k);
     point_t **startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
@@ -149,27 +148,28 @@ int main(int argc, char *argv[]) {
     }
     generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber);
     csvFileHeadline(programArguments.quiet, programArguments.output_stream);
-    for (int i = 0; i < iterationNumber; ++i) {
+
+    // Simulation of each kMeans problem
+    for (uint64_t i = 0; i < iterationNumber; ++i) {
         k_means_t *kMeansSimulation = produce(generalData->vectors, startingCentroids, i, k,
                                               generalData->size, generalData->dimension);
         k_means(kMeansSimulation,
                 (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
-        writeOneKmeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream, startingCentroids[i],
+        writeOneKMeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream, startingCentroids[i],
                        (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
         clean(kMeansSimulation);
     }
 
     // TODO: Be careful everything must be freed
-    for (int i = 0; i < generalData->size; ++i) {
+    for (uint64_t i = 0; i < generalData->size; ++i) {
         free(generalData->vectors[i]);
     }
     free(generalData->vectors);
     free(generalData);
-    for (int i = 0; i < iterationNumber; ++i) {
+    for (uint64_t i = 0; i < iterationNumber; ++i) {
         free(startingCentroids[i]);
     }
     free(startingCentroids);
-
     // close the files opened by parse_args
     if (programArguments.input_stream != stdin) {
         fclose(programArguments.input_stream);

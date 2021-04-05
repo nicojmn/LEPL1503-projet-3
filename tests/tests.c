@@ -11,8 +11,8 @@
 #include "../src/distance.c"
 #include "../src/kMeans.c"
 #include "../src/generateStartingCentroids.c"
-#include "../headers/binaryFile.h"
-#include "../src/binaryFile.c"
+#include "../headers/readBinaryFile.h"
+#include "../src/readBinaryFile.c"
 #include "../src/createOutputFile.c"
 
 
@@ -553,7 +553,7 @@ void test_createOutputFileDimension3(void) {
     csvFileHeadline(false, outputFile);
     printf("headline ok\n");
 
-    writeOneKmeans(kMeansDim3, false, outputFile, startingCentroids->centroids,
+    writeOneKMeans(kMeansDim3, false, outputFile, startingCentroids->centroids,
                    (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
     printf("kmeans ok\n");
 
@@ -578,7 +578,7 @@ void test_createOutputFileDimension2(void) {
     startingCentroids->centroids[1].vector[1] = (int64_t) 2;
 
     csvFileHeadline(false, outputFile);
-    writeOneKmeans(kMeansDim2, false, outputFile, startingCentroids->centroids,
+    writeOneKMeans(kMeansDim2, false, outputFile, startingCentroids->centroids,
                    (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
 }
 
