@@ -1,6 +1,6 @@
 #include "../headers/generateStartingCentroids.h"
 
-int64_t factorial(int64_t x) {
+uint64_t factorial(int64_t x) {
     int64_t result = 1;
     while (x > 1) {
         result *= x;

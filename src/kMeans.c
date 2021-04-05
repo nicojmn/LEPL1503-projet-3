@@ -13,11 +13,9 @@ void updateCentroids(k_means_t *kMeans) {
             ((kMeans->centroids)[i].vector)[j] = (int64_t) 0;
         }
     }
-
     for (int i = 0; i < kMeans->k; ++i) {
         (kMeans->clustersSize)[i] = (int64_t) 0;
     }
-
     // Sum
     for (int i = 0; i < kMeans->size; ++i) {
         int centroidID = (kMeans->points)[i].nearestCentroidID;
@@ -26,7 +24,6 @@ void updateCentroids(k_means_t *kMeans) {
         }
         (kMeans->clustersSize)[centroidID]++;
     }
-
     // Average
     for (int i = 0; i < kMeans->k; ++i) {
         for (int j = 0; j < kMeans->dimension; ++j) {
@@ -43,26 +40,23 @@ void updateCentroids(k_means_t *kMeans) {
 int32_t assignVectorsToCentroids(k_means_t *kMeans,
                                  squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
                                                                           int32_t dimension)) {
-
     int32_t hasChanged = 0;
-
     for (int i = 0; i < kMeans->size; ++i) {
         // Let's find the closest centroid
+        int64_t currentDistance = INT64_MAX;
+        int32_t currentCentroid;
+        int32_t oldCentroid = (kMeans->points)[i].nearestCentroidID;
         for (int j = 0; j < kMeans->k; ++j) {
-
-            // If it's the first time this function is used
-            int64_t oldDistance = INT64_MAX;
-            if (((kMeans->points)[i]).nearestCentroidID != -1) {
-                oldDistance = (int64_t) distanceFunction(&(kMeans->points)[i],
-                                                         &(kMeans->centroids)[((kMeans->points)[i]).nearestCentroidID],
-                                                         kMeans->dimension);
-            }
             int64_t newDistance = (int64_t) distanceFunction(&(kMeans->points)[i], &(kMeans->centroids)[j],
                                                              kMeans->dimension);
-            if (oldDistance > newDistance){
-                hasChanged = 1;
-                (kMeans->points)[i].nearestCentroidID = (int32_t) j;
+            if (newDistance < currentDistance) {
+                currentDistance = newDistance;
+                currentCentroid = (int32_t) j;
             }
+        }
+        (kMeans->points)[i].nearestCentroidID = currentCentroid;
+        if (currentCentroid != oldCentroid) {
+            hasChanged = 1;
         }
     }
     return hasChanged;

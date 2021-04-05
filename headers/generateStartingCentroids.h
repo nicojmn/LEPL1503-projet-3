@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "point.h"
 
-int64_t factorial(int64_t x);
+uint64_t factorial(int64_t x);
 
 
 /**

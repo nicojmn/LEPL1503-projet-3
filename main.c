@@ -140,8 +140,7 @@ int main(int argc, char *argv[]) {
     int32_t k = programArguments.k;
     int32_t n = programArguments.n_first_initialization_points;
     if (n > generalData->size) return -1;
-    int32_t iterationNumber = (int32_t) factorial(n) / (factorial(k) * factorial(n - k));
-
+    uint64_t iterationNumber = factorial(n) / (factorial(k) * factorial(n - k));
     point_t **startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
     for (int i = 0; i < iterationNumber; ++i) {
         startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
@@ -176,5 +175,6 @@ int main(int argc, char *argv[]) {
     if (programArguments.output_stream != stdout) {
         fclose(programArguments.output_stream);
     }
+    printf("The job is done !\n");
     return 0;
 }
