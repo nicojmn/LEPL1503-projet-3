@@ -1,0 +1,27 @@
+==7705== Memcheck, a memory error detector
+==7705== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==7705== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
+==7705== Command: ./exe -k 4 -p 6 -n 1 -d manhattan -f output_csv/kmeans.csv input_binary/ex3.bin
+==7705== Parent PID: 3642
+==7705== 
+==7705== Conditional jump or move depends on uninitialised value(s)
+==7705==    at 0x109806: generateSetOfStartingCentroids (generateStartingCentroids.c:51)
+==7705==    by 0x10AE74: main (main.c:149)
+==7705==  Uninitialised value was created by a stack allocation
+==7705==    at 0x109644: generateSetOfStartingCentroids (generateStartingCentroids.c:36)
+==7705== 
+==7705== Conditional jump or move depends on uninitialised value(s)
+==7705==    at 0x1097E2: generateSetOfStartingCentroids (generateStartingCentroids.c:51)
+==7705==    by 0x10AE74: main (main.c:149)
+==7705==  Uninitialised value was created by a stack allocation
+==7705==    at 0x109644: generateSetOfStartingCentroids (generateStartingCentroids.c:36)
+==7705== 
+==7705== 
+==7705== HEAP SUMMARY:
+==7705==     in use at exit: 0 bytes in 0 blocks
+==7705==   total heap usage: 1,236 allocs, 1,236 frees, 535,836 bytes allocated
+==7705== 
+==7705== All heap blocks were freed -- no leaks are possible
+==7705== 
+==7705== For lists of detected and suppressed errors, rerun with: -s
+==7705== ERROR SUMMARY: 7 errors from 2 contexts (suppressed: 0 from 0)
