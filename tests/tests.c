@@ -631,7 +631,6 @@ int32_t teardownGenerateStartingCentroids(void) {
     }
     free(fileData2->vectors);
     free(fileData2);
-    return 0;
 
     uint32_t k = 2;
     uint32_t n = 4;
@@ -644,7 +643,7 @@ int32_t teardownGenerateStartingCentroids(void) {
     }
     free(startingCentroid1);
     free(startingCentroid2);
-
+    return 0;
 }
 
 void testGenerateStartingCentroids(void) {
@@ -704,6 +703,8 @@ int main() {
     /** add a suite to the registry */
     distanceTestSuite = CU_add_suite("distance tests", setup, teardown);
     distortionTestSuite = CU_add_suite("distortion test", setup, teardown);
+    generateStartingCentroidsSuite = CU_add_suite("generateStartingCentroids test", setupCreateOutputfile,
+                                                  teardownGenerateStartingCentroids);
     updateCentroidsTestSuite = CU_add_suite("updateCentroids test", setup, teardown);
     assignVectorSuite = CU_add_suite("Assign vector", setup, teardown);
     kmeansSuite = CU_add_suite("Kmeans test", setup, teardown);
@@ -712,7 +713,7 @@ int main() {
 
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
         updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kmeansSuite == NULL
-        || binaryFileSuite == NULL || csvFileSuite == NULL) {
+        || binaryFileSuite == NULL || csvFileSuite == NULL || generateStartingCentroidsSuite == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -722,13 +723,15 @@ int main() {
     if ((NULL == CU_add_test(distanceTestSuite, "squared manhattan distance", testManhattan)) ||
         (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
         (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion)) ||
+        (NULL ==
+         CU_add_test(generateStartingCentroidsSuite, "test to generate centroids", testGenerateStartingCentroids)) ||
         (NULL == CU_add_test(updateCentroidsTestSuite, "updateCentroids", testUpdateCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector normal", testNormalAssignVectorToCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids)) ||
         (NULL == CU_add_test(kmeansSuite, "One iteration of Kmeans", testKmeansDimension2)) ||
-        NULL == CU_add_test(kmeansSuite, "Two iterations of Kmeans with dimension 3", testKmeansDimension3) ||
-        NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile) ||
-        NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2)) {
+        (NULL == CU_add_test(kmeansSuite, "Two iterations of Kmeans with dimension 3", testKmeansDimension3)) ||
+        (NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile)) ||
+        (NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2))) {
         CU_cleanup_registry();
         return CU_get_error();
     }
