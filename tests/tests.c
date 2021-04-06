@@ -582,22 +582,104 @@ void test_createOutputFileDimension2(void) {
                    (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
 }
 
+void setupGenerateStartingCentroids(void) {
+
+    fileData1 = (data_t *) malloc(sizeof(data_t));
+    if (fileData1 == NULL) return -1;
+    *FILE
+    ex1 = fopen("input_binary/ex1.bin", "r");
+    loadData(ex1, fileData1);
+
+    uint32_t k = 2;
+    uint32_t n = 4;
+    // We use a special function for numerical consideration
+    // It won't overflow for close big number k and n
+    uint64_t iterationNumber = combinatorial(n, k);
+    point_t **startingCentroids1 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
+    for (uint64_t i = 0; i < iterationNumber; ++i) {
+        startingCentroids1[i] = (point_t *) malloc(k * sizeof(point_t));
+    }
+    generateSetOfStartingCentroids(startingCentroids1, fileData1->vectors, k, n, iterationNumber);
+
+
+    fileData2 = (data_t *) malloc(sizeof(data_t));
+    if (fileData2 == NULL) return -1;
+    *FILE
+    ex3 = fopen("input_binary/ex3.bin", "r");
+    loadData(ex3, fileData2);
+
+    point_t **startingCentroids2 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
+    for (uint64_t i = 0; i < iterationNumber; ++i) {
+        startingCentroids2[i] = (point_t *) malloc(k * sizeof(point_t));
+    }
+    generateSetOfStartingCentroids(startingCentroids2, fileData2->vectors, k, n, iterationNumber);
+
+}
+
+int32_t teardownGenerateStartingCentroids(void) {
+
+    if (0 != fclose(ex1)) return -1;
+    for (uint64_t i = 0; i < fileData1->size; i++) {
+        free((fileData1->vectors)[i]);
+    }
+    free(fileData1->vectors);
+    free(fileData1);
+
+    if (0 != fclose(ex3)) return -1;
+    for (uint64_t i = 0; i < fileData2->size; i++) {
+        free((fileData2->vectors)[i]);
+    }
+    free(fileData2->vectors);
+    free(fileData2);
+
+    uint32_t k = 2;
+    uint32_t n = 4;
+    uint64_t iterationNumber = combinatorial(n, k);
+
+    for (int i = 0; i < iterationNumber; ++i) {
+        free(startingCentroid1[i]);
+        free(startingCentroid2[i]);
+
+    }
+    free(startingCentroid1);
+    free(startingCentroid2);
+    return 0;
+}
 
 void testGenerateStartingCentroids(void) {
 
-    /*
-    tentative d initialisation de centroid
-    (kMeansDim2->points)[0].nearestCentroidID = ?;
-    startingCentroidsID[?][?].vector = vectors[?];
+    //test : ex1.bin
+    CU_ASSERT_EQUAL(startingCentroids1[0]->vector[0], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[0]->vector[1], 1);
 
-    CU_ASSERT_EQUAL(generateSetOfStartingCentroids(argument1, argument2 , 4, 4, 1), returned)
-    - argument1 c'est le centroide du point qui va être initialisé
-    - argument2 c'est le vecteur associé
-    - returned c'est j'imagine genre une mini liste du genre [0 1 2 3] dans ce cas ci
+    CU_ASSERT_EQUAL(startingCentroids1[1]->vector[0], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[1]->vector[1], 1);
 
-     -> reste à comprendre comment initialisé tout ça  (voir tentative au dessus)
-     -> est ce que j'ai l'air de bégayé avec les tests ? oui totalement
-     */
+    CU_ASSERT_EQUAL(startingCentroids1[2]->vector[0], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[2]->vector[1], 1);
+
+    CU_ASSERT_EQUAL(startingCentroids1[3]->vector[0], 2);
+    CU_ASSERT_EQUAL(startingCentroids1[3]->vector[1], 2);
+
+    CU_ASSERT_EQUAL(startingCentroids1[3]->vector[0], 3);
+    CU_ASSERT_EQUAL(startingCentroids1[3]->vector[1], 4);
+
+
+    //test : ex3.bin
+    CU_ASSERT_EQUAL(startingCentroids2[0]->vector[0], 2053);
+    CU_ASSERT_EQUAL(startingCentroids2[0]->vector[1], 981);
+
+    CU_ASSERT_EQUAL(startingCentroids2[1]->vector[0], 2053);
+    CU_ASSERT_EQUAL(startingCentroids2[1]->vector[1], 981);
+
+    CU_ASSERT_EQUAL(startingCentroids2[2]->vector[0], 2053);
+    CU_ASSERT_EQUAL(startingCentroids2[2]->vector[1], 981);
+
+    CU_ASSERT_EQUAL(startingCentroids2[3]->vector[0], 515);
+    CU_ASSERT_EQUAL(startingCentroids2[3]->vector[1], 486);
+
+    CU_ASSERT_EQUAL(startingCentroids2[3]->vector[0], 988);
+    CU_ASSERT_EQUAL(startingCentroids2[3]->vector[1], 519);
 
 }
 
@@ -611,6 +693,7 @@ int main() {
     CU_pSuite kmeansSuite = NULL;
     CU_pSuite binaryFileSuite = NULL;
     CU_pSuite csvFileSuite = NULL;
+    CU_pSuite generateStartingCentroidsSuite = NULL;
 
     /** initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry()) {
@@ -620,6 +703,8 @@ int main() {
     /** add a suite to the registry */
     distanceTestSuite = CU_add_suite("distance tests", setup, teardown);
     distortionTestSuite = CU_add_suite("distortion test", setup, teardown);
+    generateStartingCentroidsSuite = CU_add_suite("generateStartingCentroids test", setupCreateOutputfile,
+                                                  teardownGenerateStartingCentroids);
     updateCentroidsTestSuite = CU_add_suite("updateCentroids test", setup, teardown);
     assignVectorSuite = CU_add_suite("Assign vector", setup, teardown);
     kmeansSuite = CU_add_suite("Kmeans test", setup, teardown);
@@ -628,7 +713,7 @@ int main() {
 
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
         updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kmeansSuite == NULL
-        || binaryFileSuite == NULL || csvFileSuite == NULL) {
+        || binaryFileSuite == NULL || csvFileSuite == NULL || generateStartingCentroidsSuite == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -638,13 +723,15 @@ int main() {
     if ((NULL == CU_add_test(distanceTestSuite, "squared manhattan distance", testManhattan)) ||
         (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
         (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion)) ||
+        (NULL ==
+         CU_add_test(generateStartingCentroidsSuite, "test to generate centroids", testGenerateStartingCentroids)) ||
         (NULL == CU_add_test(updateCentroidsTestSuite, "updateCentroids", testUpdateCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector normal", testNormalAssignVectorToCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids)) ||
         (NULL == CU_add_test(kmeansSuite, "One iteration of Kmeans", testKmeansDimension2)) ||
-        NULL == CU_add_test(kmeansSuite, "Two iterations of Kmeans with dimension 3", testKmeansDimension3) ||
-        NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile) ||
-        NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2)) {
+        (NULL == CU_add_test(kmeansSuite, "Two iterations of Kmeans with dimension 3", testKmeansDimension3)) ||
+        (NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile)) ||
+        (NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2))) {
         CU_cleanup_registry();
         return CU_get_error();
     }
