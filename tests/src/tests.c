@@ -5,21 +5,24 @@
 #include <CUnit/TestRun.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../headers/distance.h"
-#include "../headers/point.h"
-#include "../headers/kMeans.h"
-#include "../src/distance.c"
-#include "../src/kMeans.c"
-#include "../src/generateStartingCentroids.c"
-#include "../headers/readBinaryFile.h"
-#include "../src/readBinaryFile.c"
-#include "../src/createOutputFile.c"
+#include "../../headers/distance.h"
+#include "../../headers/point.h"
+#include "../../headers/kMeans.h"
+#include "../../src/distance.c"
+#include "../../src/kMeans.c"
+#include "../../src/generateStartingCentroids.c"
+#include "../../headers/readBinaryFile.h"
+#include "../../src/readBinaryFile.c"
+#include "../../src/createOutputFile.c"
+
+#include "../headers/tests.h"
+#include "../headers/distanceTests.h"
+#include "./distanceTests.c"
+
+// TODO refactor test.c in multiples files
 
 
 /** Testing with different dimensions */
-k_means_t *kMeansDim1 = NULL;
-k_means_t *kMeansDim2 = NULL;
-k_means_t *kMeansDim3 = NULL;
 
 int32_t setup(void) {
     kMeansDim1 = (k_means_t *) malloc(sizeof(k_means_t));
@@ -400,26 +403,6 @@ void testReadBinaryFile(void) {
     CU_ASSERT_EQUAL((dataTest2->vectors)[12][1], 1);
 }
 
-/** We've used the corresponding python function to get the corrects values */
-void testManhattan(void) {
-    CU_ASSERT_EQUAL(squared_manhattan_distance(&kMeansDim1->points[0], &kMeansDim1->points[1],
-                                               kMeansDim1->dimension), 1);
-    CU_ASSERT_EQUAL(squared_manhattan_distance(&kMeansDim2->points[0], &kMeansDim2->points[1],
-                                               kMeansDim2->dimension), 16);
-    CU_ASSERT_EQUAL(squared_manhattan_distance(&kMeansDim3->points[0], &kMeansDim3->points[1],
-                                               kMeansDim3->dimension), 121);
-}
-
-/** We've used the corresponding python function to get the corrects values */
-void testEuclidean(void) {
-    CU_ASSERT_EQUAL(squared_euclidean_distance(&kMeansDim1->points[0], &kMeansDim1->points[1],
-                                               kMeansDim1->dimension), 1);
-    CU_ASSERT_EQUAL(squared_euclidean_distance(&kMeansDim2->points[0], &kMeansDim2->points[1],
-                                               kMeansDim2->dimension), 8);
-    CU_ASSERT_EQUAL(squared_euclidean_distance(&kMeansDim3->points[0], &kMeansDim3->points[1],
-                                               kMeansDim3->dimension), 61);
-}
-
 /** We've used the corresponding python function to get the correct value */
 void testDistortion(void) {
     squared_distance_func_t generic_func = squared_euclidean_distance;
@@ -704,7 +687,7 @@ int main() {
     }
 
     /** add a suite to the registry */
-    distanceTestSuite = CU_add_suite("distance tests", setup, teardown);
+    distanceTestSuite = CU_add_suite("distance tests", distanceSetup, distanceTeardown);
     distortionTestSuite = CU_add_suite("distortion test", setup, teardown);
     generateStartingCentroidsSuite = CU_add_suite("generateStartingCentroids test", setupCreateOutputfile,
                                                   teardownGenerateStartingCentroids);

@@ -17,9 +17,9 @@ clean:
 	rm -f *.o
 	rm -f tests/*.o
 
-tests: tests/tests.c
-	$(CC) tests/tests.c -o tests/tests.o $(LIBS) $(CFLAGS)
-	./tests/tests.o
+tests: tests/src/tests.c
+	$(CC) tests/src/tests.c -o tests/src/tests.o $(LIBS) $(CFLAGS)
+	./tests/src/tests.o
 
 valgrind:
 ## ----------------------------------------------------------------------
