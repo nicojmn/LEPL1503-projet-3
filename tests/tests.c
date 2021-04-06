@@ -599,7 +599,7 @@ void setupGenerateStartingCentroids(void) {
     for (uint64_t i = 0; i < iterationNumber; ++i) {
         startingCentroids1[i] = (point_t *) malloc(k * sizeof(point_t));
     }
-    generateSetOfStartingCentroids(startingCentroids, fileData1->vectors, k, n, iterationNumber);
+    generateSetOfStartingCentroids(startingCentroids1, fileData1->vectors, k, n, iterationNumber);
 
 
     fileData2 = (data_t *) malloc(sizeof(data_t));
