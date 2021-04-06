@@ -47,5 +47,9 @@ endif
 endif
 	rm -f tests/$(notdir $(basename $(filePath))).o
 
+valgrindMain : main.c
+	$(CC) $(CFLAGS) main.c -o exe
+	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no --log-file=tests/valgrind-log/executable-bin3-manhattan.txt ./exe  -k 4 -p 6 -n 1 -d manhattan -f output_csv/kmeans.csv  input_binary/ex3.bin
+
 # a .PHONY target forces make to execute the command even if the target already exists
 .PHONY: clean tests
