@@ -46,8 +46,8 @@ int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t 
     if (fprintf(outputPath, "\"[") < 0) return -1;
     if (writeVectorList(kMeans->centroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;
     if (fprintf(outputPath, "]\"") < 0) return -1;
-    if (fprintf(outputPath, ",") < 0) return -1;
     if (!quiet) {
+        if (fprintf(outputPath, ",") < 0) return -1;
         if (fprintf(outputPath, "\"[") < 0) return -1;
         point_t **listOfVector = malloc(sizeof(point_t) * kMeans->k);
         if (listOfVector == NULL) return -1;
@@ -65,7 +65,7 @@ int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t 
         }
         for (int i = 0; i < kMeans->k; i++) {
             if (fprintf(outputPath, "[") < 0) return -1;
-            writeVectorList(listOfVector[i], kMeans->dimension, kMeans->clustersSize[i], outputPath);
+            if (writeVectorList(listOfVector[i], kMeans->dimension, kMeans->clustersSize[i], outputPath)) return -1;
             if (fprintf(outputPath, "]") < 0) return -1;
             if (i != kMeans->k - 1) {
                 if (fprintf(outputPath, ", ") < 0) return -1;

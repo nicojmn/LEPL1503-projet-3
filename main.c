@@ -155,21 +155,21 @@ int main(int argc, char *argv[]) {
                                               generalData->size, generalData->dimension);
         k_means(kMeansSimulation,
                 (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
-        writeOneKMeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream, startingCentroids[i],
-                       (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
+        if (writeOneKMeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream,
+                           startingCentroids[i],
+                           (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func) ==
+            -1) {
+            clean(kMeansSimulation);
+            fullClean(generalData, startingCentroids, iterationNumber);
+            fclose(programArguments.input_stream);
+            fclose(programArguments.output_stream);
+            return -2;
+        };
         clean(kMeansSimulation);
     }
 
     // TODO: Be careful everything must be freed
-    for (uint64_t i = 0; i < generalData->size; ++i) {
-        free(generalData->vectors[i]);
-    }
-    free(generalData->vectors);
-    free(generalData);
-    for (uint64_t i = 0; i < iterationNumber; ++i) {
-        free(startingCentroids[i]);
-    }
-    free(startingCentroids);
+    fullClean(generalData, startingCentroids, iterationNumber);
     // close the files opened by parse_args
     if (programArguments.input_stream != stdin) {
         fclose(programArguments.input_stream);

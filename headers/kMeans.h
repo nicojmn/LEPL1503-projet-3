@@ -60,4 +60,5 @@ k_means_t *produce(int64_t **vectors, point_t **startingCentroidsID, int32_t ind
 
 void clean(k_means_t *KMeans);
 
+void fullClean(data_t *generalData, point_t **startingCentroids, uint64_t iterationNumber);
 #endif //K_MEANS
