@@ -1,16 +1,11 @@
-#include <CUnit/Basic.h>
 #include <CUnit/CUnit.h>
-#include <CUnit/CUError.h>
-#include <CUnit/TestDB.h>
 #include <CUnit/TestRun.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "../headers/distanceTests.h"
 #include "../headers/tests.h"
-#include "../../headers/distance.h"
-#include "../../headers/point.h"
-#include "../../headers/kMeans.h"
+
 
 // TODO : clean setup & distance
 int32_t distanceSetup(void) {
