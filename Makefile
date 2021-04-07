@@ -1,4 +1,4 @@
-CC = gcc
+CC = gcc -std=gnu99
 CFLAGS = -Wall -Werror -g
 LIBS = -lcunit -lpthread
 INCLUDE_HEADERS_DIRECTORY = -Iheaders
