@@ -1,16 +1,11 @@
-#include <CUnit/Basic.h>
 #include <CUnit/CUnit.h>
-#include <CUnit/CUError.h>
-#include <CUnit/TestDB.h>
-#include <CUnit/TestRun.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "../headers/distortionTests.h"
 #include "../headers/tests.h"
-#include "../../headers/distance.h"
 
-// TODO : clean setup & teardown of distortion
+
 int32_t distortionSetup(void) {
 
     kMeansDim2 = (k_means_t *) malloc(sizeof(k_means_t));
