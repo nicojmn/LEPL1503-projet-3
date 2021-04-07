@@ -15,7 +15,7 @@ clean:
 	rm -f src/*.o
 	rm -f kmeans
 	rm -f *.o
-	rm -f tests/*.o
+	rm -f tests/src/*.o
 
 tests: tests/src/tests.c
 	$(CC) tests/src/tests.c -o tests/src/tests.o $(LIBS) $(CFLAGS)
