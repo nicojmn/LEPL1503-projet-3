@@ -21,6 +21,8 @@
 #include "./distanceTests.c"
 #include "../headers/readBinaryFileTests.h"
 #include "./readBinaryFileTests.c"
+#include "../headers/distortionTests.h"
+#include "./distortionTests.c"
 
 // TODO refactor test.c in multiples files
 
@@ -364,18 +366,7 @@ int32_t teardownCreateOutputFile(void) {
 
 
 
-/** We've used the corresponding python function to get the correct value */
-void testDistortion(void) {
-    squared_distance_func_t generic_func = squared_euclidean_distance;
-    CU_ASSERT_EQUAL(distortion(kMeansDim2,
-                               (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func),
-                    10);
-    generic_func = squared_manhattan_distance;
-    CU_ASSERT_EQUAL(distortion(kMeansDim2,
-                               (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func),
-                    20);
 
-}
 
 
 /** We've used the corresponding python function to get the correct value */
@@ -650,7 +641,7 @@ int main() {
 
     /** add a suite to the registry */
     distanceTestSuite = CU_add_suite("distance tests", distanceSetup, distanceTeardown);
-    distortionTestSuite = CU_add_suite("distortion test", setup, teardown);
+    distortionTestSuite = CU_add_suite("distortion test", distortionSetup, distortionTeardown);
     generateStartingCentroidsSuite = CU_add_suite("generateStartingCentroids test", setupGenerateStartingCentroids,
                                                   teardownGenerateStartingCentroids);
     updateCentroidsTestSuite = CU_add_suite("updateCentroids test", setup, teardown);
