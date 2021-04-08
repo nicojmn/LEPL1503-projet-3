@@ -13,12 +13,15 @@
  */
 int32_t csvFileHeadline(bool quiet, FILE *outputPath);
 
+
+int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t size, FILE *outputFile);
+
 /*
  * Adds to outputPath the following data on one line :
  */
-int32_t
-writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
-               squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2, int32_t dimension));
+int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
+                       squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
+                                                                int32_t dimension));
 
 
 #endif //CREATEOUTPUTFILE_H

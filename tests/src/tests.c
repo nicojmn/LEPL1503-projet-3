@@ -14,7 +14,6 @@
 #include "../../src/generateStartingCentroids.c"
 #include "../../headers/readBinaryFile.h"
 #include "../../src/readBinaryFile.c"
-#include "../../src/createOutputFile.c"
 
 #include "../headers/tests.h"
 #include "../headers/distanceTests.h"
@@ -23,7 +22,8 @@
 #include "./readBinaryFileTests.c"
 #include "../headers/distortionTests.h"
 #include "./distortionTests.c"
-
+#include "../headers/outputCsvTests.h"
+#include "./outputCsvTests.c"
 // TODO refactor test.c in multiples files
 
 
@@ -182,187 +182,6 @@ int32_t teardown(void) {
     return 0;
 }
 
-int32_t setupCreateOutputfile(void) {
-    kMeansDim2 = (k_means_t *) malloc(sizeof(k_means_t));
-    if (kMeansDim2 == NULL) return -1;
-    kMeansDim2->dimension = (int32_t) 2;
-    kMeansDim2->points = (point_t *) malloc(7 * sizeof(point_t));
-    kMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
-    if (kMeansDim2->points == NULL) return -1;
-    kMeansDim2->size = 7;
-    kMeansDim2->k = 2;
-    kMeansDim2->clustersSize = (int64_t *) malloc(2 * sizeof(int64_t *));
-    if (kMeansDim2->clustersSize == NULL) return -1;
-
-    (kMeansDim2->points)[0].vector = malloc(2 * sizeof(int64_t));
-    if ((kMeansDim2->points)[0].vector == NULL) return -1;
-    ((kMeansDim2->points)[0].vector)[0] = (int64_t) 1;
-    ((kMeansDim2->points)[0].vector)[1] = (int64_t) 1;
-    (kMeansDim2->points)[0].nearestCentroidID = 0;
-
-
-    (kMeansDim2->points)[1].vector = malloc(2 * sizeof(int64_t));
-    if ((kMeansDim2->points)[1].vector == NULL) return -1;
-    ((kMeansDim2->points)[1].vector)[0] = (int64_t) 2;
-    ((kMeansDim2->points)[1].vector)[1] = (int64_t) 2;
-    (kMeansDim2->points)[1].nearestCentroidID = 1;
-
-    (kMeansDim2->points)[2].vector = malloc(2 * sizeof(int64_t));
-    if ((kMeansDim2->points)[2].vector == NULL) return -1;
-    ((kMeansDim2->points)[2].vector)[0] = (int64_t) 3;
-    ((kMeansDim2->points)[2].vector)[1] = (int64_t) 4;
-    (kMeansDim2->points)[2].nearestCentroidID = -1;
-
-    (kMeansDim2->points)[3].vector = malloc(2 * sizeof(int64_t));
-    if ((kMeansDim2->points)[3].vector == NULL) return -1;
-    ((kMeansDim2->points)[3].vector)[0] = (int64_t) 5;
-    ((kMeansDim2->points)[3].vector)[1] = (int64_t) 7;
-    (kMeansDim2->points)[3].nearestCentroidID = -1;
-
-
-    (kMeansDim2->points)[4].vector = malloc(2 * sizeof(int64_t));
-    if ((kMeansDim2->points)[4].vector == NULL) return -1;
-    ((kMeansDim2->points)[4].vector)[0] = (int64_t) 3;
-    ((kMeansDim2->points)[4].vector)[1] = (int64_t) 5;
-    (kMeansDim2->points)[4].nearestCentroidID = -1;
-
-    (kMeansDim2->points)[5].vector = malloc(2 * sizeof(int64_t));
-    if ((kMeansDim2->points)[5].vector == NULL) return -1;
-    ((kMeansDim2->points)[5].vector)[0] = (int64_t) 5;
-    ((kMeansDim2->points)[5].vector)[1] = (int64_t) 5;
-    (kMeansDim2->points)[5].nearestCentroidID = -1;
-
-    (kMeansDim2->points)[6].vector = malloc(2 * sizeof(int64_t));
-    if ((kMeansDim2->points)[6].vector == NULL) return -1;
-    ((kMeansDim2->points)[6].vector)[0] = (int64_t) 4;
-    ((kMeansDim2->points)[6].vector)[1] = (int64_t) 5;
-    (kMeansDim2->points)[6].nearestCentroidID = -1;
-
-
-    (kMeansDim2->centroids)[0].vector = malloc(2 * sizeof(int64_t));
-    if ((kMeansDim2->centroids)[0].vector == NULL) return -1;
-    ((kMeansDim2->centroids)[0].vector)[0] = (int64_t) 1;
-    ((kMeansDim2->centroids)[0].vector)[1] = (int64_t) 1;
-
-    (kMeansDim2->centroids)[1].vector = malloc(2 * sizeof(int64_t));
-    if ((kMeansDim2->centroids)[1].vector == NULL) return -1;
-    ((kMeansDim2->centroids)[1].vector)[0] = (int64_t) 2;
-    ((kMeansDim2->centroids)[1].vector)[1] = (int64_t) 2;
-
-    kMeansDim3 = (k_means_t *) malloc(sizeof(k_means_t));
-    if (kMeansDim3 == NULL) return -1;
-    kMeansDim3->dimension = (int32_t) 3;
-    kMeansDim3->points = (point_t *) malloc(6 * sizeof(point_t));
-    kMeansDim3->centroids = (point_t *) malloc(2 * sizeof(point_t));
-    if (kMeansDim3->points == NULL) return -1;
-    kMeansDim3->size = 6;
-    kMeansDim3->k = 2;
-    kMeansDim3->clustersSize = (int64_t *) malloc(2 * sizeof(int64_t *));
-    if (kMeansDim3->clustersSize == NULL) return -1;
-
-    (kMeansDim3->points)[0].vector = malloc(3 * sizeof(int64_t));
-    if ((kMeansDim3->points)[0].vector == NULL) return -1;
-    ((kMeansDim3->points)[0].vector)[0] = (int64_t) -1;
-    ((kMeansDim3->points)[0].vector)[1] = (int64_t) 4;
-    ((kMeansDim3->points)[0].vector)[2] = (int64_t) 4;
-    (kMeansDim3->points)[0].nearestCentroidID = 0;
-
-    (kMeansDim3->points)[1].vector = malloc(3 * sizeof(int64_t));
-    if ((kMeansDim3->points)[1].vector == NULL) return -1;
-    ((kMeansDim3->points)[1].vector)[0] = (int64_t) -1;
-    ((kMeansDim3->points)[1].vector)[1] = (int64_t) -2;
-    ((kMeansDim3->points)[1].vector)[2] = (int64_t) 9;
-    (kMeansDim3->points)[1].nearestCentroidID = 0;
-
-    (kMeansDim3->points)[2].vector = malloc(3 * sizeof(int64_t));
-    if ((kMeansDim3->points)[2].vector == NULL) return -1;
-    ((kMeansDim3->points)[2].vector)[0] = (int64_t) 2;
-    ((kMeansDim3->points)[2].vector)[1] = (int64_t) 4;
-    ((kMeansDim3->points)[2].vector)[2] = (int64_t) 2;
-    (kMeansDim3->points)[2].nearestCentroidID = 0;
-
-    (kMeansDim3->points)[3].vector = malloc(3 * sizeof(int64_t));
-    if ((kMeansDim3->points)[3].vector == NULL) return -1;
-    ((kMeansDim3->points)[3].vector)[0] = (int64_t) 6;
-    ((kMeansDim3->points)[3].vector)[1] = (int64_t) 2;
-    ((kMeansDim3->points)[3].vector)[2] = (int64_t) 1;
-    (kMeansDim3->points)[3].nearestCentroidID = 1;
-
-    (kMeansDim3->points)[4].vector = malloc(3 * sizeof(int64_t));
-    if ((kMeansDim3->points)[4].vector == NULL) return -1;
-    ((kMeansDim3->points)[4].vector)[0] = (int64_t) -2;
-    ((kMeansDim3->points)[4].vector)[1] = (int64_t) 4;
-    ((kMeansDim3->points)[4].vector)[2] = (int64_t) 3;
-    (kMeansDim3->points)[4].nearestCentroidID = 1;
-
-    (kMeansDim3->points)[5].vector = malloc(3 * sizeof(int64_t));
-    if ((kMeansDim3->points)[5].vector == NULL) return -1;
-    ((kMeansDim3->points)[5].vector)[0] = (int64_t) 5;
-    ((kMeansDim3->points)[5].vector)[1] = (int64_t) 5;
-    ((kMeansDim3->points)[5].vector)[2] = (int64_t) 5;
-    (kMeansDim3->points)[5].nearestCentroidID = 1;
-
-    (kMeansDim3->centroids)[0].vector = malloc(2 * sizeof(int64_t));
-    if ((kMeansDim3->centroids)[0].vector == NULL) return -1;
-    ((kMeansDim3->centroids)[0].vector)[0] = (int64_t) -2;
-    ((kMeansDim3->centroids)[0].vector)[1] = (int64_t) 4;
-    ((kMeansDim3->centroids)[0].vector)[1] = (int64_t) 3;
-
-    (kMeansDim3->centroids)[1].vector = malloc(2 * sizeof(int64_t));
-    if ((kMeansDim3->centroids)[1].vector == NULL) return -1;
-    ((kMeansDim3->centroids)[1].vector)[0] = (int64_t) 6;
-    ((kMeansDim3->centroids)[1].vector)[1] = (int64_t) 2;
-    ((kMeansDim3->centroids)[0].vector)[1] = (int64_t) 1;
-    return 0;
-
-}
-
-/** Testing output file */
-FILE *outputFile;
-FILE *outputFile2;
-k_means_t *outputStartingCentroids1;
-k_means_t *outputStartingCentroids2;
-
-int32_t teardownCreateOutputFile(void) {
-    int64_t numberofPoints = 7;
-    int32_t k = 2;
-    for (int i = 0; i < numberofPoints; i++) {
-        free(kMeansDim2->points[i].vector);
-    }
-
-    for (int i = 0; i < k; i++) {
-        free(kMeansDim2->centroids[i].vector);
-        free(kMeansDim3->centroids[i].vector);
-        free(outputStartingCentroids1->centroids[i].vector);
-        free(outputStartingCentroids2->centroids[i].vector);
-    }
-    free(kMeansDim2->points);
-    free(kMeansDim2->centroids);
-    free(kMeansDim2->clustersSize);
-    free(kMeansDim2);
-
-    numberofPoints = 6;
-
-    for (int i = 0; i < numberofPoints; i++) {
-        free(kMeansDim3->points[i].vector);
-    }
-
-    free(kMeansDim3->points);
-    free((kMeansDim3->centroids));
-    free(kMeansDim3->clustersSize);
-
-    free(kMeansDim3);
-
-    free(outputFile);
-    free(outputFile2);
-
-
-    free(outputStartingCentroids1);
-    free(outputStartingCentroids2);
-
-
-    return 0;
-}
 
 
 
@@ -462,54 +281,6 @@ void testKmeansDimension3(void) {
 
 }
 
-void test_createOutputFileDimension3(void) {
-    outputFile = fopen("output_csv/dimension3.csv", "w");
-    outputStartingCentroids1 = (k_means_t *) malloc(sizeof(point_t));
-    squared_distance_func_t generic_func = squared_euclidean_distance;
-    k_means(kMeansDim3, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);;
-
-    outputStartingCentroids1->centroids = (point_t *) malloc(sizeof(point_t) * 2);
-    outputStartingCentroids1->centroids[0].vector = malloc(sizeof(int64_t) * 3);
-
-    outputStartingCentroids1->centroids[0].vector[0] = (int64_t) -2;
-    outputStartingCentroids1->centroids[0].vector[1] = (int64_t) 4;
-    outputStartingCentroids1->centroids[0].vector[2] = (int64_t) 3;
-
-    outputStartingCentroids1->centroids[1].vector = malloc(sizeof(point_t) * 3);
-
-    outputStartingCentroids1->centroids[1].vector[0] = (int64_t) 6;
-    outputStartingCentroids1->centroids[1].vector[1] = (int64_t) 2;
-    outputStartingCentroids1->centroids[1].vector[2] = (int64_t) 1;
-    csvFileHeadline(false, outputFile);
-
-    writeOneKMeans(kMeansDim3, false, outputFile, outputStartingCentroids1->centroids,
-                   (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
-    printf("kmeans ok\n");
-
-}
-
-void test_createOutputFileDimension2(void) {
-    squared_distance_func_t generic_func = squared_manhattan_distance;
-    outputFile2 = fopen("output_csv/ex1.csv", "w");
-    outputStartingCentroids2 = (k_means_t *) malloc(sizeof(point_t));
-    k_means(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
-
-    outputStartingCentroids2->centroids = (point_t *) malloc(sizeof(point_t) * 2);
-    outputStartingCentroids2->centroids[0].vector = malloc(sizeof(int64_t) * 2);
-
-    outputStartingCentroids2->centroids[0].vector[0] = (int64_t) 1;
-    outputStartingCentroids2->centroids[0].vector[1] = (int64_t) 1;
-
-    outputStartingCentroids2->centroids[1].vector = malloc(sizeof(point_t) * 2);
-
-    outputStartingCentroids2->centroids[1].vector[0] = (int64_t) 2;
-    outputStartingCentroids2->centroids[1].vector[1] = (int64_t) 2;
-
-    csvFileHeadline(false, outputFile2);
-    writeOneKMeans(kMeansDim2, false, outputFile2, outputStartingCentroids2->centroids,
-                   (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
-}
-
 point_t **startingCentroids1;
 point_t **startingCentroids2;
 
@@ -576,6 +347,7 @@ int32_t teardownGenerateStartingCentroids(void) {
     }
     free(startingCentroids1);
     free(startingCentroids2);
+
 
     return 0;
 }

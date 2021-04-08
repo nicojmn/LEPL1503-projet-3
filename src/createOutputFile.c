@@ -65,7 +65,7 @@ int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t 
         }
         for (int i = 0; i < kMeans->k; i++) {
             if (fprintf(outputPath, "[") < 0) return -1;
-            if (writeVectorList(listOfVector[i], kMeans->dimension, kMeans->clustersSize[i], outputPath)) return -1;
+            if (writeVectorList(listOfVector[i], kMeans->dimension, kMeans->clustersSize[i], outputPath) < 0) return -1;
             if (fprintf(outputPath, "]") < 0) return -1;
             if (i != kMeans->k - 1) {
                 if (fprintf(outputPath, ", ") < 0) return -1;
