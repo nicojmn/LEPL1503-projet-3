@@ -324,29 +324,29 @@ k_means_t *outputStartingCentroids1;
 k_means_t *outputStartingCentroids2;
 
 int32_t teardownCreateOutputFile(void) {
-    free((kMeansDim2->points)[0].vector);
-    free((kMeansDim2->points)[1].vector);
-    free((kMeansDim2->points)[2].vector);
-    free((kMeansDim2->points)[3].vector);
-    free((kMeansDim2->points)[4].vector);
-    free((kMeansDim2->points)[5].vector);
-    free((kMeansDim2->points)[6].vector);
+    int64_t numberofPoints = 7;
+    int32_t k = 2;
+    for (int i = 0; i < numberofPoints; i++) {
+        free(kMeansDim2->points[i].vector);
+    }
 
-    free((kMeansDim2->centroids)[0].vector);
-    free((kMeansDim2->centroids)[1].vector);
+    for (int i = 0; i < k; i++) {
+        free(kMeansDim2->centroids[i].vector);
+        free(kMeansDim3->centroids[i].vector);
+        free(outputStartingCentroids1->centroids[i].vector);
+        free(outputStartingCentroids2->centroids[i].vector);
+    }
     free(kMeansDim2->points);
     free(kMeansDim2->centroids);
     free(kMeansDim2->clustersSize);
     free(kMeansDim2);
 
-    free((kMeansDim3->points)[0].vector);
-    free((kMeansDim3->points)[1].vector);
-    free((kMeansDim3->points)[2].vector);
-    free((kMeansDim3->points)[3].vector);
-    free((kMeansDim3->points)[4].vector);
-    free((kMeansDim3->points)[5].vector);
-    free((kMeansDim3->centroids)[0].vector);
-    free((kMeansDim3->centroids)[1].vector);
+    numberofPoints = 6;
+
+    for (int i = 0; i < numberofPoints; i++) {
+        free(kMeansDim3->points[i].vector);
+    }
+
     free(kMeansDim3->points);
     free((kMeansDim3->centroids));
     free(kMeansDim3->clustersSize);
@@ -464,12 +464,9 @@ void testKmeansDimension3(void) {
 
 void test_createOutputFileDimension3(void) {
     outputFile = fopen("output_csv/dimension3.csv", "w");
-    printf("file opened\n");
     outputStartingCentroids1 = (k_means_t *) malloc(sizeof(point_t));
     squared_distance_func_t generic_func = squared_euclidean_distance;
-    printf("\n%lu\n", kMeansDim3->points[0].vector[0]);
     k_means(kMeansDim3, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);;
-    printf("kmeans ok\n");
 
     outputStartingCentroids1->centroids = (point_t *) malloc(sizeof(point_t) * 2);
     outputStartingCentroids1->centroids[0].vector = malloc(sizeof(int64_t) * 3);
@@ -483,9 +480,7 @@ void test_createOutputFileDimension3(void) {
     outputStartingCentroids1->centroids[1].vector[0] = (int64_t) 6;
     outputStartingCentroids1->centroids[1].vector[1] = (int64_t) 2;
     outputStartingCentroids1->centroids[1].vector[2] = (int64_t) 1;
-    printf("malloced everything\n");
     csvFileHeadline(false, outputFile);
-    printf("headline ok\n");
 
     writeOneKMeans(kMeansDim3, false, outputFile, outputStartingCentroids1->centroids,
                    (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
@@ -673,9 +668,8 @@ int main() {
         //(NULL == CU_add_test(kmeansSuite, "Two iterations of Kmeans with dimension 3", testKmeansDimension3)) ||
         (NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile))
         // TODO : fix memory leak (Loic)
-        /*||
-        (NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2))*/
-            ) {
+        ||
+        (NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2))) {
         CU_cleanup_registry();
         return CU_get_error();
     }

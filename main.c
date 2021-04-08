@@ -112,6 +112,8 @@ int parse_args(args_t *args, int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
+
+
     args_t programArguments;   // allocate the args on the stack
     parse_args(&programArguments, argc, argv);
 
@@ -148,6 +150,14 @@ int main(int argc, char *argv[]) {
     }
     generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber);
     csvFileHeadline(programArguments.quiet, programArguments.output_stream);
+
+    for (int i = 0; i < iterationNumber; i++) {
+        for (int j = 0; j < 2; j++) {
+            printf("%lu\n", startingCentroids[i]->vector[j]);
+        }
+        printf("%d\n", startingCentroids[i]->nearestCentroidID);
+        printf("\n");
+    }
 
     // Simulation of each kMeans problem
     for (uint64_t i = 0; i < iterationNumber; ++i) {
