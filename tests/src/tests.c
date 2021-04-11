@@ -80,18 +80,17 @@ int32_t teardownGenerateStartingCentroids(void) {
     free(dataTest1);
 
     if (0 != fclose(fileForTest2)) return -1;
-    printf("%ld\n",dataTest2->size);
     for (uint64_t i = 0; i < dataTest2->size; i++) {
         free((dataTest2->vectors)[i]);
     }
-    printf("datatest2\n");
+
     free(dataTest2->vectors);
     free(dataTest2);
     uint32_t k = 2;
     uint32_t n = 4;
     uint64_t iterationNumber = combinatorial(n, k);
 
-    printf("startingcentroids\n");
+
     for (int i = 0; i < iterationNumber; ++i) {
         free(startingCentroids1[i]);
         free(startingCentroids2[i]);
