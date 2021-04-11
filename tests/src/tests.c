@@ -26,6 +26,8 @@
 #include "./outputCsvTests.c"
 #include "../headers/assignVectorTests.h"
 #include "./assignVectorTests.c"
+#include "../headers/updateCentroidsTests.h"
+#include "./updateCentroidsTests.c"
 
 // TODO refactor test.c in multiples files
 
@@ -183,21 +185,6 @@ int32_t teardown(void) {
     free(kMeansDim3->clustersSize);
     free(kMeansDim3);
     return 0;
-}
-
-
-
-
-
-
-
-/** We've used the corresponding python function to get the correct value */
-void testUpdateCentroids(void) {
-    updateCentroids(kMeansDim2);
-    CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[0], (int64_t) 0);
-    CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[1], (int64_t) 3);
-    CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[0], (int64_t) -4);
-    CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[1], (int64_t) 10);
 }
 
 void testKmeansDimension2(void) {
@@ -376,7 +363,7 @@ int main() {
     distortionTestSuite = CU_add_suite("distortion test", distortionSetup, distortionTeardown);
     generateStartingCentroidsSuite = CU_add_suite("generateStartingCentroids test", setupGenerateStartingCentroids,
                                                   teardownGenerateStartingCentroids);
-    updateCentroidsTestSuite = CU_add_suite("updateCentroids test", setup, teardown);
+    updateCentroidsTestSuite = CU_add_suite("updateCentroids test", updateCentroidsSetup, updateCentroidsTeardown);
     assignVectorSuite = CU_add_suite("Assign vector", assignVectorSetup, assignVectorTeardown);
     kmeansSuite = CU_add_suite("Kmeans test", setup, teardown);
     binaryFileSuite = CU_add_suite("binary file loading test", setupBinaryFile, teardownBinaryFile);

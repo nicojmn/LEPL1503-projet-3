@@ -1,7 +1,7 @@
 #ifndef LEPL1503_2021_SKELETON_OUTPUTCSVTESTS_H
 #define LEPL1503_2021_SKELETON_OUTPUTCSVTESTS_H
 
-#include "../headers/tests.h"
+#include "./tests.h"
 
 point_t **outputStartingCentroids1;
 point_t **outputStartingCentroids2;
