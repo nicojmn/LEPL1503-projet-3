@@ -10,13 +10,6 @@
 
 
 int32_t kMeansSetup(void) {
-    kMeansDim1 = (k_means_t *) malloc(sizeof(k_means_t));
-    if (kMeansDim1 == NULL) return -1;
-    kMeansDim1->dimension = (int32_t) 1;
-    kMeansDim1->points = (point_t *) malloc(1 * sizeof(point_t));
-    if (kMeansDim1->points == NULL) return -1;
-
-
     kMeansDim2 = (k_means_t *) malloc(sizeof(k_means_t));
     if (kMeansDim2 == NULL) return -1;
     kMeansDim2->dimension = (int32_t) 2;
@@ -38,14 +31,6 @@ int32_t kMeansSetup(void) {
     kMeansDim3->k = 2;
     kMeansDim3->clustersSize = (int64_t *) malloc(2 * sizeof(int64_t *));
     if (kMeansDim3->clustersSize == NULL) return -1;
-
-    (kMeansDim1->points)[0].vector = malloc(1 * sizeof(int64_t));
-    if ((kMeansDim1->points)[0].vector == NULL) return -1;
-    ((kMeansDim1->points)[0].vector)[0] = (int64_t) 1;
-
-    (kMeansDim1->points)[1].vector = malloc(1 * sizeof(int64_t));
-    if ((kMeansDim1->points)[1].vector == NULL) return -1;
-    ((kMeansDim1->points)[1].vector)[0] = (int64_t) 2;
 
     (kMeansDim2->points)[0].vector = malloc(2 * sizeof(int64_t));
     if ((kMeansDim2->points)[0].vector == NULL) return -1;
@@ -133,11 +118,6 @@ int32_t kMeansSetup(void) {
 }
 
 int32_t kMeansTeardown(void) {
-    free((kMeansDim1->points)[0].vector);
-    free((kMeansDim1->points)[1].vector);
-    free(kMeansDim1->points);
-    free(kMeansDim1->clustersSize);
-    free(kMeansDim1);
     free((kMeansDim2->points)[0].vector);
     free((kMeansDim2->points)[1].vector);
     free((kMeansDim2->points)[2].vector);

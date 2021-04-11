@@ -4,7 +4,7 @@
 #include "../headers/outputCsvTests.h"
 #include "../../src/createOutputFile.c"
 
-int32_t setupCreateOutputfile(void) {
+int32_t setupCreateOutputFile(void) {
 
     kMeansDim2 = (k_means_t *) malloc(sizeof(k_means_t));
     if (kMeansDim2 == NULL) return -1;

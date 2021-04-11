@@ -167,7 +167,7 @@ int main() {
     assignVectorSuite = CU_add_suite("Assign vector", assignVectorSetup, assignVectorTeardown);
     kmeansSuite = CU_add_suite("Kmeans test", kMeansSetup, kMeansTeardown);
     binaryFileSuite = CU_add_suite("binary file loading test", setupBinaryFile, teardownBinaryFile);
-    csvFileSuite = CU_add_suite("writing into csv file", setupCreateOutputfile, teardownCreateOutputFile);
+    csvFileSuite = CU_add_suite("writing into csv file", setupCreateOutputFile, teardownCreateOutputFile);
 
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
         updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kmeansSuite == NULL

@@ -9,7 +9,7 @@ point_t **outputStartingCentroids2;
 FILE *outputFile;
 FILE *outputFile2;
 
-int32_t setupCreateOutputfile(void);
+int32_t setupCreateOutputFile(void);
 
 int32_t teardownCreateOutputFile(void);
 
