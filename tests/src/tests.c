@@ -438,9 +438,7 @@ int main() {
         (NULL == CU_add_test(kmeansSuite, "One iteration of Kmeans", testKmeansDimension2)) ||
         //TODO debug test dimension 3
         //(NULL == CU_add_test(kmeansSuite, "Two iterations of Kmeans with dimension 3", testKmeansDimension3)) ||
-        (NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile))
-        // TODO : fix memory leak (Loic)
-        ||
+        (NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile)) ||
         (NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2))) {
         CU_cleanup_registry();
         return CU_get_error();

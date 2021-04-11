@@ -4,13 +4,6 @@
 #include "../headers/outputCsvTests.h"
 #include "../../src/createOutputFile.c"
 
-
-point_t **outputStartingCentroids1;
-point_t **outputStartingCentroids2;
-/** Testing output file */
-FILE *outputFile;
-FILE *outputFile2;
-
 int32_t setupCreateOutputfile(void) {
 
     kMeansDim2 = (k_means_t *) malloc(sizeof(k_means_t));
