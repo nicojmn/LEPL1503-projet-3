@@ -1,0 +1,7 @@
+#ifndef PROJET_CMAKE_KMEANSTESTS_H
+#define PROJET_CMAKE_KMEANSTESTS_H
+
+#include "./tests.h"
+
+
+#endif //PROJET_CMAKE_KMEANSTESTS_H

@@ -1,12 +1,15 @@
+#include <CUnit/Basic.h>
 #include <CUnit/CUnit.h>
+#include <CUnit/CUError.h>
+#include <CUnit/TestDB.h>
 #include <CUnit/TestRun.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../headers/kMeansTests.h"
 
-#include "../headers/updateCentroidsTests.h"
 
-int32_t updateCentroidsSetup(void) {
+int32_t kMeansSetup(void) {
     kMeansDim1 = (k_means_t *) malloc(sizeof(k_means_t));
     if (kMeansDim1 == NULL) return -1;
     kMeansDim1->dimension = (int32_t) 1;
@@ -129,7 +132,7 @@ int32_t updateCentroidsSetup(void) {
     return 0;
 }
 
-int32_t updateCentroidsTeardown(void) {
+int32_t kMeansTeardown(void) {
     free((kMeansDim1->points)[0].vector);
     free((kMeansDim1->points)[1].vector);
     free(kMeansDim1->points);
@@ -159,11 +162,50 @@ int32_t updateCentroidsTeardown(void) {
     return 0;
 }
 
-/** We've used the corresponding python function to get the correct value */
-void testUpdateCentroids(void) {
-    updateCentroids(kMeansDim2);
+/** Testing with different dimensions */
+
+void testKmeansDimension2(void) {
+    squared_distance_func_t generic_func = squared_euclidean_distance;
+    k_means(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                     int32_t)) generic_func);
+
+
+    //centroid
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[0], (int64_t) 0);
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[1], (int64_t) 3);
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[0], (int64_t) -4);
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[1], (int64_t) 10);
+
+    //cluster
+    CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 0);
+    CU_ASSERT_EQUAL((kMeansDim2->points)[1].nearestCentroidID, 0);
+    CU_ASSERT_EQUAL((kMeansDim2->points)[2].nearestCentroidID, 1);
+}
+
+void testKmeansDimension3(void) {
+    squared_distance_func_t generic_func = squared_euclidean_distance;
+    k_means(kMeansDim3, (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                     int32_t)) generic_func);
+
+    // Centroids
+    CU_ASSERT_EQUAL((kMeansDim3->centroids)[0].vector[0], (int64_t) -1);
+    CU_ASSERT_EQUAL((kMeansDim3->centroids)[0].vector[1], (int64_t) 2);
+    CU_ASSERT_EQUAL((kMeansDim3->centroids)[0].vector[2], (int64_t) 5);
+
+    CU_ASSERT_EQUAL((kMeansDim3->centroids)[1].vector[0], (int64_t) 4);
+    CU_ASSERT_EQUAL((kMeansDim3->centroids)[1].vector[1], (int64_t) 3);
+    CU_ASSERT_EQUAL((kMeansDim3->centroids)[1].vector[2], (int64_t) 2);
+
+    //Clusters
+    CU_ASSERT_EQUAL((kMeansDim3->points)[0].nearestCentroidID, 0);
+    CU_ASSERT_EQUAL((kMeansDim3->points)[1].nearestCentroidID, 0);
+    CU_ASSERT_EQUAL((kMeansDim3->points)[2].nearestCentroidID, 1);
+
+    CU_ASSERT_EQUAL((kMeansDim3->points)[3].nearestCentroidID, 1);
+    CU_ASSERT_EQUAL((kMeansDim3->points)[4].nearestCentroidID, 0);
+    CU_ASSERT_EQUAL((kMeansDim3->points)[5].nearestCentroidID, 1);
+
+    CU_ASSERT_EQUAL(kMeansDim3->clustersSize[0], 3);
+    CU_ASSERT_EQUAL(kMeansDim3->clustersSize[1], 3);
+
 }
