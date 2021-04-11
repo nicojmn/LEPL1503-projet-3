@@ -10,4 +10,4 @@
 #include "../headers/kMeans.h"
 int32_t loadData(FILE *file, data_t *data);
 
-#endif //BINARYFILE_H
+#endif

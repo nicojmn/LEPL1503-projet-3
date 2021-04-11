@@ -15,4 +15,4 @@ int32_t teardownBinaryFile(void);
 
 void testReadBinaryFile(void);
 
-#endif //PROJET_CMAKE_READBINARYFILETESTS_H
+#endif

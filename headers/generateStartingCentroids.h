@@ -22,4 +22,4 @@ void generateSetOfStartingCentroids(point_t **startingCentroidsID, int64_t **vec
                                     int32_t k, int32_t n, int32_t iterationNbr);
 
 
-#endif //GENERATESTARTINGCENTROIDS_H
+#endif

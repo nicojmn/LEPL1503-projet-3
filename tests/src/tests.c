@@ -24,6 +24,9 @@
 #include "./distortionTests.c"
 #include "../headers/outputCsvTests.h"
 #include "./outputCsvTests.c"
+#include "../headers/assignVectorTests.h"
+#include "./assignVectorTests.c"
+
 // TODO refactor test.c in multiples files
 
 
@@ -195,44 +198,6 @@ void testUpdateCentroids(void) {
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[1], (int64_t) 3);
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[0], (int64_t) -4);
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[1], (int64_t) 10);
-}
-
-/** We've used the corresponding python function to get the correct value */
-void testNormalAssignVectorToCentroids(void) {
-    (kMeansDim2->points)[1].nearestCentroidID = 1;
-
-    squared_distance_func_t generic_func = squared_euclidean_distance;
-    CU_ASSERT_TRUE(assignVectorsToCentroids(kMeansDim2,
-                                            (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                         int32_t)) generic_func));
-
-    CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 0);
-    CU_ASSERT_EQUAL((kMeansDim2->points)[1].nearestCentroidID, 0);
-    CU_ASSERT_EQUAL((kMeansDim2->points)[2].nearestCentroidID, 1);
-
-    CU_ASSERT_FALSE(assignVectorsToCentroids(kMeansDim2,
-                                             (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                          int32_t)) generic_func));
-}
-
-/** We've used the corresponding python function to get the correct value */
-void testFirstAssignVectorToCentroids(void) {
-    (kMeansDim2->points)[0].nearestCentroidID = -1;
-    (kMeansDim2->points)[1].nearestCentroidID = -1;
-    (kMeansDim2->points)[2].nearestCentroidID = -1;
-
-    squared_distance_func_t generic_func = squared_euclidean_distance;
-    CU_ASSERT_TRUE(assignVectorsToCentroids(kMeansDim2,
-                                            (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                         int32_t)) generic_func));
-
-    CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 0);
-    CU_ASSERT_EQUAL((kMeansDim2->points)[1].nearestCentroidID, 0);
-    CU_ASSERT_EQUAL((kMeansDim2->points)[2].nearestCentroidID, 1);
-
-    CU_ASSERT_FALSE(assignVectorsToCentroids(kMeansDim2,
-                                             (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                          int32_t)) generic_func));
 }
 
 void testKmeansDimension2(void) {
@@ -412,7 +377,7 @@ int main() {
     generateStartingCentroidsSuite = CU_add_suite("generateStartingCentroids test", setupGenerateStartingCentroids,
                                                   teardownGenerateStartingCentroids);
     updateCentroidsTestSuite = CU_add_suite("updateCentroids test", setup, teardown);
-    assignVectorSuite = CU_add_suite("Assign vector", setup, teardown);
+    assignVectorSuite = CU_add_suite("Assign vector", assignVectorSetup, assignVectorTeardown);
     kmeansSuite = CU_add_suite("Kmeans test", setup, teardown);
     binaryFileSuite = CU_add_suite("binary file loading test", setupBinaryFile, teardownBinaryFile);
     csvFileSuite = CU_add_suite("writing into csv file", setupCreateOutputfile, teardownCreateOutputFile);

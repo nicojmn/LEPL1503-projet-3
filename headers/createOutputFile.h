@@ -24,4 +24,4 @@ int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t 
                                                                 int32_t dimension));
 
 
-#endif //CREATEOUTPUTFILE_H
+#endif

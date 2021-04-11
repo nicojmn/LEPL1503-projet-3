@@ -7,4 +7,4 @@ int32_t distortionSetup(void);
 
 int32_t distortionTeardown(void);
 
-#endif //PROJET_CMAKE_DISTORTIONTESTS_H
+#endif

@@ -9,4 +9,4 @@ void testManhattan(void);
 
 void testEuclidean(void);
 
-#endif //PROJET_CMAKE_DISTANCETESTS_H
+#endif

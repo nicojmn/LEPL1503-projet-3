@@ -17,7 +17,7 @@ void test_createOutputFileDimension3(void);
 
 void test_createOutputFileDimension2(void);
 
-#endif //OUTPUTCSVTESTS_H
+#endif
 
 
 

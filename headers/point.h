@@ -9,4 +9,4 @@ typedef struct point {
     int32_t nearestCentroidID;
 } point_t;
 
-#endif //POINT_H
+#endif
