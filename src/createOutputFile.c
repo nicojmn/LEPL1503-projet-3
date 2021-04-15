@@ -35,9 +35,12 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t siz
 }
 
 //TODO make tests for writeOneKMeans function
+
 int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
                        squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
                                                                 int32_t dimension)) {
+
+
     if (fprintf(outputPath, "\n") < 0) return -1;
     if (fprintf(outputPath, "\"[") < 0) return -1;
     if (writeVectorList(startingCentroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;
