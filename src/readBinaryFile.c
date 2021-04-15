@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include "../headers/readBinaryFile.h"
 #include <unistd.h>
-#include <stdio.h>
-#include <limits.h>
+
+#include "../headers/readBinaryFile.h"
 
 
 int32_t loadData(FILE *file, data_t *data) {

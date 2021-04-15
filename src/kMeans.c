@@ -1,9 +1,9 @@
-#include "../headers/kMeans.h"
-
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
+
+#include "../headers/kMeans.h"
 
 void updateCentroids(k_means_t *kMeans) {
 

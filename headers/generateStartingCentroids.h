@@ -2,7 +2,7 @@
 #define GENERATESTARTINGCENTROIDS_H
 
 #include <stdint.h>
-#include "point.h"
+#include "kmeansStruct.h"
 
 uint64_t factorial(uint32_t x);
 

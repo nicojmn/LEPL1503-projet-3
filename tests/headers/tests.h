@@ -2,9 +2,15 @@
 #define PROJET_CMAKE_TESTS_H
 
 #include "../../headers/kMeans.h"
+#include "../../headers/distance.h"
+#include "../../headers/kmeansStruct.h"
+#include "../../headers/kMeans.h"
+#include "../../headers/readBinaryFile.h"
 
 k_means_t *kMeansDim1 = NULL;
 k_means_t *kMeansDim2 = NULL;
 k_means_t *kMeansDim3 = NULL;
+
+int main();
 
 #endif

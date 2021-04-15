@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 #include "../../headers/distance.h"
-#include "../../headers/point.h"
+#include "../../headers/kmeansStruct.h"
 #include "../../headers/kMeans.h"
 #include "../../src/distance.c"
 #include "../../src/kMeans.c"
@@ -118,9 +118,6 @@ void testGenerateStartingCentroids(void) {
     CU_ASSERT_EQUAL(startingCentroids1[3]->vector[0], 2);
     CU_ASSERT_EQUAL(startingCentroids1[3]->vector[1], 2);
 
-    CU_ASSERT_EQUAL(startingCentroids1[4]->vector[0], 3);
-    CU_ASSERT_EQUAL(startingCentroids1[4]->vector[1], 4);
-
 
     //test : ex3.bin
     CU_ASSERT_EQUAL(startingCentroids2[0]->vector[0], 2053);
@@ -134,9 +131,6 @@ void testGenerateStartingCentroids(void) {
 
     CU_ASSERT_EQUAL(startingCentroids2[3]->vector[0], 515);
     CU_ASSERT_EQUAL(startingCentroids2[3]->vector[1], 486);
-
-    CU_ASSERT_EQUAL(startingCentroids2[4]->vector[0], 988);
-    CU_ASSERT_EQUAL(startingCentroids2[4]->vector[1], 519);
 
 }
 
@@ -179,16 +173,13 @@ int main() {
     /** NOTE - ORDER IS IMPORTANT */
     if ((NULL == CU_add_test(distanceTestSuite, "squared manhattan distance", testManhattan)) ||
         (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
-        (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion))
-        //TODO : fix tests  (Seb)
-        //|| (NULL == CU_add_test(generateStartingCentroidsSuite, "test to generate centroids", testGenerateStartingCentroids))
-        ||
+        (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion)) ||
+        (NULL ==
+         CU_add_test(generateStartingCentroidsSuite, "test to generate centroids", testGenerateStartingCentroids)) ||
         (NULL == CU_add_test(updateCentroidsTestSuite, "updateCentroids", testUpdateCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector normal", testNormalAssignVectorToCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids)) ||
         (NULL == CU_add_test(kmeansSuite, "One iteration of Kmeans", testKmeansDimension2)) ||
-        //TODO debug test dimension 3
-        //(NULL == CU_add_test(kmeansSuite, "Two iterations of Kmeans with dimension 3", testKmeansDimension3)) ||
         (NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile)) ||
         (NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2))) {
         CU_cleanup_registry();

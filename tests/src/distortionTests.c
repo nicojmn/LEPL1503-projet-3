@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../headers/distortionTests.h"
 #include "../headers/tests.h"
+#include "../headers/distortionTests.h"
 
 
 int32_t distortionSetup(void) {

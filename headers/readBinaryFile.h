@@ -7,7 +7,9 @@
 #include <string.h>
 #include <ftw.h>
 #include <stdlib.h>
-#include "../headers/kMeans.h"
+
+#include "kMeans.h"
+
 int32_t loadData(FILE *file, data_t *data);
 
 #endif

@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../headers/distanceTests.h"
 #include "../headers/tests.h"
+#include "../headers/distanceTests.h"
 
 
 // TODO : clean setup & distance

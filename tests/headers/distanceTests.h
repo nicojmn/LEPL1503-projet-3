@@ -1,6 +1,8 @@
 #ifndef PROJET_CMAKE_DISTANCETESTS_H
 #define PROJET_CMAKE_DISTANCETESTS_H
 
+#include "./tests.h"
+
 int32_t distanceSetup(void);
 
 int32_t distanceTeardown(void);

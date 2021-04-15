@@ -1,29 +1,13 @@
 #ifndef K_MEANS
 #define K_MEANS
 
-#include "point.h"
+#include "kmeansStruct.h"
 #include "../headers/distance.h"
 
-typedef struct {
-
-    point_t *centroids;
-    int64_t *clustersSize;
-    uint32_t k;
-    point_t *points;
-    uint32_t dimension;
-    uint64_t size;
-
-} k_means_t;
-
-typedef struct {
-    int64_t **vectors;
-    uint32_t dimension;
-    uint64_t size;
-} data_t;
 
 /**
  * @param kMeans: pointer to the instance of our problem
- *        It assigns each point to its closest cluster and update the size of each cluster
+ *        It assigns each kmeansStruct to its closest cluster and update the size of each cluster
  */
 void updateCentroids(k_means_t *kMeans);
 

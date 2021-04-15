@@ -1,6 +1,7 @@
-#include "../headers/createOutputFile.h"
 #include <sys/types.h>
 #include <unistd.h>
+
+#include "../headers/createOutputFile.h"
 
 // TODO make tests for csvFileHeadline function
 int32_t csvFileHeadline(bool quiet, FILE *outputPath) {

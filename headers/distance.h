@@ -2,7 +2,7 @@
 #define DISTANCE_H
 #include <stdint.h>
 
-#include "point.h"
+#include "kmeansStruct.h"
 #include "kMeans.h"
 
 /**

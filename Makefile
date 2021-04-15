@@ -18,7 +18,7 @@ clean:
 	rm -f tests/src/*.o
 
 tests: tests/src/tests.c
-	$(CC) tests/src/tests.c -o tests/src/tests.o $(LIBS) $(CFLAGS)
+	$(CC) $(INCLUDE_HEADERS_DIRECTORY) tests/src/tests.c -o tests/src/tests.o $(LIBS) $(CFLAGS)
 	./tests/src/tests.o
 	rm -f tests/src/*.o
 
