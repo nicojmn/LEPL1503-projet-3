@@ -11,6 +11,7 @@
 #include "headers/kMeans.h"
 #include "headers/createOutputFile.h"
 #include "headers/readBinaryFile.h"
+#include "src/manageHeap.c"
 #include "src/distance.c"
 #include "src/generateStartingCentroids.c"
 #include "src/kMeans.c"
@@ -19,15 +20,6 @@
 
 data_t *generalData;
 
-typedef struct {
-    FILE *input_stream;
-    FILE *output_stream;
-    uint32_t n_threads;
-    uint32_t k;
-    uint32_t n_first_initialization_points;
-    bool quiet;
-    squared_distance_func_t squared_distance_func;
-} args_t;
 
 
 void usage(char *prog_name) {
@@ -162,23 +154,13 @@ int main(int argc, char *argv[]) {
                            (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func) ==
             -1) {
             clean(kMeansSimulation);
-            fullClean(generalData, startingCentroids, iterationNumber);
-            fclose(programArguments.input_stream);
-            fclose(programArguments.output_stream);
+            fullClean(generalData, startingCentroids, iterationNumber, programArguments);
             return -2;
         }
         clean(kMeansSimulation);
     }
 
-    // TODO: Be careful everything must be freed
-    fullClean(generalData, startingCentroids, iterationNumber);
-    // close the files opened by parse_args
-    if (programArguments.input_stream != stdin) {
-        fclose(programArguments.input_stream);
-    }
-    if (programArguments.output_stream != stdout) {
-        fclose(programArguments.output_stream);
-    }
+    fullClean(generalData, startingCentroids, iterationNumber, programArguments);
     printf("The job is done !\n");
     return 0;
 }
