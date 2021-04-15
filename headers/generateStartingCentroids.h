@@ -6,7 +6,8 @@
 
 uint64_t factorial(uint32_t x);
 
-
+/** We use a special function for numerical consideration
+ It won't overflow for close big number k and n*/
 uint64_t combinatorial(uint32_t n, uint32_t x);
 
 /**

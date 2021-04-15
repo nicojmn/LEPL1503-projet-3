@@ -20,8 +20,6 @@
 
 data_t *generalData;
 
-
-
 void usage(char *prog_name) {
     fprintf(stderr, "USAGE:\n");
     fprintf(stderr, "    %s [-p n_combinations_points] [-n n_threads] [input_filename]\n", prog_name);
@@ -133,8 +131,6 @@ int main(int argc, char *argv[]) {
 
     uint32_t k = programArguments.k;
     uint32_t n = programArguments.n_first_initialization_points;
-    // We use a special function for numerical consideration
-    // It won't overflow for close big number k and n
     uint64_t iterationNumber = combinatorial(n, k);
     point_t **startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
     for (uint64_t i = 0; i < iterationNumber; ++i) {
