@@ -230,7 +230,6 @@ void test_createOutputFileDimension3(void) {
 void test_createOutputFileDimension2(void) {
     squared_distance_func_t generic_func = squared_manhattan_distance;
     k_means(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
-    printf("%u\n", kMeansDim2->dimension);
     csvFileHeadline(false, outputFile2);
     writeOneKMeans(kMeansDim2, false, outputFile2, outputStartingCentroids2[0],
                    (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
