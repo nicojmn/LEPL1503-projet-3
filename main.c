@@ -11,6 +11,7 @@
 #include "headers/kMeans.h"
 #include "headers/createOutputFile.h"
 #include "headers/readBinaryFile.h"
+#include "headers/manageHeap.h"
 #include "src/manageHeap.c"
 #include "src/distance.c"
 #include "src/generateStartingCentroids.c"
