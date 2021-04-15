@@ -215,18 +215,6 @@ int32_t teardownCreateOutputFile(void) {
     return 0;
 }
 
-void test_createOutputFileDimension3(void) {
-    squared_distance_func_t generic_func = squared_euclidean_distance;
-    k_means(kMeansDim3, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);;
-
-
-    csvFileHeadline(false, outputFile);
-
-    writeOneKMeans(kMeansDim3, false, outputFile, outputStartingCentroids1[0],
-                   (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
-
-}
-
 void test_createOutputFileDimension2(void) {
     squared_distance_func_t generic_func = squared_manhattan_distance;
     k_means(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
