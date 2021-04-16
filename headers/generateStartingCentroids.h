@@ -20,7 +20,7 @@ uint64_t combinatorial(uint32_t n, uint32_t x);
  *        //What does it do #TODO
  */
 void generateSetOfStartingCentroids(point_t **startingCentroidsID, int64_t **vectors,
-                                    int32_t k, int32_t n, int32_t iterationNbr);
+                                    uint32_t k, uint32_t n, uint64_t iterationNbr);
 
 
 #endif

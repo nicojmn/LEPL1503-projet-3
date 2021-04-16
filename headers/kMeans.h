@@ -39,7 +39,7 @@ void k_means(k_means_t *kMeans,
              squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
                                                       int32_t dimension));
 
-k_means_t *produce(int64_t **vectors, point_t **startingCentroidsID, int32_t index, int32_t k,
-                   int64_t size, uint32_t dimension);
+k_means_t *produce(int64_t **vectors, point_t **startingCentroidsID, uint32_t index, uint32_t k,
+                   uint64_t size, uint32_t dimension);
 
 #endif

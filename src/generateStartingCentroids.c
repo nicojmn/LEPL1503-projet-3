@@ -33,7 +33,7 @@ uint64_t combinatorial(uint32_t n, uint32_t k) {
 }
 
 void generateSetOfStartingCentroids(point_t **startingCentroidsID, int64_t **vectors,
-                                    int32_t k, int32_t n, int32_t iterationNbr) {
+                                    uint32_t k, uint32_t n, uint64_t iterationNbr) {
 
     int32_t indices[k];
 
