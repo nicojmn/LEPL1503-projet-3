@@ -56,7 +56,7 @@ valgrindMain : main.c
 ## -----------------------------------/!\--------------------------------
 ## WARNING : this command is used by Jenkins
 ## -----------------------------------/!\--------------------------------
-	$(CC) $(CFLAGS) main.c -o exe
+	$(CC) $(CFLAGS) main.c -o exe $(LIBS)
 	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no --log-file=tests/valgrind-log/executable-bin3-manhattan.txt ./exe  -k 4 -p 6 -n 1 -d manhattan -f output_csv/kmeans.csv  input_binary/ex3.bin
 	rm -f exe
 
