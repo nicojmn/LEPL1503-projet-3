@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <inttypes.h>
-#include <stdio.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include "headers/distance.h"
