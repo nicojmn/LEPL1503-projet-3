@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
     loadData(programArguments.input_stream, generalData);
     generic_func = programArguments.squared_distance_func;
 
-    uint32_t k = programArguments.k;
+    k = programArguments.k;
     uint32_t n = programArguments.n_first_initialization_points;
     iterationNumber = combinatorial(n, k);
     startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
