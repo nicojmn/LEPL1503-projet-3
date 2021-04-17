@@ -8,6 +8,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <semaphore.h>
 #include "headers/distance.h"
 #include "headers/generateStartingCentroids.h"
 #include "headers/kMeans.h"
@@ -29,6 +30,12 @@ squared_distance_func_t generic_func;
 point_t **startingCentroids;
 uint32_t k;
 uint64_t iterationNumber;
+
+// Initialisation
+#define N 1
+pthread_mutex_t mutex;
+sem_t busy;
+
 
 void usage(char *prog_name) {
     fprintf(stderr, "USAGE:\n");
@@ -122,6 +129,8 @@ void *runOneInstance(void *startEnd) {
         k_means(kMeansSimulation,
                 (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
         //TODO : add the mutex or semaphore
+        sem_wait(&busy);
+        if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
         if (writeOneKMeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream,
                            startingCentroids[i],
                            (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func) ==
@@ -130,6 +139,8 @@ void *runOneInstance(void *startEnd) {
             fullClean(generalData, startingCentroids, iterationNumber, programArguments);
             return (void *) -1;
         }
+        if (pthread_mutex_unlock(&mutex) != 0) return (void *) -1;
+        sem_post(&busy);
         clean(kMeansSimulation);
     }
     return NULL;
@@ -172,6 +183,8 @@ int main(int argc, char *argv[]) {
     generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber);
     csvFileHeadline(programArguments.quiet, programArguments.output_stream);
 
+    if (pthread_mutex_init(&mutex, NULL) != 0) return -1;
+    if (sem_init(&busy, 0, N) != 0) return -1; // buffer vide
     pthread_t threads[programArguments.n_threads];
     uint32_t nbrOfLinesPerThread = (uint32_t) iterationNumber / programArguments.n_threads;
     uint16_t rest = (uint16_t) iterationNumber % programArguments.n_threads;
@@ -183,18 +196,18 @@ int main(int argc, char *argv[]) {
             end++;
             rest--;
         }
-        listOfIndexes[0] = start;
-        listOfIndexes[1] = end;
+        uint32_t listOfIndexes[2] = {start, end};
         start = end;
         end += nbrOfLinesPerThread;
         if (pthread_create(&threads[i], NULL, runOneInstance, listOfIndexes) != 0) return -1;
     }
 
     for (int i = 0; i < programArguments.n_threads; i++) {
-        pthread_join(threads[i], NULL);
+        if (pthread_join(threads[i], NULL) != 0) return -1;
     }
 
     fullClean(generalData, startingCentroids, iterationNumber, programArguments);
+    if (pthread_mutex_destroy(&mutex) != 0) return -1;
     printf("The job is done !\n");
     return 0;
 }
