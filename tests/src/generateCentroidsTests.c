@@ -7,6 +7,8 @@
 #include <stdlib.h>
 
 #include "../headers/generateCentroidsTests.h"
+#include "../../src/generateStartingCentroids.c" //je sais pas trop si il faut l'include je pense pas
+
 
 point_t **startingCentroids1;
 point_t **startingCentroids2;

@@ -3,6 +3,7 @@
 
 #include "./tests.h"
 #include "../../headers/generateStartingCentroids.h"
+#include "../../headers/readBinaryFile.h"
 
 
 int32_t setupGenerateStartingCentroids(void);
