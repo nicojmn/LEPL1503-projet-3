@@ -213,31 +213,52 @@ int main(int argc, char *argv[]) {
     generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber);
     csvFileHeadline(programArguments.quiet, programArguments.output_stream);
 
+    // Handling threads
+    buffer = malloc(sizeof(buffer_t));
+    if (buffer == NULL) return -1;
+    buffer->kMeansInstances = malloc(N * sizeof(k_means_t *));
+    if (buffer->kMeansInstances == NULL) return -1;
+    buffer->indexes = malloc(N * sizeof(uint32_t));
+    if (buffer->indexes == NULL) return -1;
+    buffer->head = 0;
+    buffer->tail = 0;
+
     if (pthread_mutex_init(&mutex, NULL) != 0) return -1;
-    if (sem_init(&busy, 0, N) != 0) return -1; // buffer vide
-    pthread_t threads[programArguments.n_threads];
+    if (sem_init(&empty, 0, N) != 0) return -1;
+    if (sem_init(&full, 0 , 0) != 0) return -1;
+
+    pthread_t producerThreads[programArguments.n_threads];
+    pthread_t consumerThread;
+
     uint32_t nbrOfLinesPerThread = (uint32_t) iterationNumber / programArguments.n_threads;
     uint16_t rest = (uint16_t) iterationNumber % programArguments.n_threads;
-    uint32_t listOfIndexes[2];
     uint32_t start = 0;
     uint32_t end = nbrOfLinesPerThread;
+    uint32_t listOfIndexes[programArguments.n_threads][2];
     for (int i = 0; i < programArguments.n_threads; i++) {
         if (rest > 0) {
             end++;
             rest--;
         }
-        uint32_t listOfIndexes[2] = {start, end};
+        listOfIndexes[i][0] = start;
+        listOfIndexes[i][1] = end;
+        if (pthread_create(&producerThreads[i], NULL, &produce, (void *) listOfIndexes[i]) != 0) return -1;
         start = end;
         end += nbrOfLinesPerThread;
-        if (pthread_create(&threads[i], NULL, runOneInstance, listOfIndexes) != 0) return -1;
     }
+    if(pthread_create(&consumerThread, NULL, &consume, NULL) != 0) return -1;
 
     for (int i = 0; i < programArguments.n_threads; i++) {
-        if (pthread_join(threads[i], NULL) != 0) return -1;
+        if (pthread_join(producerThreads[i], NULL) != 0) return -1;
     }
+    if (pthread_join(consumerThread, NULL) != 0) return -1;
 
     fullClean(generalData, startingCentroids, iterationNumber, programArguments);
     if (pthread_mutex_destroy(&mutex) != 0) return -1;
+    free(buffer->kMeansInstances);
+    free(buffer->indexes);
+    free(buffer);
+
     printf("The job is done !\n");
     return 0;
 }
