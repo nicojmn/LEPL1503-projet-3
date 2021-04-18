@@ -4,6 +4,8 @@
 
 #include <stdint.h>
 
+// #TODO On ferait bien une description de chaque structure pour expliquer à quoi elle sert
+
 typedef struct {
     int64_t *vector;
     int32_t nearestCentroidID;

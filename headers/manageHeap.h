@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include "kMeans.h"
 
+// #TODO Décrire la structure
+
 typedef struct {
     FILE *input_stream;
     FILE *output_stream;
