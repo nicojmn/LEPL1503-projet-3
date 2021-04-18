@@ -31,9 +31,19 @@ uint32_t k;
 uint64_t iterationNumber;
 
 // Initialisation
-#define N 1
+#define N 2 // places in the buffer
 pthread_mutex_t mutex;
-sem_t busy;
+sem_t empty;
+sem_t full;
+
+typedef struct {
+    k_means_t **kMeansInstances;
+    uint32_t *indexes;
+    uint8_t head; // free place
+    uint8_t tail; // oldest input
+} buffer_t;
+
+buffer_t *buffer;
 
 
 void usage(char *prog_name) {
@@ -121,15 +131,33 @@ int parse_args(args_t *args, int argc, char *argv[]) {
     return 0;
 }
 
-void *runOneInstance(void *startEnd) {
+void *produce(void *startEnd) {
     for (uint32_t i = ((uint32_t *) startEnd)[0]; i < ((uint32_t *) startEnd)[1]; ++i) {
-        k_means_t *kMeansSimulation = produce(generalData->vectors, startingCentroids, i, k,
-                                              generalData->size, generalData->dimension);
+        k_means_t *kMeansSimulation = createOneInstance(generalData->vectors, startingCentroids, i, k,
+                                                        generalData->size, generalData->dimension);
         k_means(kMeansSimulation,
                 (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
-        //TODO : add the mutex or semaphore
-        sem_wait(&busy);
+
+        sem_wait(&empty);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
+        (buffer->kMeansInstances)[buffer->head] = kMeansSimulation;
+        (buffer->indexes)[buffer->head] = i;
+        buffer->head =  (buffer->head + 1) % N;
+        if (pthread_mutex_unlock(&mutex) != 0) return (void *) -1;
+        sem_post(&full);
+    }
+    return NULL;
+}
+
+void *consume(void *useless){
+    uint64_t *nbOfElemToConsume = malloc(sizeof(uint64_t));
+    if (nbOfElemToConsume == NULL) return NULL;
+    *nbOfElemToConsume = iterationNumber;
+    while (*nbOfElemToConsume > 0){
+        sem_wait(&full);
+        if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
+        uint32_t i = (buffer->indexes)[buffer->tail];
+        k_means_t *kMeansSimulation = (buffer->kMeansInstances)[buffer->tail];
         if (writeOneKMeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream,
                            startingCentroids[i],
                            (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func) ==
@@ -138,10 +166,13 @@ void *runOneInstance(void *startEnd) {
             fullClean(generalData, startingCentroids, iterationNumber, programArguments);
             return (void *) -1;
         }
-        if (pthread_mutex_unlock(&mutex) != 0) return (void *) -1;
-        sem_post(&busy);
+        buffer->tail = (buffer->tail + 1) % N;
         clean(kMeansSimulation);
+        if (pthread_mutex_unlock(&mutex) != 0) return (void *) -1;
+        sem_post(&empty);
+        (*nbOfElemToConsume)--;
     }
+    free(nbOfElemToConsume);
     return NULL;
 }
 

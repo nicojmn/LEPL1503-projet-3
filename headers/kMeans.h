@@ -2,7 +2,7 @@
 #define K_MEANS
 
 #include "kmeansStruct.h"
-#include "../headers/distance.h"
+#include "distance.h"
 
 
 /**
@@ -34,20 +34,12 @@ int32_t assignVectorsToCentroids(k_means_t *kMeans,
  *                           depending on the choice of the user
  *        It updates each cluster to match witch the nearest centroid
  */
+
 void k_means(k_means_t *kMeans,
              squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
                                                       int32_t dimension));
-/**
- * #TODO Faire la signature
- * @param vectors
- * @param startingCentroidsID
- * @param index
- * @param k
- * @param size
- * @param dimension
- * @return
- */
-k_means_t *produce(int64_t **vectors, point_t **startingCentroidsID, uint32_t index, uint32_t k,
-                   uint64_t size, uint32_t dimension);
+
+k_means_t *createOneInstance(int64_t **vectors, point_t **startingCentroidsID, uint32_t index, uint32_t k,
+                             uint64_t size, uint32_t dimension);
 
 #endif
