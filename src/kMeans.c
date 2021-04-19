@@ -38,8 +38,8 @@ void updateCentroids(k_means_t *kMeans) {
 }
 
 int32_t assignVectorsToCentroids(k_means_t *kMeans,
-                                 squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
-                                                                          int32_t dimension)) {
+                                 squared_distance_func_t distanceFunction(const point_t *, const point_t *,
+                                                                          int32_t)) {
     int32_t hasChanged = 0;
     for (uint64_t i = 0; i < kMeans->size; ++i) {
         // Let's find the closest centroid
@@ -63,8 +63,8 @@ int32_t assignVectorsToCentroids(k_means_t *kMeans,
 }
 
 void k_means(k_means_t *kMeans,
-             squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
-                                                      int32_t dimension)) {
+             squared_distance_func_t distanceFunction(const point_t *, const point_t *,
+                                                      int32_t)) {
 
     //TODO : make distanceFunction as a global function ( if possible :D)
     int32_t hasChanged = 1;

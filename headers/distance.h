@@ -26,23 +26,28 @@
 typedef int64_t (*squared_distance_func_t)(const point_t *, const point_t *, int32_t);
 
 /**
+ * @param p1 : first point
+ * @param p2 : second point
+ * @param dimension : number of dimensions
  * @return the squared manhattan distance between 2 points
  */
-int64_t squared_manhattan_distance(const point_t *, const point_t *, int32_t);
+int64_t squared_manhattan_distance(const point_t *p1, const point_t *p2, int32_t dimension);
 
 /**
+ * @param p1 : first point
+ * @param p2 : second point
+ * @param dimension : number of dimensions
  * @return the squared euclidean distance between 2 points
  */
-int64_t squared_euclidean_distance(const point_t *, const point_t *, int32_t);
+int64_t squared_euclidean_distance(const point_t *p1, const point_t *p2, int32_t dimension);
 
 /**
- * @param x : a int64_t number
+ * @param x : int64_t number
  * @return : the absolute value of x
  */
 int64_t absVal(int64_t x);
 
 /**
- *
  * @param clusters : array of clusters
  * @param k : number of clusters
  * @param dimension : dimension of the points to compare
