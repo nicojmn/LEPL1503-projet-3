@@ -10,7 +10,6 @@
 
 
 /**
- *
  * Writes in the output file the names of the data that will be added later
  * @param quiet
  * @param outputPath
