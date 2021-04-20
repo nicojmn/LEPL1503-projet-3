@@ -36,6 +36,8 @@ sem_t full;
 
 typedef struct {
     k_means_t **kMeansInstances;
+    int64_t *distortionValues;
+    point_t ***clustersOfInstances;
     uint32_t *indexes;
     uint8_t head; // free place
     uint8_t tail; // oldest input
@@ -51,11 +53,18 @@ void *produce(void *startEnd) {
         k_means(kMeansSimulation,
                 (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
 
+        point_t **clusters = generateClusters(kMeansSimulation);
+        int64_t distortionValue = distortion(kMeansSimulation,
+                                             (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                                          int32_t)) generic_func);
+
         sem_wait(&empty);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
         (buffer->kMeansInstances)[buffer->head] = kMeansSimulation;
+        (buffer->clustersOfInstances)[buffer->head] = clusters;
+        (buffer->distortionValues)[buffer->head] = distortionValue;
         (buffer->indexes)[buffer->head] = i;
-        buffer->head =  (buffer->head + 1) % N;
+        buffer->head = (buffer->head + 1) % N;
         if (pthread_mutex_unlock(&mutex) != 0) return (void *) -1;
         sem_post(&full);
     }
@@ -66,15 +75,15 @@ void *consume(void *useless){
     uint64_t *nbOfElemToConsume = malloc(sizeof(uint64_t));
     if (nbOfElemToConsume == NULL) return NULL;
     *nbOfElemToConsume = iterationNumber;
-    while (*nbOfElemToConsume > 0){
+    while (*nbOfElemToConsume > 0) {
         sem_wait(&full);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
         uint32_t i = (buffer->indexes)[buffer->tail];
         k_means_t *kMeansSimulation = (buffer->kMeansInstances)[buffer->tail];
+        point_t **clusters = (buffer->clustersOfInstances)[buffer->tail];
+        int64_t distortionValue = (buffer->distortionValues)[buffer->tail];
         if (writeOneKMeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream,
-                           startingCentroids[i],
-                           (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func) ==
-            -1) {
+                           startingCentroids[i], clusters, distortionValue) == -1) {
             clean(kMeansSimulation);
             fullClean(generalData, startingCentroids, iterationNumber, programArguments);
             return (void *) -1;
@@ -131,6 +140,10 @@ int main(int argc, char *argv[]) {
     if (buffer == NULL) return -1;
     buffer->kMeansInstances = malloc(N * sizeof(k_means_t *));
     if (buffer->kMeansInstances == NULL) return -1;
+    buffer->clustersOfInstances = malloc(N * sizeof(point_t **));
+    if (buffer->clustersOfInstances == NULL) return -1;
+    buffer->distortionValues = malloc(N * sizeof(int64_t));
+    if (buffer->distortionValues == NULL) return -1;
     buffer->indexes = malloc(N * sizeof(uint32_t));
     if (buffer->indexes == NULL) return -1;
     buffer->head = 0;
@@ -138,7 +151,7 @@ int main(int argc, char *argv[]) {
 
     if (pthread_mutex_init(&mutex, NULL) != 0) return -1;
     if (sem_init(&empty, 0, N) != 0) return -1;
-    if (sem_init(&full, 0 , 0) != 0) return -1;
+    if (sem_init(&full, 0, 0) != 0) return -1;
 
     pthread_t producerThreads[programArguments.n_threads];
     pthread_t consumerThread;
@@ -159,7 +172,7 @@ int main(int argc, char *argv[]) {
         start = end;
         end += nbrOfLinesPerThread;
     }
-    if(pthread_create(&consumerThread, NULL, &consume, NULL) != 0) return -1;
+    if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) return -1;
 
     for (int i = 0; i < programArguments.n_threads; i++) {
         if (pthread_join(producerThreads[i], NULL) != 0) return -1;
@@ -169,6 +182,8 @@ int main(int argc, char *argv[]) {
     fullClean(generalData, startingCentroids, iterationNumber, programArguments);
     if (pthread_mutex_destroy(&mutex) != 0) return -1;
     free(buffer->kMeansInstances);
+    free(buffer->clustersOfInstances);
+    free(buffer->distortionValues);
     free(buffer->indexes);
     free(buffer);
 

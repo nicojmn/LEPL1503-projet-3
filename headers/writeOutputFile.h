@@ -17,6 +17,8 @@
  */
 int32_t csvFileHeadline(bool quiet, FILE *outputFile);
 
+point_t **generateClusters(k_means_t *kMeans);
+
 /**
  * Write a list of vectors into the outputFile
  * @param listOfVectors : malloced structure
@@ -27,6 +29,8 @@ int32_t csvFileHeadline(bool quiet, FILE *outputFile);
  */
 int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t size, FILE *outputFile);
 
+
+// TODO: update specification
 /**
  * Function used to write one execution of Kmeans
  * @param kMeans : the kMeans we want to write about
@@ -36,9 +40,8 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t siz
  * @param distanceFunction : the formula used to calculate points distances, either the manhattan or the euclidean one
  * @return 0 if no error, -1 otherwise
  */
-int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputFile, point_t *startingCentroids,
-                       squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2,
-                                                                int32_t dimension));
+int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
+                       point_t **clusters, int64_t distortionValue);
 
 
 #endif

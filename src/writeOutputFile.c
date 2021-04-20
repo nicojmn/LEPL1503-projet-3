@@ -15,6 +15,27 @@ int32_t csvFileHeadline(bool quiet, FILE *outputFile) {
     return 0;
 }
 
+
+point_t **generateClusters(k_means_t *kMeans) {
+    point_t **clusters = malloc(sizeof(point_t) * kMeans->k);
+    if (clusters == NULL) return NULL;
+
+    uint64_t *clustersIndexes = malloc(sizeof(uint64_t) * kMeans->k);
+    for (int64_t clusterNbr = 0; clusterNbr < kMeans->k; clusterNbr++) {
+        clusters[clusterNbr] = malloc(sizeof(point_t) * kMeans->clustersSize[clusterNbr]);
+        if (clusters[clusterNbr] == NULL) return NULL;
+        clustersIndexes[clusterNbr] = 0;
+    }
+    for (int i = 0; i < kMeans->size; i++) {
+        int32_t ID = kMeans->points[i].nearestCentroidID;
+        clusters[ID][clustersIndexes[ID]] = kMeans->points[i];
+        clustersIndexes[ID]++;
+    }
+    free(clustersIndexes);
+    return clusters;
+}
+
+
 // TODO : make tests
 int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t size, FILE *outputFile) {
 
@@ -37,49 +58,35 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t siz
 
 //TODO make tests for writeOneKMeans function
 
-int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputFile, point_t *startingCentroids,
-                       squared_distance_func_t distanceFunction(const point_t *, const point_t *, int32_t)) {
+int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
+                       point_t **clusters, int64_t distortionValue) {
 
-    if (fprintf(outputFile, "\n") < 0) return -1;
-    if (fprintf(outputFile, "\"[") < 0) return -1;
-    if (writeVectorList(startingCentroids, kMeans->dimension, kMeans->k, outputFile) < 0) return -1;
-    if (fprintf(outputFile, "]\",") < 0) return -1;
-    if (fprintf(outputFile, "%li,", distortion(kMeans, distanceFunction)) < 0) return -1;
-    if (fprintf(outputFile, "\"[") < 0) return -1;
-    if (writeVectorList(kMeans->centroids, kMeans->dimension, kMeans->k, outputFile) < 0) return -1;
-    if (fprintf(outputFile, "]\"") < 0) return -1;
+    if (fprintf(outputPath, "\n") < 0) return -1;
+    if (fprintf(outputPath, "\"[") < 0) return -1;
+    if (writeVectorList(startingCentroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;
+    if (fprintf(outputPath, "]\",") < 0) return -1;
+    if (fprintf(outputPath, "%li,", distortionValue) < 0) return -1;
+    if (fprintf(outputPath, "\"[") < 0) return -1;
+    if (writeVectorList(kMeans->centroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;
+    if (fprintf(outputPath, "]\"") < 0) return -1;
     if (!quiet) {
-        if (fprintf(outputFile, ",") < 0) return -1;
-        if (fprintf(outputFile, "\"[") < 0) return -1;
-        point_t **listOfVector = malloc(sizeof(point_t) * kMeans->k);
-        if (listOfVector == NULL) return -1;
+        if (fprintf(outputPath, ",") < 0) return -1;
+        if (fprintf(outputPath, "\"[") < 0) return -1;
 
-        uint64_t *listOfSizes = malloc(sizeof(uint64_t) * kMeans->k);
-        for (int64_t clusterNbr = 0; clusterNbr < kMeans->k; clusterNbr++) {
-            listOfVector[clusterNbr] = malloc(sizeof(point_t) * kMeans->clustersSize[clusterNbr]);
-            if (listOfVector[clusterNbr] == NULL) return -1;
-            listOfSizes[clusterNbr] = 0;
-        }
-        for (int i = 0; i < kMeans->size; i++) {
-            int32_t ID = kMeans->points[i].nearestCentroidID;
-            listOfVector[ID][listOfSizes[ID]] = kMeans->points[i];
-            listOfSizes[ID]++;
-        }
         for (int i = 0; i < kMeans->k; i++) {
-            if (fprintf(outputFile, "[") < 0) return -1;
-            if (writeVectorList(listOfVector[i], kMeans->dimension, kMeans->clustersSize[i], outputFile) < 0) return -1;
-            if (fprintf(outputFile, "]") < 0) return -1;
+            if (fprintf(outputPath, "[") < 0) return -1;
+            if (writeVectorList(clusters[i], kMeans->dimension, kMeans->clustersSize[i], outputPath) < 0) return -1;
+            if (fprintf(outputPath, "]") < 0) return -1;
             if (i != kMeans->k - 1) {
-                if (fprintf(outputFile, ", ") < 0) return -1;
+                if (fprintf(outputPath, ", ") < 0) return -1;
             }
         }
-        if (fprintf(outputFile, "]\"") < 0) return -1;
+        if (fprintf(outputPath, "]\"") < 0) return -1;
 
-        free(listOfSizes);
         for (int i = 0; i < kMeans->k; ++i) {
-            free(listOfVector[i]);
+            free(clusters[i]);
         }
-        free(listOfVector);
+        free(clusters);
     }
     return 0;
 }
