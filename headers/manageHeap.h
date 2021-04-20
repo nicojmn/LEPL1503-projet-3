@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "kMeans.h"
-
+#include "manageArgs.h"
 
 
 /**
