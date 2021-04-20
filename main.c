@@ -11,14 +11,14 @@
 #include "headers/distance.h"
 #include "headers/generateStartingCentroids.h"
 #include "headers/kMeans.h"
-#include "headers/createOutputFile.h"
+#include "headers/writeOutputFile.h"
 #include "headers/readBinaryFile.h"
 #include "headers/manageHeap.h"
 #include "src/manageHeap.c"
 #include "src/distance.c"
 #include "src/generateStartingCentroids.c"
 #include "src/kMeans.c"
-#include "src/createOutputFile.c"
+#include "src/writeOutputFile.c"
 #include "src/readBinaryFile.c"
 
 args_t programArguments;

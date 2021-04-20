@@ -1,5 +1,5 @@
-#ifndef CREATEOUTPUTFILE_H
-#define CREATEOUTPUTFILE_H
+#ifndef WRITEOUTPUTFILE_H
+#define WRITEOUTPUTFILE_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

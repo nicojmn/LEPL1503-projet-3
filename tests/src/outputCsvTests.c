@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "../headers/outputCsvTests.h"
-#include "../../src/createOutputFile.c"
+#include "../../src/writeOutputFile.c"
 
 int32_t setupCreateOutputFile(void) {
 
