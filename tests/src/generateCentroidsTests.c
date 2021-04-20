@@ -21,13 +21,10 @@ int32_t setupGenerateStartingCentroids(void) {
 
     uint32_t k = 2;
     uint32_t n = 4;
-    // We use a special function for numerical consideration
-    // It won't overflow for close big number k and n
+
     uint64_t iterationNumber = combinatorial(n, k);
+
     startingCentroids1 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    for (uint64_t i = 0; i < iterationNumber; ++i) {
-        startingCentroids1[i] = (point_t *) malloc(k * sizeof(point_t));
-    }
     generateSetOfStartingCentroids(startingCentroids1, dataTest1->vectors, k, n, iterationNumber);
 
     dataTest2 = (data_t *) malloc(sizeof(data_t));
@@ -36,13 +33,8 @@ int32_t setupGenerateStartingCentroids(void) {
     loadData(fileForTest2, dataTest2);
 
     startingCentroids2 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    for (uint64_t i = 0; i < iterationNumber; ++i) {
-        startingCentroids2[i] = (point_t *) malloc(k * sizeof(point_t));
-    }
     generateSetOfStartingCentroids(startingCentroids2, dataTest2->vectors, k, n, iterationNumber);
-
     return 0;
-
 }
 
 int32_t teardownGenerateStartingCentroids(void) {
@@ -66,7 +58,6 @@ int32_t teardownGenerateStartingCentroids(void) {
     uint32_t n = 4;
     uint64_t iterationNumber = combinatorial(n, k);
 
-
     for (int i = 0; i < iterationNumber; ++i) {
         free(startingCentroids1[i]);
         free(startingCentroids2[i]);
@@ -74,8 +65,6 @@ int32_t teardownGenerateStartingCentroids(void) {
     }
     free(startingCentroids1);
     free(startingCentroids2);
-
-
     return 0;
 }
 

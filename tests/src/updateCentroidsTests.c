@@ -7,7 +7,7 @@
 #include "../headers/updateCentroidsTests.h"
 
 int32_t updateCentroidsSetup(void) {
-    kMeansDim2 = (k_means_t *) malloc(sizeof(k_means_t));
+    kMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (kMeansDim2 == NULL) return -1;
     kMeansDim2->dimension = (int32_t) 2;
     kMeansDim2->points = (point_t *) malloc(5 * sizeof(point_t));

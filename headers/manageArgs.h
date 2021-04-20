@@ -13,7 +13,7 @@
 
 
 /**
- * Structure regrouping all the arguments of the program
+ * Structure gathering all the arguments given in command line
  */
 typedef struct {
     FILE *input_stream;

@@ -9,14 +9,14 @@
 
 // TODO : clean setup & distance
 int32_t distanceSetup(void) {
-    kMeansDim1 = (k_means_t *) malloc(sizeof(k_means_t));
+    kMeansDim1 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (kMeansDim1 == NULL) return -1;
     kMeansDim1->dimension = (int32_t) 1;
     kMeansDim1->points = (point_t *) malloc(1 * sizeof(point_t));
     if (kMeansDim1->points == NULL) return -1;
 
 
-    kMeansDim2 = (k_means_t *) malloc(sizeof(k_means_t));
+    kMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (kMeansDim2 == NULL) return -1;
     kMeansDim2->dimension = (int32_t) 2;
     kMeansDim2->points = (point_t *) malloc(5 * sizeof(point_t));
@@ -27,7 +27,7 @@ int32_t distanceSetup(void) {
     kMeansDim2->clustersSize = (int64_t *) malloc(2 * sizeof(int64_t *));
     if (kMeansDim2->clustersSize == NULL) return -1;
 
-    kMeansDim3 = (k_means_t *) malloc(sizeof(k_means_t));
+    kMeansDim3 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (kMeansDim3 == NULL) return -1;
     kMeansDim3->dimension = (int32_t) 3;
     kMeansDim3->points = (point_t *) malloc(6 * sizeof(point_t));

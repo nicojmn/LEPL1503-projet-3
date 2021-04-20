@@ -5,7 +5,7 @@
 
 #include "../headers/kMeans.h"
 
-void updateCentroids(k_means_t *kMeans) {
+void updateCentroids(kMeans_t *kMeans) {
 
     // Initialisation of all centroid coordinates to 0
     for (int32_t i = 0; i < kMeans->k; ++i) {
@@ -37,7 +37,7 @@ void updateCentroids(k_means_t *kMeans) {
     }
 }
 
-int32_t assignVectorsToCentroids(k_means_t *kMeans,
+int32_t assignVectorsToCentroids(kMeans_t *kMeans,
                                  squared_distance_func_t distanceFunction(const point_t *, const point_t *,
                                                                           int32_t)) {
     int32_t hasChanged = 0;
@@ -62,9 +62,9 @@ int32_t assignVectorsToCentroids(k_means_t *kMeans,
     return hasChanged;
 }
 
-void k_means(k_means_t *kMeans,
-             squared_distance_func_t distanceFunction(const point_t *, const point_t *,
-                                                      int32_t)) {
+void runKMeans(kMeans_t *kMeans,
+               squared_distance_func_t distanceFunction(const point_t *, const point_t *,
+                                                        int32_t)) {
 
     //TODO : make distanceFunction as a global function ( if possible :D)
     int32_t hasChanged = 1;
@@ -75,9 +75,9 @@ void k_means(k_means_t *kMeans,
     }
 }
 
-k_means_t *createOneInstance(int64_t **vectors, point_t **startingCentroidsID, uint32_t index, uint32_t k,
-                             uint64_t size, uint32_t dimension) {
-    k_means_t *kMeans = (k_means_t *) malloc(sizeof(k_means_t));
+kMeans_t *createOneInstance(int64_t **vectors, point_t **startingCentroidsID, uint32_t index, uint32_t k,
+                            uint64_t size, uint32_t dimension) {
+    kMeans_t *kMeans = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (kMeans == NULL) return NULL;
     kMeans->clustersSize = (int64_t *) malloc(k * sizeof(int64_t));
     if (kMeans->clustersSize == NULL) return NULL;

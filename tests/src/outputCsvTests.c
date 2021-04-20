@@ -6,7 +6,7 @@
 
 int32_t setupCreateOutputFile(void) {
 
-    kMeansDim2 = (k_means_t *) malloc(sizeof(k_means_t));
+    kMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (kMeansDim2 == NULL) return -1;
     kMeansDim2->dimension = (int32_t) 2;
     kMeansDim2->points = (point_t *) malloc(7 * sizeof(point_t));
@@ -72,7 +72,7 @@ int32_t setupCreateOutputFile(void) {
     ((kMeansDim2->centroids)[1].vector)[0] = (int64_t) 2;
     ((kMeansDim2->centroids)[1].vector)[1] = (int64_t) 2;
 
-    kMeansDim3 = (k_means_t *) malloc(sizeof(k_means_t));
+    kMeansDim3 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (kMeansDim3 == NULL) return -1;
     kMeansDim3->dimension = (int32_t) 3;
     kMeansDim3->points = (point_t *) malloc(6 * sizeof(point_t));
@@ -175,9 +175,9 @@ int32_t setupCreateOutputFile(void) {
 
 
 int32_t teardownCreateOutputFile(void) {
-    int64_t numberofPoints = 7;
+    int64_t numberOfPoints = 7;
     int32_t k = 2;
-    for (int i = 0; i < numberofPoints; i++) {
+    for (int i = 0; i < numberOfPoints; i++) {
         free(kMeansDim2->points[i].vector);
     }
     for (int i = 0; i < k; i++) {
@@ -196,8 +196,8 @@ int32_t teardownCreateOutputFile(void) {
     free(kMeansDim2->clustersSize);
     free(kMeansDim2);
 
-    numberofPoints = 6;
-    for (int i = 0; i < numberofPoints; i++) {
+    numberOfPoints = 6;
+    for (int i = 0; i < numberOfPoints; i++) {
         free(kMeansDim3->points[i].vector);
     }
     free(kMeansDim3->points);
@@ -217,9 +217,13 @@ int32_t teardownCreateOutputFile(void) {
 
 void test_createOutputFileDimension2(void) {
     squared_distance_func_t generic_func = squared_manhattan_distance;
-    k_means(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
+    runKMeans(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
     csvFileHeadline(false, outputFile2);
+    point_t **clusters = generateClusters(kMeansDim2);
+    int64_t distortionValue = distortion(kMeansDim2,
+                                         (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                                      int32_t)) generic_func);
     writeOneKMeans(kMeansDim2, false, outputFile2, outputStartingCentroids2[0],
-                   (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
+                   clusters, distortionValue);
 
 }

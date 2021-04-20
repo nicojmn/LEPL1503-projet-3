@@ -1,6 +1,22 @@
 #include "../headers/manageHeap.h"
 
-void clean(k_means_t *kMeans) {
+buffer_t *createBuffer(uint8_t bufferSize) {
+    buffer_t *buffer = malloc(sizeof(buffer_t));
+    if (buffer == NULL) return NULL;
+    buffer->kMeansInstances = malloc(bufferSize * sizeof(kMeans_t *));
+    if (buffer->kMeansInstances == NULL) return NULL;
+    buffer->clustersOfInstances = malloc(bufferSize * sizeof(point_t **));
+    if (buffer->clustersOfInstances == NULL) return NULL;
+    buffer->distortionValues = malloc(bufferSize * sizeof(int64_t));
+    if (buffer->distortionValues == NULL) return NULL;
+    buffer->indexes = malloc(bufferSize * sizeof(uint32_t));
+    if (buffer->indexes == NULL) return NULL;
+    buffer->head = 0;
+    buffer->tail = 0;
+    return buffer;
+}
+
+void clean(kMeans_t *kMeans) {
     for (int i = 0; i < kMeans->k; ++i) {
         free((kMeans->centroids)[i].vector);
     }
@@ -11,7 +27,8 @@ void clean(k_means_t *kMeans) {
     free(kMeans);
 }
 
-void fullClean(data_t *generalData, point_t **startingCentroids, uint64_t iterationNumber, args_t args) {
+void fullClean(data_t *generalData, point_t **startingCentroids, uint64_t iterationNumber,
+               args_t args, buffer_t *buffer) {
     for (uint64_t i = 0; i < generalData->size; ++i) {
         free(generalData->vectors[i]);
     }
@@ -29,4 +46,9 @@ void fullClean(data_t *generalData, point_t **startingCentroids, uint64_t iterat
     if (args.output_stream != stdout) {
         fclose(args.output_stream);
     }
+    free(buffer->kMeansInstances);
+    free(buffer->clustersOfInstances);
+    free(buffer->distortionValues);
+    free(buffer->indexes);
+    free(buffer);
 }

@@ -13,7 +13,7 @@ typedef struct {
 } point_t;
 
 /**
- * Structure containing all the necessary data for one iteration of the kMeans algorithm
+ * Structure containing all the necessary data for one iteration of the runKMeans algorithm
  */
 typedef struct {
     point_t *centroids;
@@ -22,7 +22,7 @@ typedef struct {
     point_t *points;
     uint32_t dimension;
     uint64_t size;
-} k_means_t;
+} kMeans_t;
 
 /**
  * Structure containing the instance's characteristics and all the points from the input file

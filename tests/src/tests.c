@@ -74,7 +74,8 @@ int main() {
         (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
         (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion)) ||
         (NULL ==
-         CU_add_test(generateStartingCentroidsSuite, "test to generate centroids", testGenerateStartingCentroids)) ||
+         CU_add_test(generateStartingCentroidsSuite, "generation of starting centroids",
+                     testGenerateStartingCentroids)) ||
         (NULL == CU_add_test(updateCentroidsTestSuite, "updateCentroids", testUpdateCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector normal", testNormalAssignVectorToCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids)) ||

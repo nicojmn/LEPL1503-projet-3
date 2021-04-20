@@ -19,39 +19,31 @@
 #include "src/readBinaryFile.c"
 #include "src/manageArgs.c"
 
+// inputs of the program
 args_t programArguments;
 
 data_t *generalData;
-squared_distance_func_t generic_func;
 
+// kMeans problem
 point_t **startingCentroids;
 uint32_t k;
 uint64_t iterationNumber;
+squared_distance_func_t generic_func;
 
-// Initialisation
+// Threads
 #define N 2 // places in the buffer
 pthread_mutex_t mutex;
 sem_t empty;
 sem_t full;
-
-typedef struct {
-    k_means_t **kMeansInstances;
-    int64_t *distortionValues;
-    point_t ***clustersOfInstances;
-    uint32_t *indexes;
-    uint8_t head; // free place
-    uint8_t tail; // oldest input
-} buffer_t;
-
 buffer_t *buffer;
 
 
 void *produce(void *startEnd) {
     for (uint32_t i = ((uint32_t *) startEnd)[0]; i < ((uint32_t *) startEnd)[1]; ++i) {
-        k_means_t *kMeansSimulation = createOneInstance(generalData->vectors, startingCentroids, i, k,
-                                                        generalData->size, generalData->dimension);
-        k_means(kMeansSimulation,
-                (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
+        kMeans_t *kMeansSimulation = createOneInstance(generalData->vectors, startingCentroids, i, k,
+                                                       generalData->size, generalData->dimension);
+        runKMeans(kMeansSimulation,
+                  (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
 
         point_t **clusters = generateClusters(kMeansSimulation);
         int64_t distortionValue = distortion(kMeansSimulation,
@@ -79,13 +71,13 @@ void *consume(void *useless){
         sem_wait(&full);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
         uint32_t i = (buffer->indexes)[buffer->tail];
-        k_means_t *kMeansSimulation = (buffer->kMeansInstances)[buffer->tail];
+        kMeans_t *kMeansSimulation = (buffer->kMeansInstances)[buffer->tail];
         point_t **clusters = (buffer->clustersOfInstances)[buffer->tail];
         int64_t distortionValue = (buffer->distortionValues)[buffer->tail];
         if (writeOneKMeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream,
                            startingCentroids[i], clusters, distortionValue) == -1) {
             clean(kMeansSimulation);
-            fullClean(generalData, startingCentroids, iterationNumber, programArguments);
+            fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
             return (void *) -1;
         }
         buffer->tail = (buffer->tail + 1) % N;
@@ -129,26 +121,11 @@ int main(int argc, char *argv[]) {
     uint32_t n = programArguments.n_first_initialization_points;
     iterationNumber = combinatorial(n, k);
     startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    for (uint64_t i = 0; i < iterationNumber; ++i) {
-        startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
-    }
     generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber);
     csvFileHeadline(programArguments.quiet, programArguments.output_stream);
 
     // Handling threads
-    buffer = malloc(sizeof(buffer_t));
-    if (buffer == NULL) return -1;
-    buffer->kMeansInstances = malloc(N * sizeof(k_means_t *));
-    if (buffer->kMeansInstances == NULL) return -1;
-    buffer->clustersOfInstances = malloc(N * sizeof(point_t **));
-    if (buffer->clustersOfInstances == NULL) return -1;
-    buffer->distortionValues = malloc(N * sizeof(int64_t));
-    if (buffer->distortionValues == NULL) return -1;
-    buffer->indexes = malloc(N * sizeof(uint32_t));
-    if (buffer->indexes == NULL) return -1;
-    buffer->head = 0;
-    buffer->tail = 0;
-
+    buffer = createBuffer((uint8_t) N);
     if (pthread_mutex_init(&mutex, NULL) != 0) return -1;
     if (sem_init(&empty, 0, N) != 0) return -1;
     if (sem_init(&full, 0, 0) != 0) return -1;
@@ -156,10 +133,10 @@ int main(int argc, char *argv[]) {
     pthread_t producerThreads[programArguments.n_threads];
     pthread_t consumerThread;
 
-    uint32_t nbrOfLinesPerThread = (uint32_t) iterationNumber / programArguments.n_threads;
+    uint32_t amountOfInstancePerThread = (uint32_t) iterationNumber / programArguments.n_threads;
     uint16_t rest = (uint16_t) iterationNumber % programArguments.n_threads;
     uint32_t start = 0;
-    uint32_t end = nbrOfLinesPerThread;
+    uint32_t end = amountOfInstancePerThread;
     uint32_t listOfIndexes[programArguments.n_threads][2];
     for (int i = 0; i < programArguments.n_threads; i++) {
         if (rest > 0) {
@@ -170,7 +147,7 @@ int main(int argc, char *argv[]) {
         listOfIndexes[i][1] = end;
         if (pthread_create(&producerThreads[i], NULL, &produce, (void *) listOfIndexes[i]) != 0) return -1;
         start = end;
-        end += nbrOfLinesPerThread;
+        end += amountOfInstancePerThread;
     }
     if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) return -1;
 
@@ -179,13 +156,8 @@ int main(int argc, char *argv[]) {
     }
     if (pthread_join(consumerThread, NULL) != 0) return -1;
 
-    fullClean(generalData, startingCentroids, iterationNumber, programArguments);
+    fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
     if (pthread_mutex_destroy(&mutex) != 0) return -1;
-    free(buffer->kMeansInstances);
-    free(buffer->clustersOfInstances);
-    free(buffer->distortionValues);
-    free(buffer->indexes);
-    free(buffer);
 
     printf("The job is done !\n");
     return 0;

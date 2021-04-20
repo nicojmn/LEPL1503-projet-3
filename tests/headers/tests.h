@@ -7,9 +7,9 @@
 #include "../../headers/kMeans.h"
 #include "../../headers/readBinaryFile.h"
 
-k_means_t *kMeansDim1 = NULL;
-k_means_t *kMeansDim2 = NULL;
-k_means_t *kMeansDim3 = NULL;
+kMeans_t *kMeansDim1 = NULL;
+kMeans_t *kMeansDim2 = NULL;
+kMeans_t *kMeansDim3 = NULL;
 
 int main();
 

@@ -16,7 +16,7 @@ int32_t csvFileHeadline(bool quiet, FILE *outputFile) {
 }
 
 
-point_t **generateClusters(k_means_t *kMeans) {
+point_t **generateClusters(kMeans_t *kMeans) {
     point_t **clusters = malloc(sizeof(point_t) * kMeans->k);
     if (clusters == NULL) return NULL;
 
@@ -58,7 +58,7 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t siz
 
 //TODO make tests for writeOneKMeans function
 
-int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
+int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
                        point_t **clusters, int64_t distortionValue) {
 
     if (fprintf(outputPath, "\n") < 0) return -1;

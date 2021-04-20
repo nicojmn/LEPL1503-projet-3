@@ -17,7 +17,12 @@
  */
 int32_t csvFileHeadline(bool quiet, FILE *outputFile);
 
-point_t **generateClusters(k_means_t *kMeans);
+/**
+ *
+ * @param kMeans : one instance of the problem kMeans
+ * @return the clusters
+ */
+point_t **generateClusters(kMeans_t *kMeans);
 
 /**
  * Write a list of vectors into the outputFile
@@ -30,17 +35,17 @@ point_t **generateClusters(k_means_t *kMeans);
 int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t size, FILE *outputFile);
 
 
-// TODO: update specification
 /**
  * Function used to write one execution of Kmeans
- * @param kMeans : the kMeans we want to write about
+ * @param kMeans : the runKMeans we want to write about
  * @param quiet : boolean that adds the clusters in the output file if equals to false
  * @param outputFile : the already opened output file
- * @param startingCentroids : set of points used for kMeans calculation
- * @param distanceFunction : the formula used to calculate points distances, either the manhattan or the euclidean one
+ * @param startingCentroids : set of points used for runKMeans calculation
+ * @param clusters : the clusters of the simulation
+ * @param distortionValue: the distortion of kMeans
  * @return 0 if no error, -1 otherwise
  */
-int32_t writeOneKMeans(k_means_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
+int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
                        point_t **clusters, int64_t distortionValue);
 
 
