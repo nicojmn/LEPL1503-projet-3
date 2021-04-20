@@ -3,10 +3,9 @@
 
 #include <stdint.h>
 
-// #TODO On ferait bien une description de chaque structure pour expliquer à quoi elle sert
 
 /**
- * Structure representing a graphical point with it's coords vector and the nearest centroid
+ * Structure representing a graphical point with it's coords as vector and the nearest centroid
  */
 typedef struct {
     int64_t *vector;
