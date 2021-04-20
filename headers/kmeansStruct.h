@@ -25,7 +25,7 @@ typedef struct {
 } k_means_t;
 
 /**
- * Structure containing the instance's characteristics
+ * Structure containing the instance's characteristics and all the points from the input file
  */
 typedef struct {
     int64_t **vectors;

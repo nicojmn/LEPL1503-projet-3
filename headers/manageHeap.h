@@ -27,7 +27,7 @@ void clean(k_means_t *KMeans);
 
 /**
  * Free the data of the global structures of the program
- * @param generalData : the instance's characteristics
+ * @param generalData : the instance's characteristics and all the points from the input file
  * @param startingCentroids : set of points used for kMeans calculation
  * @param iterationNumber : number of times we calculate new centroids
  * @param args : the arguments of the program
