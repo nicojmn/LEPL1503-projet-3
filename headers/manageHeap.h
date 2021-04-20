@@ -6,18 +6,6 @@
 #include "kMeans.h"
 
 
-/**
- * Structure regrouping all the arguments of the program
- */
-typedef struct {
-    FILE *input_stream;
-    FILE *output_stream;
-    uint32_t n_threads;
-    uint32_t k;
-    uint32_t n_first_initialization_points;
-    bool quiet;
-    squared_distance_func_t squared_distance_func;
-} args_t;
 
 /**
  * Free all the data allocated in a k_means_t structure
