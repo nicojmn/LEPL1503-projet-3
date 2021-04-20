@@ -4,34 +4,34 @@
 #include "../headers/readBinaryFile.h"
 
 
-int32_t loadData(FILE *file, data_t *data) {
+int32_t loadData(FILE *inputFile, data_t *generalData) {
 
     uint32_t *dimension = (uint32_t *) malloc(sizeof(uint32_t));
     if (dimension == NULL) return -1;
-    fread(dimension, 4 * sizeof(char), 1, file);
-    data->dimension = (uint32_t) be32toh(*dimension);
-    fseek(file, 4, SEEK_SET);
+    fread(dimension, 4 * sizeof(char), 1, inputFile);
+    generalData->dimension = (uint32_t) be32toh(*dimension);
+    fseek(inputFile, 4, SEEK_SET);
 
     uint64_t *size = (uint64_t *) malloc(sizeof(uint64_t));
     if (size == NULL) return -1;
-    fread(size, 8 * sizeof(char), 1, file);
-    data->size = (uint64_t) be64toh(*size);
+    fread(size, 8 * sizeof(char), 1, inputFile);
+    generalData->size = (uint64_t) be64toh(*size);
 
-    fseek(file, 12, SEEK_SET);
+    fseek(inputFile, 12, SEEK_SET);
 
-    int64_t *buffer = (int64_t *) malloc((data->dimension) * (data->size) * sizeof(int64_t));
+    int64_t *buffer = (int64_t *) malloc((generalData->dimension) * (generalData->size) * sizeof(int64_t));
     if (buffer == NULL) return -1;
 
-    fread(buffer, 8 * sizeof(char), (data->dimension) * (data->size), file);
+    fread(buffer, 8 * sizeof(char), (generalData->dimension) * (generalData->size), inputFile);
 
-    data->vectors = (int64_t **) malloc(data->size * sizeof(int64_t * ));
-    for (int64_t i = 0; i < data->size; i++) {
+    generalData->vectors = (int64_t **) malloc(generalData->size * sizeof(int64_t * ));
+    for (int64_t i = 0; i < generalData->size; i++) {
 
-        (data->vectors)[i] = (int64_t *) malloc((data->dimension) * sizeof(int64_t));
-        if ((data->vectors)[i] == NULL) return -1;
+        (generalData->vectors)[i] = (int64_t *) malloc((generalData->dimension) * sizeof(int64_t));
+        if ((generalData->vectors)[i] == NULL) return -1;
 
-        for (uint32_t j = 0; j < (data->dimension); j++) {
-            (data->vectors)[i][j] = (int64_t) be64toh(buffer[i * (data->dimension) + j]);
+        for (uint32_t j = 0; j < (generalData->dimension); j++) {
+            (generalData->vectors)[i][j] = (int64_t) be64toh(buffer[i * (generalData->dimension) + j]);
         }
     }
     free(dimension);

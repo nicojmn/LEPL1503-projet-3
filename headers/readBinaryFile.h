@@ -11,11 +11,11 @@
 #include "kMeans.h"
 
 /**
- *
- * @param file : the binary file to read
- * @param data : the data read from the file
+ * Loads the data from the binary input file and store it in the data_t structure
+ * @param inputFile : the binary input file to read
+ * @param generalData : the instance's characteristics and all the points from the input file
  * @return 0 if load succeed, -1 if error occurs
  */
-int32_t loadData(FILE *file, data_t *data);
+int32_t loadData(FILE *inputFile, data_t *generalData);
 
 #endif
