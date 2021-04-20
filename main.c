@@ -1,16 +1,12 @@
 #include <stdio.h>
 #include <stdint.h>
-#include <stdbool.h>
 #include <string.h>
-#include <getopt.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <inttypes.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include "headers/distance.h"
 #include "headers/generateStartingCentroids.h"
-#include "headers/kMeans.h"
 #include "headers/writeOutputFile.h"
 #include "headers/readBinaryFile.h"
 #include "headers/manageHeap.h"
