@@ -9,7 +9,7 @@
  */
 typedef struct {
     int64_t *vector;
-    int32_t nearestCentroidID;
+    uint32_t nearestCentroidID;
 } point_t;
 
 /**

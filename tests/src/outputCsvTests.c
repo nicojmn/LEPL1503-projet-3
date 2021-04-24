@@ -217,12 +217,12 @@ int32_t teardownCreateOutputFile(void) {
 
 void test_createOutputFileDimension2(void) {
     squared_distance_func_t generic_func = squared_manhattan_distance;
-    runKMeans(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
+    runKMeans(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
     csvFileHeadline(false, outputFile2);
     point_t **clusters = generateClusters(kMeansDim2);
-    int64_t distortionValue = distortion(kMeansDim2,
-                                         (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                      int32_t)) generic_func);
+    uint64_t distortionValue = distortion(kMeansDim2,
+                                          (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                                       uint32_t)) generic_func);
     writeOneKMeans(kMeansDim2, false, outputFile2, outputStartingCentroids2[0],
                    clusters, distortionValue);
 

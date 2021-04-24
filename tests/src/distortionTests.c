@@ -69,11 +69,11 @@ int32_t distortionTeardown(void) {
 void testDistortion(void) {
     squared_distance_func_t generic_func = squared_euclidean_distance;
     CU_ASSERT_EQUAL(distortion(kMeansDim2,
-                               (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func),
+                               (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func),
                     10);
     generic_func = squared_manhattan_distance;
     CU_ASSERT_EQUAL(distortion(kMeansDim2,
-                               (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func),
+                               (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func),
                     20);
 
 }

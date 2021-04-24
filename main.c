@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <inttypes.h>
 #include <pthread.h>
+#include "time.h"
 #include <semaphore.h>
 #include "headers/distance.h"
 #include "headers/generateStartingCentroids.h"
@@ -43,12 +44,12 @@ void *produce(void *startEnd) {
         kMeans_t *kMeansSimulation = createOneInstance(generalData->vectors, startingCentroids, i, k,
                                                        generalData->size, generalData->dimension);
         runKMeans(kMeansSimulation,
-                  (squared_distance_func_t (*)(const point_t *, const point_t *, int32_t)) generic_func);
+                  (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
 
         point_t **clusters = generateClusters(kMeansSimulation);
         int64_t distortionValue = distortion(kMeansSimulation,
                                              (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                          int32_t)) generic_func);
+                                                                          uint32_t)) generic_func);
 
         sem_wait(&empty);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
@@ -73,7 +74,7 @@ void *consume(void *useless){
         uint32_t i = (buffer->indexes)[buffer->tail];
         kMeans_t *kMeansSimulation = (buffer->kMeansInstances)[buffer->tail];
         point_t **clusters = (buffer->clustersOfInstances)[buffer->tail];
-        int64_t distortionValue = (buffer->distortionValues)[buffer->tail];
+        uint64_t distortionValue = (buffer->distortionValues)[buffer->tail];
         if (writeOneKMeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream,
                            startingCentroids[i], clusters, distortionValue) == -1) {
             clean(kMeansSimulation);
@@ -120,8 +121,14 @@ int main(int argc, char *argv[]) {
     k = programArguments.k;
     uint32_t n = programArguments.n_first_initialization_points;
     iterationNumber = combinatorial(n, k);
+    printf("Iteration nbr: %ld\n", iterationNumber);
+    // time_t t1 = clock();
     startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
+
+    // The time took by the function generateSetOfStartingCentroids is negligible
     generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber);
+    // time_t t2 = clock();
+    // printf("Temps pris pour la generation de centroids: %fs\n", ((double) (t2-t1))/CLOCKS_PER_SEC);
     csvFileHeadline(programArguments.quiet, programArguments.output_stream);
 
     // Handling threads
@@ -138,6 +145,7 @@ int main(int argc, char *argv[]) {
     uint32_t start = 0;
     uint32_t end = amountOfInstancePerThread;
     uint32_t listOfIndexes[programArguments.n_threads][2];
+    // On gère le cas ou il y a plus de thread que de soumission ?
     for (int i = 0; i < programArguments.n_threads; i++) {
         if (rest > 0) {
             end++;
@@ -151,9 +159,12 @@ int main(int argc, char *argv[]) {
     }
     if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) return -1;
 
-    for (int i = 0; i < programArguments.n_threads; i++) {
+    // time_t t3 = clock();
+    for (uint32_t i = 0; i < programArguments.n_threads; i++) {
         if (pthread_join(producerThreads[i], NULL) != 0) return -1;
     }
+    // time_t t4 = clock();
+    // printf("test: %fs\n", ((double) t4-t3) / CLOCKS_PER_SEC);
     if (pthread_join(consumerThread, NULL) != 0) return -1;
 
     fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);

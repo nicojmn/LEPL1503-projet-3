@@ -49,7 +49,7 @@ void generateSetOfStartingCentroids(point_t **startingCentroids, int64_t **vecto
     }
 
     for (int i = 0; i < iterationNbr; ++i) {
-        // Creating the set of centroids
+        // Creating the set of centroids for each iteration i
         for (int l = 0; l < k; ++l) {
             startingCentroids[i][l].vector = vectors[indices[l]];
         }

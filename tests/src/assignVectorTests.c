@@ -69,7 +69,7 @@ void testNormalAssignVectorToCentroids(void) {
     squared_distance_func_t generic_func = squared_euclidean_distance;
     CU_ASSERT_TRUE(assignVectorsToCentroids(kMeansDim2,
                                             (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                         int32_t)) generic_func));
+                                                                         uint32_t)) generic_func));
 
     CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 0);
     CU_ASSERT_EQUAL((kMeansDim2->points)[1].nearestCentroidID, 0);
@@ -77,7 +77,7 @@ void testNormalAssignVectorToCentroids(void) {
 
     CU_ASSERT_FALSE(assignVectorsToCentroids(kMeansDim2,
                                              (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                          int32_t)) generic_func));
+                                                                          uint32_t)) generic_func));
 }
 
 /** We've used the corresponding python function to get the correct value */
@@ -89,7 +89,7 @@ void testFirstAssignVectorToCentroids(void) {
     squared_distance_func_t generic_func = squared_euclidean_distance;
     CU_ASSERT_TRUE(assignVectorsToCentroids(kMeansDim2,
                                             (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                         int32_t)) generic_func));
+                                                                         uint32_t)) generic_func));
 
     CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 0);
     CU_ASSERT_EQUAL((kMeansDim2->points)[1].nearestCentroidID, 0);
@@ -97,5 +97,5 @@ void testFirstAssignVectorToCentroids(void) {
 
     CU_ASSERT_FALSE(assignVectorsToCentroids(kMeansDim2,
                                              (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                          int32_t)) generic_func));
+                                                                          uint32_t)) generic_func));
 }

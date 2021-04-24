@@ -147,7 +147,7 @@ int32_t kMeansTeardown(void) {
 void testKmeansDimension2(void) {
     squared_distance_func_t generic_func = squared_euclidean_distance;
     runKMeans(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                       int32_t)) generic_func);
+                                                       uint32_t)) generic_func);
 
 
     //centroid

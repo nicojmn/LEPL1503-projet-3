@@ -12,7 +12,7 @@
 void updateCentroids(kMeans_t *kMeans);
 
 /** Copy function from distance.h */
-typedef int64_t (*squared_distance_func_t)(const point_t *, const point_t *, int32_t);
+typedef uint64_t (*squared_distance_func_t)(const point_t *, const point_t *, uint32_t);
 
 /**
  *
@@ -25,7 +25,7 @@ typedef int64_t (*squared_distance_func_t)(const point_t *, const point_t *, int
  */
 int32_t assignVectorsToCentroids(kMeans_t *kMeans,
                                  squared_distance_func_t distanceFunction(const point_t *, const point_t *,
-                                                                          int32_t));
+                                                                          uint32_t));
 
 /**
  *
@@ -37,7 +37,7 @@ int32_t assignVectorsToCentroids(kMeans_t *kMeans,
 
 void runKMeans(kMeans_t *kMeans,
                squared_distance_func_t distanceFunction(const point_t *, const point_t *,
-                                                        int32_t));
+                                                        uint32_t));
 
 kMeans_t *createOneInstance(int64_t **vectors, point_t **startingCentroidsID, uint32_t index, uint32_t k,
                             uint64_t size, uint32_t dimension);

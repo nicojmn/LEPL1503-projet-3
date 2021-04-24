@@ -20,10 +20,10 @@
  *      } else {
  *          generic_func = squared_euclidean_distance;
  *      }
- *      int64_t dist = generic_func(a, b, dimension); // computes either the manhattan distance or the euclidean distance depending on the some_condition
+ *      uint64_t dist = generic_func(a, b, dimension); // computes either the manhattan distance or the euclidean distance depending on the some_condition
  *
  */
-typedef int64_t (*squared_distance_func_t)(const point_t *, const point_t *, int32_t);
+typedef uint64_t (*squared_distance_func_t)(const point_t *, const point_t *, uint32_t);
 
 /**
  * @param p1 : first point
@@ -31,7 +31,7 @@ typedef int64_t (*squared_distance_func_t)(const point_t *, const point_t *, int
  * @param dimension : number of dimensions
  * @return the squared manhattan distance between 2 points
  */
-int64_t squared_manhattan_distance(const point_t *p1, const point_t *p2, int32_t dimension);
+uint64_t squared_manhattan_distance(const point_t *p1, const point_t *p2, uint32_t dimension);
 
 /**
  * @param p1 : first point
@@ -39,13 +39,13 @@ int64_t squared_manhattan_distance(const point_t *p1, const point_t *p2, int32_t
  * @param dimension : number of dimensions
  * @return the squared euclidean distance between 2 points
  */
-int64_t squared_euclidean_distance(const point_t *p1, const point_t *p2, int32_t dimension);
+uint64_t squared_euclidean_distance(const point_t *p1, const point_t *p2, uint32_t dimension);
 
 /**
  * @param x : int64_t number
  * @return : the absolute value of x
  */
-int64_t absVal(int64_t x);
+uint64_t absVal(int64_t x);
 
 /**
  * @param clusters : array of clusters
@@ -55,8 +55,8 @@ int64_t absVal(int64_t x);
  *                           depending on the choice of the user
  * @return distortionSum : the total distortion between all the clusters
  */
-int64_t distortion(kMeans_t *kMeans,
-                   squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2, int32_t dimension));
+uint64_t distortion(kMeans_t *kMeans,
+                    squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2, uint32_t dimension));
 
 
 #endif

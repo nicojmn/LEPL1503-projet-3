@@ -59,7 +59,7 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t siz
 //TODO make tests for writeOneKMeans function
 
 int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
-                       point_t **clusters, int64_t distortionValue) {
+                       point_t **clusters, uint64_t distortionValue) {
 
     if (fprintf(outputPath, "\n") < 0) return -1;
     if (fprintf(outputPath, "\"[") < 0) return -1;
