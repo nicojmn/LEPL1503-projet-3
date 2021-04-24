@@ -20,18 +20,18 @@ point_t **generateClusters(kMeans_t *kMeans) {
     point_t **clusters = malloc(sizeof(point_t) * kMeans->k);
     if (clusters == NULL) return NULL;
 
-    uint64_t *clustersIndexes = malloc(sizeof(uint64_t) * kMeans->k);
-    for (int64_t clusterNbr = 0; clusterNbr < kMeans->k; clusterNbr++) {
+    uint64_t *positionsInClusters = malloc(sizeof(uint64_t) * kMeans->k);
+    for (uint32_t clusterNbr = 0; clusterNbr < kMeans->k; clusterNbr++) {
         clusters[clusterNbr] = malloc(sizeof(point_t) * kMeans->clustersSize[clusterNbr]);
         if (clusters[clusterNbr] == NULL) return NULL;
-        clustersIndexes[clusterNbr] = 0;
+        positionsInClusters[clusterNbr] = 0;
     }
-    for (int i = 0; i < kMeans->size; i++) {
-        int32_t ID = kMeans->points[i].nearestCentroidID;
-        clusters[ID][clustersIndexes[ID]] = kMeans->points[i];
-        clustersIndexes[ID]++;
+    for (uint64_t i = 0; i < kMeans->size; i++) {
+        uint32_t ID = kMeans->points[i].nearestCentroidID;
+        clusters[ID][positionsInClusters[ID]] = kMeans->points[i];
+        positionsInClusters[ID]++;
     }
-    free(clustersIndexes);
+    free(positionsInClusters);
     return clusters;
 }
 
@@ -39,9 +39,9 @@ point_t **generateClusters(kMeans_t *kMeans) {
 // TODO : make tests
 int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t size, FILE *outputFile) {
 
-    for (int vectors = 0; vectors < size; ++vectors) {
+    for (uint64_t vectors = 0; vectors < size; ++vectors) {
         if (fprintf(outputFile, "(") < 0) return -1;
-        for (int values = 0; values < dimension; ++values) {
+        for (uint32_t values = 0; values < dimension; ++values) {
             if (fprintf(outputFile, "%ld", listOfVectors[vectors].vector[values]) < 0) return -1;
             if (values != dimension - 1) {
                 if (fprintf(outputFile, ", ") < 0) return -1;
@@ -57,7 +57,6 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t siz
 }
 
 //TODO make tests for writeOneKMeans function
-
 int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
                        point_t **clusters, uint64_t distortionValue) {
 
@@ -73,7 +72,7 @@ int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *
         if (fprintf(outputPath, ",") < 0) return -1;
         if (fprintf(outputPath, "\"[") < 0) return -1;
 
-        for (int i = 0; i < kMeans->k; i++) {
+        for (uint32_t i = 0; i < kMeans->k; i++) {
             if (fprintf(outputPath, "[") < 0) return -1;
             if (writeVectorList(clusters[i], kMeans->dimension, kMeans->clustersSize[i], outputPath) < 0) return -1;
             if (fprintf(outputPath, "]") < 0) return -1;
@@ -83,7 +82,7 @@ int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *
         }
         if (fprintf(outputPath, "]\"") < 0) return -1;
 
-        for (int i = 0; i < kMeans->k; ++i) {
+        for (uint32_t i = 0; i < kMeans->k; ++i) {
             free(clusters[i]);
         }
         free(clusters);

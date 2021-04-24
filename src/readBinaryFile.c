@@ -25,7 +25,7 @@ int32_t loadData(FILE *inputFile, data_t *generalData) {
     fread(buffer, 8 * sizeof(char), (generalData->dimension) * (generalData->size), inputFile);
 
     generalData->vectors = (int64_t **) malloc(generalData->size * sizeof(int64_t * ));
-    for (int64_t i = 0; i < generalData->size; i++) {
+    for (uint64_t i = 0; i < generalData->size; i++) {
 
         (generalData->vectors)[i] = (int64_t *) malloc((generalData->dimension) * sizeof(int64_t));
         if ((generalData->vectors)[i] == NULL) return -1;

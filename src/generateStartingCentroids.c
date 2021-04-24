@@ -3,7 +3,7 @@
 
 #include "../headers/generateStartingCentroids.h"
 
-uint64_t factorial(uint32_t x) {
+uint64_t factorial(uint64_t x) {
     uint64_t result = 1;
     while (x > 1) {
         result *= x;
@@ -37,29 +37,31 @@ uint64_t combinatorial(uint32_t n, uint32_t k) {
 
 void generateSetOfStartingCentroids(point_t **startingCentroids, int64_t **vectors,
                                     uint32_t k, uint32_t n, uint64_t iterationNbr) {
-    ;
+
     for (uint64_t i = 0; i < iterationNbr; ++i) {
         startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
     }
-    int32_t indices[k];
+    uint32_t indices[k];
 
     // First set of centroids
-    for (int i = 0; i < k; ++i) {
+    for (uint32_t i = 0; i < k; ++i) {
         indices[i] = i;
     }
 
-    for (int i = 0; i < iterationNbr; ++i) {
+    for (uint64_t i = 0; i < iterationNbr; ++i) {
         // Creating the set of centroids for each iteration i
-        for (int l = 0; l < k; ++l) {
+        for (uint32_t l = 0; l < k; ++l) {
             startingCentroids[i][l].vector = vectors[indices[l]];
         }
-        int j = k - 1;
+        // j can become negative so no uint32_t here
+        int32_t j = k - 1;
         while (indices[j] == n - 1 || indices[j] == indices[j + 1] - 1) {
             j--;
         }
         indices[j]++;
-        for (int l = j + 1; l < k; ++l) {
-            indices[l] = indices[l - 1] + 1;
+        // the operation m - 1 can occur so m must be int32_t
+        for (int32_t m = (j + 1); m < k; ++m) {
+            indices[m] = indices[m - 1] + 1;
         }
     }
 }

@@ -9,7 +9,7 @@
  * @param x : a number
  * @return the factorial of x
  */
-uint64_t factorial(uint32_t x);
+uint64_t factorial(uint64_t x);
 
 /**
  * Calculate a combinatorial

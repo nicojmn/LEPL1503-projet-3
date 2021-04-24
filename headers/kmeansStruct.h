@@ -17,7 +17,7 @@ typedef struct {
  */
 typedef struct {
     point_t *centroids;
-    int64_t *clustersSize;
+    uint64_t *clustersSize;
     uint32_t k;
     point_t *points;
     uint32_t dimension;

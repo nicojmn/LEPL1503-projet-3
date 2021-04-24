@@ -9,7 +9,7 @@
 
 typedef struct {
     kMeans_t **kMeansInstances;
-    int64_t *distortionValues;
+    uint64_t *distortionValues;
     point_t ***clustersOfInstances;
     uint32_t *indexes;
     uint8_t head; // free place

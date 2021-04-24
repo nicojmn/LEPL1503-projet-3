@@ -47,9 +47,9 @@ void *produce(void *startEnd) {
                   (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
 
         point_t **clusters = generateClusters(kMeansSimulation);
-        int64_t distortionValue = distortion(kMeansSimulation,
-                                             (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                          uint32_t)) generic_func);
+        uint64_t distortionValue = distortion(kMeansSimulation,
+                                              (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                                           uint32_t)) generic_func);
 
         sem_wait(&empty);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;

@@ -24,7 +24,7 @@ int32_t distanceSetup(void) {
     if (kMeansDim2->points == NULL) return -1;
     kMeansDim2->size = 3;
     kMeansDim2->k = 2;
-    kMeansDim2->clustersSize = (int64_t *) malloc(2 * sizeof(int64_t *));
+    kMeansDim2->clustersSize = (uint64_t *) malloc(2 * sizeof(uint64_t *));
     if (kMeansDim2->clustersSize == NULL) return -1;
 
     kMeansDim3 = (kMeans_t *) malloc(sizeof(kMeans_t));
@@ -35,7 +35,7 @@ int32_t distanceSetup(void) {
     if (kMeansDim3->points == NULL) return -1;
     kMeansDim3->size = 6;
     kMeansDim3->k = 2;
-    kMeansDim3->clustersSize = (int64_t *) malloc(2 * sizeof(int64_t *));
+    kMeansDim3->clustersSize = (uint64_t *) malloc(2 * sizeof(uint64_t *));
     if (kMeansDim3->clustersSize == NULL) return -1;
 
     (kMeansDim1->points)[0].vector = malloc(1 * sizeof(int64_t));

@@ -17,7 +17,7 @@ buffer_t *createBuffer(uint8_t bufferSize) {
 }
 
 void clean(kMeans_t *kMeans) {
-    for (int i = 0; i < kMeans->k; ++i) {
+    for (uint32_t i = 0; i < kMeans->k; ++i) {
         free((kMeans->centroids)[i].vector);
     }
     free(kMeans->centroids);
