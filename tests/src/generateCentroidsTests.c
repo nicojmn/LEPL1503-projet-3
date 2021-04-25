@@ -68,6 +68,7 @@ int32_t teardownGenerateStartingCentroids(void) {
     return 0;
 }
 
+/** We've used the corresponding python function to get the correct value */
 void testGenerateStartingCentroids(void) {
 
     //test : ex1.bin

@@ -38,6 +38,7 @@ int32_t teardownBinaryFile(void) {
     return 0;
 }
 
+/** We've used the corresponding python function to get the correct value */
 void testReadBinaryFile(void) {
 
     loadData(fileForTest1, dataTest1);

@@ -142,8 +142,9 @@ int32_t kMeansTeardown(void) {
     return 0;
 }
 
-/** Testing with different dimensions */
-
+/** Testing with different dimensions
+    We've used the corresponding python function to get the correct value
+*/
 void testKmeansDimension2(void) {
     squared_distance_func_t generic_func = squared_euclidean_distance;
     runKMeans(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *,

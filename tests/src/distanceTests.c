@@ -161,6 +161,7 @@ int32_t distanceTeardown(void) {
     return 0;
 }
 
+/** We've used the corresponding python function to get the correct value */
 void testManhattan(void) {
     CU_ASSERT_EQUAL(squared_manhattan_distance(&kMeansDim1->points[0], &kMeansDim1->points[1],
                                                kMeansDim1->dimension), 1);
