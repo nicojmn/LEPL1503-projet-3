@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <inttypes.h>
 #include <pthread.h>
-#include "time.h"
 #include <semaphore.h>
 #include "headers/distance.h"
 #include "headers/generateStartingCentroids.h"
@@ -23,6 +22,7 @@
 // inputs of the program
 args_t programArguments;
 
+// storage of the points from the input binary file
 data_t *generalData;
 
 // kMeans problem
@@ -101,7 +101,6 @@ int main(int argc, char *argv[]) {
                 programArguments.n_first_initialization_points, programArguments.k);
         return -1;
     }
-    // the following fprintf (and every code already present in this skeleton) can be removed, it is just an example to show you how to use the program arguments
     fprintf(stderr, "\tnumber of threads executing the LLoyd's algorithm in parallel: %" PRIu32 "\n",
             programArguments.n_threads);
     fprintf(stderr, "\tnumber of clusters (k): %" PRIu32 "\n", programArguments.k);
@@ -121,14 +120,13 @@ int main(int argc, char *argv[]) {
     k = programArguments.k;
     uint32_t n = programArguments.n_first_initialization_points;
     iterationNumber = combinatorial(n, k);
-    printf("Iteration nbr: %ld\n", iterationNumber);
-    // time_t t1 = clock();
     startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
 
     // The time took by the function generateSetOfStartingCentroids is negligible
-    generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber);
-    // time_t t2 = clock();
-    // printf("Temps pris pour la generation de centroids: %fs\n", ((double) (t2-t1))/CLOCKS_PER_SEC);
+    if (generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber)
+        == -1)
+        return -1;
+
     csvFileHeadline(programArguments.quiet, programArguments.output_stream);
 
     // Handling threads
@@ -145,7 +143,6 @@ int main(int argc, char *argv[]) {
     uint32_t start = 0;
     uint32_t end = amountOfInstancePerThread;
     uint32_t listOfIndexes[programArguments.n_threads][2];
-    // On gère le cas ou il y a plus de thread que de soumission ?
     for (int i = 0; i < programArguments.n_threads; i++) {
         if (rest > 0) {
             end++;
@@ -159,12 +156,9 @@ int main(int argc, char *argv[]) {
     }
     if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) return -1;
 
-    // time_t t3 = clock();
     for (uint32_t i = 0; i < programArguments.n_threads; i++) {
         if (pthread_join(producerThreads[i], NULL) != 0) return -1;
     }
-    // time_t t4 = clock();
-    // printf("test: %fs\n", ((double) t4-t3) / CLOCKS_PER_SEC);
     if (pthread_join(consumerThread, NULL) != 0) return -1;
 
     fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);

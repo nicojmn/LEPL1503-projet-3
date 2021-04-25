@@ -29,8 +29,8 @@ uint64_t combinatorial(uint32_t n, uint32_t x);
  * @param n : the n first points which will be used for the combination
  * @param iterationNbr : number of times we'll calculate new centroids
  */
-void generateSetOfStartingCentroids(point_t **startingCentroidsID, int64_t **vectors,
-                                    uint32_t k, uint32_t n, uint64_t iterationNbr);
+int32_t generateSetOfStartingCentroids(point_t **startingCentroidsID, int64_t **vectors,
+                                       uint32_t k, uint32_t n, uint64_t iterationNbr);
 
 
 #endif

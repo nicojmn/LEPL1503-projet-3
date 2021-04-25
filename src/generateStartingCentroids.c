@@ -35,12 +35,15 @@ uint64_t combinatorial(uint32_t n, uint32_t k) {
     }
 }
 
-void generateSetOfStartingCentroids(point_t **startingCentroids, int64_t **vectors,
-                                    uint32_t k, uint32_t n, uint64_t iterationNbr) {
+int32_t generateSetOfStartingCentroids(point_t **startingCentroids, int64_t **vectors,
+                                       uint32_t k, uint32_t n, uint64_t iterationNbr) {
+
 
     for (uint64_t i = 0; i < iterationNbr; ++i) {
         startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
+        if (startingCentroids[i] == NULL) return -1;
     }
+
     uint32_t indices[k];
 
     // First set of centroids
@@ -64,4 +67,5 @@ void generateSetOfStartingCentroids(point_t **startingCentroids, int64_t **vecto
             indices[m] = indices[m - 1] + 1;
         }
     }
+    return 0;
 }
