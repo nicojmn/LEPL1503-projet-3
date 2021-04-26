@@ -9,13 +9,13 @@ int32_t loadData(FILE *inputFile, data_t *generalData) {
     uint32_t *dimension = (uint32_t *) malloc(sizeof(uint32_t));
     if (dimension == NULL) return -1;
     fread(dimension, 4 * sizeof(char), 1, inputFile);
-    generalData->dimension = (uint32_t) be32toh(*dimension);
+    generalData->dimension = (uint32_t) (*dimension);
     fseek(inputFile, 4, SEEK_SET);
 
     uint64_t *size = (uint64_t *) malloc(sizeof(uint64_t));
     if (size == NULL) return -1;
     fread(size, 8 * sizeof(char), 1, inputFile);
-    generalData->size = (uint64_t) be64toh(*size);
+    generalData->size = (uint64_t) (*size);
 
     fseek(inputFile, 12, SEEK_SET);
 
@@ -31,7 +31,7 @@ int32_t loadData(FILE *inputFile, data_t *generalData) {
         if ((generalData->vectors)[i] == NULL) return -1;
 
         for (uint32_t j = 0; j < (generalData->dimension); j++) {
-            (generalData->vectors)[i][j] = (int64_t) be64toh(buffer[i * (generalData->dimension) + j]);
+            (generalData->vectors)[i][j] = (int64_t) (buffer[i * (generalData->dimension) + j]);
         }
     }
     free(dimension);

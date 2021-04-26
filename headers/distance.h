@@ -23,7 +23,6 @@
  *      uint64_t dist = generic_func(a, b, dimension); // computes either the manhattan distance or the euclidean distance depending on the some_condition
  *
  */
-typedef uint64_t (*squared_distance_func_t)(const point_t *, const point_t *, uint32_t);
 
 /**
  * @param p1 : first point

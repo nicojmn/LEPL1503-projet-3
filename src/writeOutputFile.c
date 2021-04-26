@@ -42,7 +42,7 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t siz
     for (uint64_t vectors = 0; vectors < size; ++vectors) {
         if (fprintf(outputFile, "(") < 0) return -1;
         for (uint32_t values = 0; values < dimension; ++values) {
-            if (fprintf(outputFile, "%ld", listOfVectors[vectors].vector[values]) < 0) return -1;
+            if (fprintf(outputFile, "%lld", listOfVectors[vectors].vector[values]) < 0) return -1;
             if (values != dimension - 1) {
                 if (fprintf(outputFile, ", ") < 0) return -1;
             }
@@ -64,7 +64,7 @@ int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *
     if (fprintf(outputPath, "\"[") < 0) return -1;
     if (writeVectorList(startingCentroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;
     if (fprintf(outputPath, "]\",") < 0) return -1;
-    if (fprintf(outputPath, "%li,", distortionValue) < 0) return -1;
+    if (fprintf(outputPath, "%lli,", distortionValue) < 0) return -1;
     if (fprintf(outputPath, "\"[") < 0) return -1;
     if (writeVectorList(kMeans->centroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;
     if (fprintf(outputPath, "]\"") < 0) return -1;
