@@ -5,20 +5,29 @@
 #include <inttypes.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include "headers/distance.h"
-#include "headers/generateStartingCentroids.h"
-#include "headers/writeOutputFile.h"
-#include "headers/readBinaryFile.h"
-#include "headers/manageHeap.h"
-#include "headers/manageArgs.h"
-#include "src/manageHeap.c"
-#include "src/distance.c"
-#include "src/generateStartingCentroids.c"
-#include "src/kMeans.c"
-#include "src/writeOutputFile.c"
-#include "src/readBinaryFile.c"
-#include "src/manageArgs.c"
 
+
+#include "headers/distance.h"
+#include "headers/kMeans.h"
+#include "headers/generateStartingCentroids.h"
+#include "headers/readBinaryFile.h"
+#include "headers/writeOutputFile.h"
+#include "headers/manageArgs.h"
+#include "headers/manageHeap.h"
+
+//TODO : move distortion in a separate file
+uint64_t distortion(kMeans_t *kMeans, squared_distance_func_t
+distanceFunction(const point_t *p1, const point_t *p2, uint32_t dimension)) {
+
+    uint64_t distortionSum = 0;
+    squared_distance_func_t genericDistanceFunction = (squared_distance_func_t) distanceFunction;
+    for (uint64_t i = 0; i < kMeans->size; ++i) {
+        distortionSum += genericDistanceFunction(&(kMeans->points)[i],
+                                                 &(kMeans->centroids)[((kMeans->points)[i]).nearestCentroidID],
+                                                 kMeans->dimension);
+    }
+    return distortionSum;
+}
 // inputs of the program
 args_t programArguments;
 

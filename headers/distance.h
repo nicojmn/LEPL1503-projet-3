@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 #include "kmeansStruct.h"
-#include "kMeans.h"
+//#include "kMeans.h"
 
 /**
  * This typedef below defines the distance_func_t type, a function pointer type that groups all
@@ -57,8 +57,8 @@ uint64_t absVal(int64_t x);
  *                           depending on the choice of the user
  * @return distortionSum : the total distortion between all the clusters
  */
-uint64_t distortion(kMeans_t *kMeans,
-                    squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2, uint32_t dimension));
+/*uint64_t distortion(kMeans_t *kMeans,
+                    squared_distance_func_t distanceFunction(const point_t *p1, const point_t *p2, uint32_t dimension));*/
 
 
 #endif
