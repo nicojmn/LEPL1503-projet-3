@@ -60,16 +60,13 @@ valgrindMain : main.c  src/distance.o src/kMeans.o  src/generateStartingCentroid
 	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./valgrindMain  -k 4 -p 6 -n 1 -d manhattan -f output_csv/kmeans.csv  input_binary/ex3.bin
 	rm -rf valgrindMain
 
-helgrind: main.c tests/src/tests.c
+helgrind: main.c  src/distance.o src/kMeans.o  src/generateStartingCentroids.o src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
 ## -----------------------------------/!\--------------------------------
 ## WARNING : this command is used by Jenkins
 ## -----------------------------------/!\--------------------------------
-	$(CC) $(CFLAGS) main.c -o helgrind $(LIBS)
-	$(CC) $(CFLAGS) ./tests/src/tests.c -o ./helgrind-tests.o $(LIBS)
+	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 	valgrind --tool=helgrind ./helgrind -k 2 -p3 -n 2 -d euclidean -f output_csv/kmeans.csv input_binary/ex3.bin
-	valgrind --tool=helgrind ./helgrind-tests.o
 	rm -f helgrind
-	rm -f helgrind-tests.o
 
 
 
