@@ -48,6 +48,7 @@ uint64_t squared_euclidean_distance(const point_t *p1, const point_t *p2, uint32
 uint64_t absVal(int64_t x);
 
 /**
+ *
  * @param clusters : array of clusters
  * @param k : number of clusters
  * @param dimension : dimension of the points to compare
