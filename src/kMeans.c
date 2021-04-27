@@ -19,7 +19,7 @@ void updateCentroids(kMeans_t *kMeans) {
         }
         (kMeans->clustersSize)[centroidID]++;
     }
-    // Average
+    // Computing the average
     for (uint32_t i = 0; i < kMeans->k; ++i) {
         for (uint32_t j = 0; j < kMeans->dimension; ++j) {
             /** Comments from the python script:
@@ -65,7 +65,6 @@ void runKMeans(kMeans_t *kMeans,
     while (hasChanged == 1) {
         hasChanged = assignVectorsToCentroids(kMeans, distanceFunction);
         updateCentroids(kMeans);
-
     }
 }
 
@@ -83,6 +82,7 @@ kMeans_t *createOneInstance(int64_t **vectors, point_t **startingCentroidsID, ui
     kMeans->k = k;
     kMeans->size = size;
     kMeans->dimension = dimension;
+
     // setup centroids
     for (uint32_t i = 0; i < k; ++i) {
         (kMeans->centroids)[i].vector = (int64_t *) malloc(dimension * sizeof(int64_t));

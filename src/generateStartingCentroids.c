@@ -13,6 +13,7 @@ uint64_t combinatorial(uint32_t n, uint32_t k) {
     uint64_t denominator1 = k;
     uint64_t denominator2 = n - k;
     uint64_t result = 1;
+    // We avoid unnecessary calculus : (5!)/(3!*2!) = (5*4)/(2!)
     if (denominator1 > denominator2) {
         uint32_t iterationNbr = n - denominator1;
         while (iterationNbr > 0) {
@@ -35,7 +36,6 @@ uint64_t combinatorial(uint32_t n, uint32_t k) {
 int32_t generateSetOfStartingCentroids(point_t **startingCentroids, int64_t **vectors,
                                        uint32_t k, uint32_t n, uint64_t iterationNbr) {
 
-
     for (uint64_t i = 0; i < iterationNbr; ++i) {
         startingCentroids[i] = (point_t *) malloc(k * sizeof(point_t));
         if (startingCentroids[i] == NULL) return -1;
@@ -53,7 +53,7 @@ int32_t generateSetOfStartingCentroids(point_t **startingCentroids, int64_t **ve
         for (uint32_t l = 0; l < k; ++l) {
             startingCentroids[i][l].vector = vectors[indices[l]];
         }
-        // j can become negative so no uint32_t here
+        // j can become negative so no uint32_t are allowed here
         int32_t j = k - 1;
         while (indices[j] == n - 1 || indices[j] == indices[j + 1] - 1) {
             j--;

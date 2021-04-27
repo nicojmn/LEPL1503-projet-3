@@ -1,5 +1,5 @@
-#ifndef PROJET_CMAKE_MANAGEARGS_H
-#define PROJET_CMAKE_MANAGEARGS_H
+#ifndef MANAGEARGS_H
+#define MANAGEARGS_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -29,4 +29,4 @@ void usage(char *prog_name);
 
 int parse_args(args_t *args, int argc, char *argv[]);
 
-#endif //PROJET_CMAKE_MANAGEARGS_H
+#endif //MANAGEARGS_H

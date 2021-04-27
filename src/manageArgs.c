@@ -17,7 +17,6 @@ void usage(char *prog_name) {
             "    -d distance (manhattan by default): can be either \"euclidean\" or \"manhattan\". Chooses the distance formula to use by the algorithm to compute the distance between the points\n");
 }
 
-
 int parse_args(args_t *args, int argc, char *argv[]) {
     memset(args, 0, sizeof(args_t));    // set everything to 0 by default
     // the default values are the following, they will be changed depending on the arguments given to the program
@@ -88,4 +87,3 @@ int parse_args(args_t *args, int argc, char *argv[]) {
 
     return 0;
 }
-

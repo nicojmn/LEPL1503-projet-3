@@ -218,7 +218,7 @@ int32_t teardownCreateOutputFile(void) {
 void test_createOutputFileDimension2(void) {
     squared_distance_func_t generic_func = squared_manhattan_distance;
     runKMeans(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
-    csvFileHeadline(false, outputFile2);
+    writeHeadline(false, outputFile2);
     point_t **clusters = generateClusters(kMeansDim2);
     uint64_t distortionValue = distortion(kMeansDim2,
                                           (squared_distance_func_t (*)(const point_t *, const point_t *,

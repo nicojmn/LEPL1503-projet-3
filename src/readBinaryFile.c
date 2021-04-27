@@ -3,19 +3,21 @@
 
 int32_t loadData(FILE *inputFile, data_t *generalData) {
 
+    // We retrieve the dimension
     uint32_t *dimension = (uint32_t *) malloc(sizeof(uint32_t));
     if (dimension == NULL) return -1;
     fread(dimension, 4 * sizeof(char), 1, inputFile);
     generalData->dimension = (uint32_t) be32toh(*dimension);
-    fseek(inputFile, 4, SEEK_SET);
 
+    // We retrieve the size (number of points)
+    fseek(inputFile, 4, SEEK_SET);
     uint64_t *size = (uint64_t *) malloc(sizeof(uint64_t));
     if (size == NULL) return -1;
     fread(size, 8 * sizeof(char), 1, inputFile);
     generalData->size = (uint64_t) be64toh(*size);
 
+    // We retrieve all the points
     fseek(inputFile, 12, SEEK_SET);
-
     int64_t *buffer = (int64_t *) malloc((generalData->dimension) * (generalData->size) * sizeof(int64_t));
     if (buffer == NULL) return -1;
 

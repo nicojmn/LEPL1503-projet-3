@@ -29,11 +29,15 @@ void clean(kMeans_t *kMeans) {
 
 void fullClean(data_t *generalData, point_t **startingCentroids, uint64_t iterationNumber,
                args_t args, buffer_t *buffer) {
+
+    // Freeing the data collected from the input file
     for (uint64_t i = 0; i < generalData->size; ++i) {
         free(generalData->vectors[i]);
     }
     free(generalData->vectors);
     free(generalData);
+
+    // Freeing the set of starting centroids
     for (uint64_t i = 0; i < iterationNumber; ++i) {
         free(startingCentroids[i]);
     }
@@ -46,6 +50,7 @@ void fullClean(data_t *generalData, point_t **startingCentroids, uint64_t iterat
     if (args.output_stream != stdout) {
         fclose(args.output_stream);
     }
+    // Freeing the buffer
     free(buffer->kMeansInstances);
     free(buffer->clustersOfInstances);
     free(buffer->distortionValues);

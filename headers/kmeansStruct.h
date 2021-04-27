@@ -5,7 +5,11 @@
 
 
 /**
- * Structure representing a graphical point with it's coords as vector and the nearest centroid
+ * Structure representing a graphical point with it's coords as vector
+ * and the nearest centroid
+ *
+ * /!\ We don't use any cluster structure but instead we linked each point to
+ * its closest centroid (using nearestCentroidID)
  */
 typedef struct {
     int64_t *vector;
@@ -13,7 +17,7 @@ typedef struct {
 } point_t;
 
 /**
- * Structure containing all the necessary data for one iteration of the runKMeans algorithm
+ * Structure containing all the necessary features for one iteration of Lloyd's algorithm
  */
 typedef struct {
     point_t *centroids;
@@ -25,7 +29,8 @@ typedef struct {
 } kMeans_t;
 
 /**
- * Structure containing the instance's characteristics and all the points from the input file
+ * Structure containing the instance's features and all the points from the input file
+ * We don't copy the points' coordinate anywhere else but only use pointers
  */
 typedef struct {
     int64_t **vectors;

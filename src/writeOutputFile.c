@@ -1,6 +1,6 @@
 #include "../headers/writeOutputFile.h"
 
-int32_t csvFileHeadline(bool quiet, FILE *outputFile) {
+int32_t writeHeadline(bool quiet, FILE *outputFile) {
     char *dataNames = "initialization centroids,distortion,centroids";
     fprintf(outputFile, "%s", dataNames);
 
@@ -32,7 +32,7 @@ point_t **generateClusters(kMeans_t *kMeans) {
 }
 
 
-int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t size, FILE *outputFile) {
+int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint64_t size, FILE *outputFile) {
 
     for (uint64_t vectors = 0; vectors < size; ++vectors) {
         if (fprintf(outputFile, "(") < 0) return -1;

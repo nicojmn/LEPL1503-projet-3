@@ -15,43 +15,43 @@
 
 
 /**
- * Writes in the output file the names of the data that will be added later
- * @param quiet : boolean that adds the clusters in the output file if equals to false
- * @param outputFile : the already opened output file
+ * Writes the headline of the csv outputFile
+ * @param quiet : boolean that decides whether we want to write the points of the simulation
+ *                in the output csv file or not
+ * @param outputFile : an already opened output csv file
  * @return 0 if no error, -1 otherwise
  */
-int32_t csvFileHeadline(bool quiet, FILE *outputFile);
+int32_t writeHeadline(bool quiet, FILE *outputFile);
 
 /**
- *
  * @param kMeans : one instance of the problem kMeans
- * @return the clusters
+ * @return : returns the final clusters of kMeans
  */
 point_t **generateClusters(kMeans_t *kMeans);
 
 /**
  * Write a list of vectors into the outputFile
  * @param listOfVectors : malloced structure
- * @param dimension : number of dimensions
- * @param size : number of points in a
- * @param outputFile : the already opened output file
+ * @param dimension : the dimension of each point
+ * @param size : size of listOfVectors
+ * @param outputFile : an already opened output csv file
  * @return 0 if no error, -1 otherwise
  */
-int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t size, FILE *outputFile);
+int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint64_t size, FILE *outputFile);
 
 
 /**
- * Function used to write one execution of Kmeans
- * @param kMeans : the runKMeans we want to write about
- * @param quiet : boolean that adds the clusters in the output file if equals to false
- * @param outputFile : the already opened output file
- * @param startingCentroids : set of points used for runKMeans calculation
- * @param clusters : the clusters of the simulation
+ * Function used to write one instance of kMeans
+ * @param kMeans : the instance of kMeans we want to write into outputFile
+ * @param quiet : boolean that decides whether we want to write the points of the simulation
+ *                in the output csv file or not
+ * @param outputFile : an already opened output csv file
+ * @param startingCentroids : the different set of starting centroids
+ * @param clusters : the final clusters of the kMeans instance
  * @param distortionValue: the distortion of kMeans
  * @return 0 if no error, -1 otherwise
  */
 int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
                        point_t **clusters, uint64_t distortionValue);
-
 
 #endif

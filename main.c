@@ -17,10 +17,10 @@
 // inputs of the program
 args_t programArguments;
 
-// storage of the points from the input binary file
+// storage of the points collected from the input binary file
 data_t *generalData;
 
-// kMeans problem
+// general features of the kMeans problem
 point_t **startingCentroids;
 uint32_t k;
 uint64_t iterationNumber;
@@ -45,7 +45,6 @@ void *produce(void *startEnd) {
         uint64_t distortionValue = distortion(kMeansSimulation,
                                               (squared_distance_func_t (*)(const point_t *, const point_t *,
                                                                            uint32_t)) generic_func);
-
         sem_wait(&empty);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
         (buffer->kMeansInstances)[buffer->head] = kMeansSimulation;
@@ -106,39 +105,43 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "\tsquared distance function: %s\n",
             programArguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
 
-
+    // Collecting data
     generalData = (data_t *) malloc(sizeof(data_t));
     if (generalData == NULL) return -1;
     loadData(programArguments.input_stream, generalData);
-    generic_func = programArguments.squared_distance_func;
 
+    // General features of the kMeans problem
+    generic_func = programArguments.squared_distance_func;
     k = programArguments.k;
     uint32_t n = programArguments.n_first_initialization_points;
+    uint32_t nThreads = programArguments.n_threads;
     iterationNumber = combinatorial(n, k);
-    startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
 
     // The time took by the function generateSetOfStartingCentroids is negligible
+    startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
     if (generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber)
         == -1)
         return -1;
 
-    csvFileHeadline(programArguments.quiet, programArguments.output_stream);
+    writeHeadline(programArguments.quiet, programArguments.output_stream);
 
-    // Handling threads
+    // Setup of the threads
     buffer = createBuffer((uint8_t) N);
     if (pthread_mutex_init(&mutex, NULL) != 0) return -1;
     if (sem_init(&empty, 0, N) != 0) return -1;
     if (sem_init(&full, 0, 0) != 0) return -1;
 
-    pthread_t producerThreads[programArguments.n_threads];
+    pthread_t producerThreads[nThreads];
     pthread_t consumerThread;
 
-    uint32_t amountOfInstancePerThread = (uint32_t) iterationNumber / programArguments.n_threads;
-    uint16_t rest = (uint16_t) iterationNumber % programArguments.n_threads;
+    uint32_t amountOfInstancePerThread = (uint32_t) iterationNumber / nThreads;
+    uint16_t rest = (uint16_t) iterationNumber % nThreads;
     uint32_t start = 0;
     uint32_t end = amountOfInstancePerThread;
-    uint32_t listOfIndexes[programArguments.n_threads][2];
-    for (int i = 0; i < programArguments.n_threads; i++) {
+    uint32_t listOfIndexes[nThreads][2];
+
+    // Launch of the threads
+    for (int i = 0; i < nThreads; i++) {
         if (rest > 0) {
             end++;
             rest--;
@@ -151,11 +154,13 @@ int main(int argc, char *argv[]) {
     }
     if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) return -1;
 
-    for (uint32_t i = 0; i < programArguments.n_threads; i++) {
+    // Close the threads
+    for (uint32_t i = 0; i < nThreads; i++) {
         if (pthread_join(producerThreads[i], NULL) != 0) return -1;
     }
     if (pthread_join(consumerThread, NULL) != 0) return -1;
 
+    // Closing, freeing, destroying what is necessary
     fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
     if (pthread_mutex_destroy(&mutex) != 0) return -1;
 
