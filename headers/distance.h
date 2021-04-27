@@ -24,6 +24,8 @@
  *
  */
 
+typedef uint64_t (*squared_distance_func_t)(const point_t *, const point_t *, uint32_t);
+
 /**
  * @param p1 : first point
  * @param p2 : second point

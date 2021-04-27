@@ -132,8 +132,8 @@ int main(int argc, char *argv[]) {
     // Handling threads
     buffer = createBuffer((uint8_t) N);
     if (pthread_mutex_init(&mutex, NULL) != 0) return -1;
-    if (sem_open(&empty, 0, N) != 0) return -1;
-    if (sem_open(&full, 0, 0) != 0) return -1;
+    if (sem_init(&empty, 0, N) != 0) return -1;
+    if (sem_init(&full, 0, 0) != 0) return -1;
 
     pthread_t producerThreads[programArguments.n_threads];
     pthread_t consumerThread;
