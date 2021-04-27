@@ -14,6 +14,7 @@
 #include "../../src/generateStartingCentroids.c"
 #include "../../headers/readBinaryFile.h"
 #include "../../src/readBinaryFile.c"
+#include "../../src/distortion.c"
 
 #include "../headers/tests.h"
 #include "../headers/distanceTests.h"

@@ -2,6 +2,7 @@
 #define PROJET_CMAKE_DISTORTIONTESTS_H
 
 #include "./tests.h"
+#include "../../headers/distortion.h"
 
 void testDistortion(void);
 
