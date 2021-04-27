@@ -1,6 +1,3 @@
-#include <sys/types.h>
-#include <unistd.h>
-
 #include "../headers/writeOutputFile.h"
 
 int32_t csvFileHeadline(bool quiet, FILE *outputFile) {
@@ -57,18 +54,14 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint32_t siz
 int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
                        point_t **clusters, uint64_t distortionValue) {
 
-    if (fprintf(outputPath, "\n") < 0) return -1;
-    if (fprintf(outputPath, "\"[") < 0) return -1;
+    if (fprintf(outputPath, "\n\"[") < 0) return -1;
     if (writeVectorList(startingCentroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;
-    if (fprintf(outputPath, "]\",") < 0) return -1;
-    if (fprintf(outputPath, "%" PRIu64, distortionValue) < 0) return -1;
+    if (fprintf(outputPath, "]\",%"PRIu64, distortionValue) < 0) return -1;
     if (fprintf(outputPath, ",\"[") < 0) return -1;
     if (writeVectorList(kMeans->centroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;
     if (fprintf(outputPath, "]\"") < 0) return -1;
     if (!quiet) {
-        if (fprintf(outputPath, ",") < 0) return -1;
-        if (fprintf(outputPath, "\"[") < 0) return -1;
-
+        if (fprintf(outputPath, ",\"[") < 0) return -1;
         for (uint32_t i = 0; i < kMeans->k; i++) {
             if (fprintf(outputPath, "[") < 0) return -1;
             if (writeVectorList(clusters[i], kMeans->dimension, kMeans->clustersSize[i], outputPath) < 0) return -1;
