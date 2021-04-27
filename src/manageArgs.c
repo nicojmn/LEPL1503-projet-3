@@ -1,6 +1,5 @@
 #include "../headers/manageArgs.h"
 
-args_t programArguments;
 
 void usage(char *prog_name) {
     fprintf(stderr, "USAGE:\n");
@@ -84,6 +83,5 @@ int parse_args(args_t *args, int argc, char *argv[]) {
             return -1;
         }
     }
-
     return 0;
 }
