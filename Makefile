@@ -15,20 +15,19 @@ clean:
 	rm -f src/*.o
 	rm -f kmeans
 	rm -f *.o
-	rm -f tests/src/*.o
+	rm -f tests-file/src/*.o
 
-tests: tests/src/tests.c
-	$(CC) $(INCLUDE_HEADERS_DIRECTORY) tests/src/tests.c -o tests/src/tests.o $(LIBS) $(CFLAGS)
-	./tests/src/tests.o
-	rm -f tests/src/*.o
+tests: tests-file/src/tests.c tests-file/src/distanceTests.o tests-file/src/distortionTests.o tests-file/src/kMeansTests.o tests-file/src/assignVectorTests.o tests-file/src/generateCentroidsTests.o tests-file/src/outputCsvTests.o tests-file/src/readBinaryFileTests.o tests-file/src/updateCentroidsTests.o
+	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
+	./tests-file/src/tests.o
 
 valgrind:
 ## ----------------------------------------------------------------------
 ## Perform a valgrind test on a selected file
 ## level : med or full (the level of inspection, medium or full)
-## log : yes or no (if the result should be logged in tests/valgrind-log)
+## log : yes or no (if the result should be logged in tests-file/valgrind-log)
 ## filePath : the .c path to file to perform test
-## example : make valgrind level=full log=yes file=tests/tests.c
+## example : make valgrind level=full log=yes file=tests-file/tests-file.c
 ## ----------------------------------------------------------------------
 
 ## -----------------------------------/!\--------------------------------
@@ -65,7 +64,7 @@ helgrind: main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o sr
 ## WARNING : this command is used by Jenkins
 ## -----------------------------------/!\--------------------------------
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
-	valgrind --tool=helgrind ./helgrind -k 2 -p3 -n 2 -d euclidean -f output_csv/kmeans.csv input_binary/ex3.bin
+	valgrind --tool=helgrind ./helgrind -k 2 -p 3 -n 2 -d euclidean -f output_csv/kmeans.csv input_binary/ex3.bin
 	rm -f helgrind
 
 

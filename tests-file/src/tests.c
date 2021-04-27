@@ -51,7 +51,7 @@ int main() {
     }
 
     /** add a suite to the registry */
-    distanceTestSuite = CU_add_suite("distance tests", distanceSetup, distanceTeardown);
+    distanceTestSuite = CU_add_suite("distance tests-file", distanceSetup, distanceTeardown);
     distortionTestSuite = CU_add_suite("distortion test", distortionSetup, distortionTeardown);
     generateStartingCentroidsSuite = CU_add_suite("generateStartingCentroids test", setupGenerateStartingCentroids,
                                                   teardownGenerateStartingCentroids);
@@ -68,7 +68,7 @@ int main() {
         return CU_get_error();
     }
 
-    /** add the tests to the suite */
+    /** add the tests-file to the suite */
     /** NOTE - ORDER IS IMPORTANT */
     if ((NULL == CU_add_test(distanceTestSuite, "squared manhattan distance", testManhattan)) ||
         (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
@@ -86,7 +86,7 @@ int main() {
         return CU_get_error();
     }
 
-    /** Run all tests using the CUnit Basic interface */
+    /** Run all tests-file using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
     CU_cleanup_registry();
