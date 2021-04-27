@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "../headers/generateStartingCentroids.h"
 
 uint64_t factorial(uint64_t x) {

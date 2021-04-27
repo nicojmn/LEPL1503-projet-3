@@ -2,6 +2,9 @@
 #define GENERATESTARTINGCENTROIDS_H
 
 #include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "kmeansStruct.h"
 
 /**

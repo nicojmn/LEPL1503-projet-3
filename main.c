@@ -6,10 +6,8 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-
 #include "headers/distance.h"
 #include "headers/kMeans.h"
-#include "headers/distortion.h"
 #include "headers/generateStartingCentroids.h"
 #include "headers/readBinaryFile.h"
 #include "headers/writeOutputFile.h"

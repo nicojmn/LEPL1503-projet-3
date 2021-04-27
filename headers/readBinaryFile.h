@@ -7,6 +7,7 @@
 #include <string.h>
 #include <ftw.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "kMeans.h"
 
