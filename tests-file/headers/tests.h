@@ -6,6 +6,9 @@
 #include "../../headers/kmeansStruct.h"
 #include "../../headers/kMeans.h"
 #include "../../headers/readBinaryFile.h"
+#include "../../headers/generateStartingCentroids.h"
+#include "../../headers/readBinaryFile.h"
+#include "../headers/readBinaryFileTests.h"
 
 int main();
 

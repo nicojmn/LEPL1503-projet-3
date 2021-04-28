@@ -2,13 +2,10 @@
 #include <CUnit/CUnit.h>
 #include <CUnit/CUError.h>
 #include <CUnit/TestDB.h>
-#include <CUnit/TestRun.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "../headers/tests.h"
 #include "../headers/distanceTests.h"
-#include "../headers/readBinaryFileTests.h"
 #include "../headers/distortionTests.h"
 #include "../headers/outputCsvTests.h"
 #include "../headers/assignVectorTests.h"

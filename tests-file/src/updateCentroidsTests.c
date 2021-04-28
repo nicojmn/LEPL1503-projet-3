@@ -5,7 +5,9 @@
 
 
 #include "../headers/updateCentroidsTests.h"
+
 kMeans_t *updateKMeansDim2 = NULL;
+
 /** We've used the corresponding python function to get the correct value */
 int32_t updateCentroidsSetup(void) {
     updateKMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
