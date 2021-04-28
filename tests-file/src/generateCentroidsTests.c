@@ -1,7 +1,4 @@
-#include <CUnit/Basic.h>
 #include <CUnit/CUnit.h>
-#include <CUnit/CUError.h>
-#include <CUnit/TestDB.h>
 #include <CUnit/TestRun.h>
 #include <stdio.h>
 #include <stdlib.h>

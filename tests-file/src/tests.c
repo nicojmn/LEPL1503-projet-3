@@ -2,36 +2,16 @@
 #include <CUnit/CUnit.h>
 #include <CUnit/CUError.h>
 #include <CUnit/TestDB.h>
-#include <CUnit/TestRun.h>
 #include <stdio.h>
-#include <stdlib.h>
-
-#include "../../headers/distance.h"
-#include "../../headers/kmeansStruct.h"
-#include "../../headers/kMeans.h"
-#include "../../src/distance.c"
-#include "../../src/kMeans.c"
-#include "../../src/generateStartingCentroids.c"
-#include "../../headers/readBinaryFile.h"
-#include "../../src/readBinaryFile.c"
 
 #include "../headers/tests.h"
 #include "../headers/distanceTests.h"
-#include "./distanceTests.c"
-#include "../headers/readBinaryFileTests.h"
-#include "./readBinaryFileTests.c"
 #include "../headers/distortionTests.h"
-#include "./distortionTests.c"
 #include "../headers/outputCsvTests.h"
-#include "./outputCsvTests.c"
 #include "../headers/assignVectorTests.h"
-#include "./assignVectorTests.c"
 #include "../headers/updateCentroidsTests.h"
-#include "./updateCentroidsTests.c"
 #include "../headers/kMeansTests.h"
-#include "./kMeansTests.c"
 #include "../headers/generateCentroidsTests.h"
-#include "./generateCentroidsTests.c"
 
 
 int main() {
@@ -51,7 +31,7 @@ int main() {
     }
 
     /** add a suite to the registry */
-    distanceTestSuite = CU_add_suite("distance tests", distanceSetup, distanceTeardown);
+    distanceTestSuite = CU_add_suite("distance tests-file", distanceSetup, distanceTeardown);
     distortionTestSuite = CU_add_suite("distortion test", distortionSetup, distortionTeardown);
     generateStartingCentroidsSuite = CU_add_suite("generateStartingCentroids test", setupGenerateStartingCentroids,
                                                   teardownGenerateStartingCentroids);
@@ -68,7 +48,7 @@ int main() {
         return CU_get_error();
     }
 
-    /** add the tests to the suite */
+    /** add the tests-file to the suite */
     /** NOTE - ORDER IS IMPORTANT */
     if ((NULL == CU_add_test(distanceTestSuite, "squared manhattan distance", testManhattan)) ||
         (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
@@ -86,7 +66,7 @@ int main() {
         return CU_get_error();
     }
 
-    /** Run all tests using the CUnit Basic interface */
+    /** Run all tests-file using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
     CU_cleanup_registry();

@@ -5,6 +5,7 @@
 
 point_t **outputStartingCentroids1;
 point_t **outputStartingCentroids2;
+
 /** Testing output file */
 FILE *outputFile;
 FILE *outputFile2;
