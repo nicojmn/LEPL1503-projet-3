@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "../headers/outputCsvTests.h"
-#include "../../src/writeOutputFile.c"
 
 kMeans_t *outputKMeansDim2 = NULL;
 kMeans_t *outputKMeansDim3 = NULL;

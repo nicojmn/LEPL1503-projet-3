@@ -18,7 +18,7 @@ clean:
 	rm -f src/*.o
 	rm -f tests-file/src/*.o
 
-tests: tests-file/src/tests.c tests-file/src/distanceTests.o src/distance.o tests-file/src/distortionTests.o src/kMeans.o tests-file/src/kMeansTests.o tests-file/src/assignVectorTests.o tests-file/src/generateCentroidsTests.o src/readBinaryFile.o src/generateStartingCentroids.o tests-file/src/outputCsvTests.o tests-file/src/readBinaryFileTests.o tests-file/src/updateCentroidsTests.o
+tests: tests-file/src/tests.c tests-file/src/distanceTests.o src/distance.o tests-file/src/distortionTests.o src/kMeans.o tests-file/src/kMeansTests.o tests-file/src/assignVectorTests.o tests-file/src/generateCentroidsTests.o src/readBinaryFile.o src/generateStartingCentroids.o tests-file/src/outputCsvTests.o src/writeOutputFile.o tests-file/src/readBinaryFileTests.o tests-file/src/updateCentroidsTests.o
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 	./tests
 
