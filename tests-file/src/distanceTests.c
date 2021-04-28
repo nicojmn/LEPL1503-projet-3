@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../headers/tests.h"
+
 #include "../headers/distanceTests.h"
 
 kMeans_t *distanceKMeansDim1 = NULL;

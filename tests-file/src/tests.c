@@ -6,32 +6,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../headers/distance.h"
-#include "../../headers/kmeansStruct.h"
-#include "../../headers/kMeans.h"
-#include "../../src/distance.c"
-#include "../../src/kMeans.c"
-#include "../../src/generateStartingCentroids.c"
-#include "../../headers/readBinaryFile.h"
-#include "../../src/readBinaryFile.c"
-
 #include "../headers/tests.h"
 #include "../headers/distanceTests.h"
-#include "./distanceTests.c"
 #include "../headers/readBinaryFileTests.h"
-#include "./readBinaryFileTests.c"
 #include "../headers/distortionTests.h"
-#include "./distortionTests.c"
 #include "../headers/outputCsvTests.h"
-#include "./outputCsvTests.c"
 #include "../headers/assignVectorTests.h"
-#include "./assignVectorTests.c"
 #include "../headers/updateCentroidsTests.h"
-#include "./updateCentroidsTests.c"
 #include "../headers/kMeansTests.h"
-#include "./kMeansTests.c"
 #include "../headers/generateCentroidsTests.h"
-#include "./generateCentroidsTests.c"
 
 
 int main() {
