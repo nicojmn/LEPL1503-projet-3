@@ -19,6 +19,9 @@ clean:
 	rm -f tests-file/src/*.o
 
 tests: tests-file/src/tests.c tests-file/src/distanceTests.o src/distance.o tests-file/src/distortionTests.o src/kMeans.o tests-file/src/kMeansTests.o tests-file/src/assignVectorTests.o tests-file/src/generateCentroidsTests.o src/readBinaryFile.o src/generateStartingCentroids.o tests-file/src/outputCsvTests.o src/writeOutputFile.o tests-file/src/readBinaryFileTests.o tests-file/src/updateCentroidsTests.o
+## -----------------------------------/!\--------------------------------
+## WARNING : this command is used by Jenkins
+## -----------------------------------/!\--------------------------------
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 	./tests
 
@@ -30,10 +33,6 @@ valgrind:
 ## filePath : the .c path to file to perform test
 ## example : make valgrind level=full log=yes file=tests-file/tests-file.c
 ## ----------------------------------------------------------------------
-
-## -----------------------------------/!\--------------------------------
-## WARNING : this command is used by Jenkins
-## -----------------------------------/!\--------------------------------
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) $(filePath) -o tests/$(notdir $(basename $(filePath))).o $(LIBS)
 	chmod 777 ./tests/$(notdir $(basename $(filePath))).o
 ifeq ($(level), full)
