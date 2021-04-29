@@ -38,10 +38,12 @@ void fullClean(data_t *generalData, point_t **startingCentroids, uint64_t iterat
     free(generalData);
 
     // Freeing the set of starting centroids
-    for (uint64_t i = 0; i < iterationNumber; ++i) {
-        free(startingCentroids[i]);
+    if (startingCentroids != NULL) {
+        for (uint64_t i = 0; i < iterationNumber; ++i) {
+            free(startingCentroids[i]);
+        }
+        free(startingCentroids);
     }
-    free(startingCentroids);
 
     // close the files opened by parse_args
     if (args.input_stream != stdin) {

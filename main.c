@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
     // Collecting data
     generalData = (data_t *) malloc(sizeof(data_t));
     if (generalData == NULL) return -1;
-    loadData(programArguments.input_stream, generalData);
+    if (loadData(programArguments.input_stream, generalData) == -1) return -1;
 
     // General features of the kMeans problem
     generic_func = programArguments.squared_distance_func;
@@ -120,8 +120,10 @@ int main(int argc, char *argv[]) {
     // The time took by the function generateSetOfStartingCentroids is negligible
     startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
     if (generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber)
-        == -1)
+        == -1) {
+        fullClean(generalData, NULL, iterationNumber, programArguments, NULL);
         return -1;
+    }
 
     if (writeHeadline(programArguments.quiet, programArguments.output_stream) == -1) {
         fullClean(generalData, startingCentroids, iterationNumber, programArguments, NULL);
@@ -130,9 +132,11 @@ int main(int argc, char *argv[]) {
 
     // Setup of the threads
     buffer = createBuffer((uint8_t) N);
-    if (pthread_mutex_init(&mutex, NULL) != 0) return -1;
-    if (sem_init(&empty, 0, N) != 0) return -1;
-    if (sem_init(&full, 0, 0) != 0) return -1;
+    if (buffer == NULL || pthread_mutex_init(&mutex, NULL) != 0 ||
+        sem_init(&empty, 0, N) != 0 || sem_init(&full, 0, 0) != 0) {
+        fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+        return -1;
+    }
 
     pthread_t producerThreads[nThreads];
     pthread_t consumerThread;
@@ -151,17 +155,29 @@ int main(int argc, char *argv[]) {
         }
         listOfIndexes[i][0] = start;
         listOfIndexes[i][1] = end;
-        if (pthread_create(&producerThreads[i], NULL, &produce, (void *) listOfIndexes[i]) != 0) return -1;
+        if (pthread_create(&producerThreads[i], NULL, &produce, (void *) listOfIndexes[i]) != 0) {
+            fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+            return -1;
+        }
         start = end;
         end += amountOfInstancePerThread;
     }
-    if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) return -1;
+    if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) {
+        fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+        return -1;
+    }
 
     // Closing the threads
     for (uint32_t i = 0; i < nThreads; i++) {
-        if (pthread_join(producerThreads[i], NULL) != 0) return -1;
+        if (pthread_join(producerThreads[i], NULL) != 0) {
+            fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+            return -1;
+        }
     }
-    if (pthread_join(consumerThread, NULL) != 0) return -1;
+    if (pthread_join(consumerThread, NULL) != 0) {
+        fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+        return -1;
+    }
 
     // Closing, freeing, destroying what is necessary
     fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
