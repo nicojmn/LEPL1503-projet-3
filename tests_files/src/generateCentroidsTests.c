@@ -1,13 +1,14 @@
-#include <CUnit/CUnit.h>
-#include <CUnit/TestRun.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "../headers/generateCentroidsTests.h"
 
 
 point_t **startingCentroids1;
 point_t **startingCentroids2;
+
+data_t *dataTest1;
+FILE *fileForTest1;
+
+data_t *dataTest2;
+FILE *fileForTest2;
 
 int32_t setupGenerateStartingCentroids(void) {
 

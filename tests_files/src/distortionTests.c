@@ -1,7 +1,3 @@
-#include <CUnit/CUnit.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "../headers/distortionTests.h"
 
 kMeans_t *distortionKMeansDim2 = NULL;

@@ -1,7 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "../headers/outputCsvTests.h"
+
+point_t **outputStartingCentroids1;
+point_t **outputStartingCentroids2;
+
+FILE *outputFile;
 
 kMeans_t *outputKMeansDim2 = NULL;
 kMeans_t *outputKMeansDim3 = NULL;
@@ -168,11 +170,8 @@ int32_t setupCreateOutputFile(void) {
     outputStartingCentroids2[0][1].vector[0] = (int64_t) 2;
     outputStartingCentroids2[0][1].vector[1] = (int64_t) 2;
 
-    outputFile2 = fopen("output_csv/ex1.csv", "w");
-    outputFile = fopen("output_csv/dimension3.csv", "w");
-
+    outputFile = fopen("tests_files/output_csv/ex1.csv", "w");
     return 0;
-
 }
 
 
@@ -209,7 +208,6 @@ int32_t teardownCreateOutputFile(void) {
     free(outputKMeansDim3);
 
     fclose(outputFile);
-    fclose(outputFile2);
 
     free(outputStartingCentroids1);
     free(outputStartingCentroids2);
@@ -220,12 +218,12 @@ int32_t teardownCreateOutputFile(void) {
 void test_createOutputFileDimension2(void) {
     squared_distance_func_t generic_func = squared_manhattan_distance;
     runKMeans(outputKMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
-    writeHeadline(false, outputFile2);
+    writeHeadline(false, outputFile);
     point_t **clusters = generateClusters(outputKMeansDim2);
     uint64_t distortionValue = distortion(outputKMeansDim2,
                                           (squared_distance_func_t (*)(const point_t *, const point_t *,
                                                                        uint32_t)) generic_func);
-    writeOneKMeans(outputKMeansDim2, false, outputFile2, outputStartingCentroids2[0],
+    writeOneKMeans(outputKMeansDim2, false, outputFile, outputStartingCentroids2[0],
                    clusters, distortionValue);
 
 }

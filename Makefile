@@ -16,9 +16,15 @@ clean:
 	rm -f tests
 	rm -f *.o
 	rm -f src/*.o
-	rm -f tests-file/src/*.o
+	rm -f tests_files/src/*.o
 
-tests: tests-file/src/tests.c tests-file/src/distanceTests.o src/distance.o tests-file/src/distortionTests.o src/kMeans.o tests-file/src/kMeansTests.o tests-file/src/assignVectorTests.o tests-file/src/generateCentroidsTests.o src/readBinaryFile.o src/generateStartingCentroids.o tests-file/src/outputCsvTests.o src/writeOutputFile.o tests-file/src/readBinaryFileTests.o tests-file/src/updateCentroidsTests.o
+tests: tests_files/src/tests.c \
+	   src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o \
+	   src/writeOutputFile.o src/manageArgs.o src/manageHeap.o \
+	   tests_files/src/distanceTests.o tests_files/src/assignVectorTests.o \
+	   tests_files/src/distortionTests.o tests_files/src/generateCentroidsTests.o \
+	   tests_files/src/kMeansTests.o tests_files/src/outputCsvTests.o \
+	   tests_files/src/readBinaryFileTests.o tests_files/src/updateCentroidsTests.o
 ## -----------------------------------/!\--------------------------------
 ## WARNING : this command is used by Jenkins
 ## -----------------------------------/!\--------------------------------
@@ -29,9 +35,9 @@ valgrind:
 ## ----------------------------------------------------------------------
 ## Perform a valgrind test on a selected file
 ## level : med or full (the level of inspection, medium or full)
-## log : yes or no (if the result should be logged in tests-file/valgrind-log)
+## log : yes or no (if the result should be logged in tests_files/valgrind-log)
 ## filePath : the .c path to file to perform test
-## example : make valgrind level=full log=yes file=tests-file/tests-file.c
+## example : make valgrind level=full log=yes file=tests_files/tests_files.c
 ## ----------------------------------------------------------------------
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) $(filePath) -o tests/$(notdir $(basename $(filePath))).o $(LIBS)
 	chmod 777 ./tests/$(notdir $(basename $(filePath))).o

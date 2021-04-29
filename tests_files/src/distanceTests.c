@@ -1,9 +1,3 @@
-#include <CUnit/CUnit.h>
-#include <CUnit/TestRun.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-
 #include "../headers/distanceTests.h"
 
 kMeans_t *distanceKMeansDim1 = NULL;

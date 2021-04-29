@@ -15,7 +15,7 @@
 
 
 /**
- * Writes the headline of the csv outputFile
+ * Writes the headline of the csv outputFile1
  * @param quiet : boolean that decides whether we want to write the points of the simulation
  *                in the output csv file or not
  * @param outputFile : an already opened output csv file
@@ -30,7 +30,7 @@ int32_t writeHeadline(bool quiet, FILE *outputFile);
 point_t **generateClusters(kMeans_t *kMeans);
 
 /**
- * Write a list of vectors into the outputFile
+ * Write a list of vectors into the outputFile1
  * @param listOfVectors : malloced structure
  * @param dimension : the dimension of each point
  * @param size : size of listOfVectors
@@ -42,7 +42,7 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint64_t siz
 
 /**
  * Function used to write one instance of kMeans
- * @param kMeans : the instance of kMeans we want to write into outputFile
+ * @param kMeans : the instance of kMeans we want to write into outputFile1
  * @param quiet : boolean that decides whether we want to write the points of the simulation
  *                in the output csv file or not
  * @param outputFile : an already opened output csv file
