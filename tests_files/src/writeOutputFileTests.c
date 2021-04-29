@@ -1,4 +1,4 @@
-#include "../headers/outputCsvTests.h"
+#include "../headers/writeOutputFileTests.h"
 
 point_t **outputStartingCentroids1;
 point_t **outputStartingCentroids2;

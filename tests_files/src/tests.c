@@ -42,9 +42,9 @@ int main() {
     if ((NULL == CU_add_test(distanceTestSuite, "squared manhattan distance", testManhattan)) ||
         (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
         (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion)) ||
-        (NULL ==
-         CU_add_test(generateStartingCentroidsSuite, "generation of starting centroids",
-                     testGenerateStartingCentroids)) ||
+        (NULL == CU_add_test(generateStartingCentroidsSuite, "generation of starting centroids",
+                             testGenerateStartingCentroids)) ||
+        (NULL == CU_add_test(generateStartingCentroidsSuite, "combinatorial", testCombinatorial)) ||
         (NULL == CU_add_test(updateCentroidsTestSuite, "updateCentroids", testUpdateCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector normal", testNormalAssignVectorToCentroids)) ||
         (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids)) ||

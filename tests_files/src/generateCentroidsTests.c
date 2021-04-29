@@ -97,3 +97,17 @@ void testGenerateStartingCentroids(void) {
     CU_ASSERT_EQUAL(startingCentroids2[3]->vector[1], 486);
 }
 
+void testCombinatorial() {
+
+    // (1!) / (1!0!) = 1
+    CU_ASSERT_EQUAL(combinatorial(1, 1), 1);
+
+    // (3!) / (2!1!) = 3
+    CU_ASSERT_EQUAL(combinatorial(3, 2), 3);
+
+    // (10!) / (7!3!) = (10*9*8) / (3 * 2) = 120
+    CU_ASSERT_EQUAL(combinatorial(10, 7), 120);
+
+    // (200!) / (198!2!) = (200*199) / (2) = 19900
+    CU_ASSERT_EQUAL(combinatorial(200, 198), 19900);
+}

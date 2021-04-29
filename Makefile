@@ -28,7 +28,7 @@ tests: tests_files/src/tests.c \
 	   src/writeOutputFile.o src/manageArgs.o src/manageHeap.o \
 	   tests_files/src/distanceTests.o tests_files/src/assignVectorTests.o \
 	   tests_files/src/distortionTests.o tests_files/src/generateCentroidsTests.o \
-	   tests_files/src/kMeansTests.o tests_files/src/outputCsvTests.o \
+	   tests_files/src/kMeansTests.o tests_files/src/writeOutputFileTests.o \
 	   tests_files/src/readBinaryFileTests.o tests_files/src/updateCentroidsTests.o
 ## -----------------------------------/!\--------------------------------
 ## WARNING : this command is used by Jenkins

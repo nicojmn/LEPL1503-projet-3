@@ -18,6 +18,7 @@ uint64_t factorial(uint64_t x);
  * Calculate a combinatorial
  * We use a special function for numerical consideration
  * It won't overflow for close big number k and n
+ * in fact it does the simplification (200!) / (198!2!) = (200*199) / (2!)
  * @param n : total number of items
  * @param x : number of items being picked
  * @return the combinatorial of n with x items being picked

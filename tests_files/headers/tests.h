@@ -6,7 +6,7 @@
 
 #include "distanceTests.h"
 #include "distortionTests.h"
-#include "outputCsvTests.h"
+#include "writeOutputFileTests.h"
 #include "assignVectorTests.h"
 #include "updateCentroidsTests.h"
 #include "kMeansTests.h"

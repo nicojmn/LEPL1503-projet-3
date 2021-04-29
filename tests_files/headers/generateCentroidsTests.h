@@ -16,5 +16,6 @@ int32_t teardownGenerateStartingCentroids(void);
 
 void testGenerateStartingCentroids(void);
 
+void testCombinatorial(void);
 
 #endif
