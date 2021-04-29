@@ -14,7 +14,7 @@ int32_t setupGenerateStartingCentroids(void) {
 
     dataTest1 = (data_t *) malloc(sizeof(data_t));
     if (dataTest1 == NULL) return -1;
-    fileForTest1 = fopen("input_binary/ex1.bin", "r");
+    fileForTest1 = fopen("tests_files/input_binary/ex1.bin", "r");
     loadData(fileForTest1, dataTest1);
 
     uint32_t k = 2;
@@ -27,7 +27,7 @@ int32_t setupGenerateStartingCentroids(void) {
 
     dataTest2 = (data_t *) malloc(sizeof(data_t));
     if (dataTest2 == NULL) return -1;
-    fileForTest2 = fopen("input_binary/ex3.bin", "r");
+    fileForTest2 = fopen("tests_files/input_binary/ex3.bin", "r");
     loadData(fileForTest2, dataTest2);
 
     startingCentroids2 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
@@ -69,7 +69,7 @@ int32_t teardownGenerateStartingCentroids(void) {
 /** We've used the corresponding python function to get the correct value */
 void testGenerateStartingCentroids(void) {
 
-    //test : ex1.bin
+    // using ex1.bin
     CU_ASSERT_EQUAL(startingCentroids1[0]->vector[0], 1);
     CU_ASSERT_EQUAL(startingCentroids1[0]->vector[1], 1);
 
@@ -83,7 +83,7 @@ void testGenerateStartingCentroids(void) {
     CU_ASSERT_EQUAL(startingCentroids1[3]->vector[1], 2);
 
 
-    //test : ex3.bin
+    // using ex3.bin
     CU_ASSERT_EQUAL(startingCentroids2[0]->vector[0], 2053);
     CU_ASSERT_EQUAL(startingCentroids2[0]->vector[1], 981);
 

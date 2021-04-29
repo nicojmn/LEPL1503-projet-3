@@ -145,13 +145,13 @@ void testKMeansDimension2(void) {
                                                        uint32_t)) generic_func);
 
 
-    //centroid
+    // testing the centroids
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[0], (int64_t) 0);
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[1], (int64_t) 3);
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[0], (int64_t) -4);
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[1].vector[1], (int64_t) 10);
 
-    //cluster
+    // testing the clusters
     CU_ASSERT_EQUAL((kMeansDim2->points)[0].nearestCentroidID, 0);
     CU_ASSERT_EQUAL((kMeansDim2->points)[1].nearestCentroidID, 0);
     CU_ASSERT_EQUAL((kMeansDim2->points)[2].nearestCentroidID, 1);

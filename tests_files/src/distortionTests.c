@@ -21,7 +21,6 @@ int32_t distortionSetup(void) {
     ((distortionKMeansDim2->points)[0].vector)[1] = (int64_t) 2;
     (distortionKMeansDim2->points)[0].nearestCentroidID = 0;
 
-
     (distortionKMeansDim2->points)[1].vector = malloc(2 * sizeof(int64_t));
     if ((distortionKMeansDim2->points)[1].vector == NULL) return -1;
     ((distortionKMeansDim2->points)[1].vector)[0] = (int64_t) -1;
@@ -71,5 +70,4 @@ void testDistortion(void) {
     CU_ASSERT_EQUAL(distortion(distortionKMeansDim2,
                                (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func),
                     20);
-
 }

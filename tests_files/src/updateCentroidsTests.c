@@ -8,7 +8,7 @@
 
 kMeans_t *updateCentroidsKMeansDim2 = NULL;
 
-/** We've used the corresponding python function to get the correct value */
+
 int32_t updateCentroidsSetup(void) {
     updateCentroidsKMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (updateCentroidsKMeansDim2 == NULL) return -1;

@@ -20,7 +20,6 @@ int32_t assignVectorSetup(void) {
     ((assignVectorKMeansDim2->points)[0].vector)[1] = (int64_t) 2;
     (assignVectorKMeansDim2->points)[0].nearestCentroidID = 0;
 
-
     (assignVectorKMeansDim2->points)[1].vector = malloc(2 * sizeof(int64_t));
     if ((assignVectorKMeansDim2->points)[1].vector == NULL) return -1;
     ((assignVectorKMeansDim2->points)[1].vector)[0] = (int64_t) -1;

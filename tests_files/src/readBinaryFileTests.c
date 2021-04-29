@@ -7,13 +7,13 @@ FILE *fileForTest2;
 data_t *dataTest2;
 
 int32_t setupBinaryFile(void) {
-    fileForTest1 = fopen("input_binary/ex1.bin", "r");
+    fileForTest1 = fopen("tests_files/input_binary/ex1.bin", "r");
     if (fileForTest1 == NULL) return -1;
 
     dataTest1 = (data_t *) malloc(sizeof(data_t));
     if (dataTest1 == NULL) return -1;
 
-    fileForTest2 = fopen("input_binary/ex2.bin", "r");
+    fileForTest2 = fopen("tests_files/input_binary/ex2.bin", "r");
     if (fileForTest2 == NULL) return -1;
 
     dataTest2 = (data_t *) malloc(sizeof(data_t));
@@ -38,7 +38,7 @@ int32_t teardownBinaryFile(void) {
     return 0;
 }
 
-/** We've used the corresponding python function to get the correct value */
+/** We've used the corresponding json file to check the correct values */
 void testReadBinaryFile(void) {
 
     loadData(fileForTest1, dataTest1);

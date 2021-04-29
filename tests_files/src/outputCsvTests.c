@@ -215,6 +215,10 @@ int32_t teardownCreateOutputFile(void) {
     return 0;
 }
 
+/**
+ * We only check here if everything looks good
+ * For better assessment, we've used compare_solutions.py
+ */
 void test_createOutputFileDimension2(void) {
     squared_distance_func_t generic_func = squared_manhattan_distance;
     runKMeans(outputKMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);

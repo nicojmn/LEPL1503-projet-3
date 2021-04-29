@@ -11,7 +11,6 @@ int32_t distanceSetup(void) {
     distanceKMeansDim1->points = (point_t *) malloc(1 * sizeof(point_t));
     if (distanceKMeansDim1->points == NULL) return -1;
 
-
     distanceKMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (distanceKMeansDim2 == NULL) return -1;
     distanceKMeansDim2->dimension = (int32_t) 2;
@@ -47,7 +46,6 @@ int32_t distanceSetup(void) {
     ((distanceKMeansDim2->points)[0].vector)[0] = (int64_t) 1;
     ((distanceKMeansDim2->points)[0].vector)[1] = (int64_t) 2;
     (distanceKMeansDim2->points)[0].nearestCentroidID = 0;
-
 
     (distanceKMeansDim2->points)[1].vector = malloc(2 * sizeof(int64_t));
     if ((distanceKMeansDim2->points)[1].vector == NULL) return -1;
