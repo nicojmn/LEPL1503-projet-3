@@ -1,9 +1,9 @@
 #include "../headers/writeOutputFileTests.h"
 
-point_t **outputStartingCentroids1;
-point_t **outputStartingCentroids2;
+point_t **writeOutputFileCentroids1;
+point_t **writeOutputFileCentroids2;
 
-FILE *outputFile;
+FILE *writeOutputFile;
 
 kMeans_t *outputKMeansDim2 = NULL;
 kMeans_t *outputKMeansDim3 = NULL;
@@ -142,35 +142,35 @@ int32_t setupCreateOutputFile(void) {
     ((outputKMeansDim3->centroids)[0].vector)[1] = (int64_t) 1;
 
 
-    outputStartingCentroids1 = (point_t **) malloc(sizeof(point_t *));
-    outputStartingCentroids1[0] = malloc(sizeof(point_t) * 2);
+    writeOutputFileCentroids1 = (point_t **) malloc(sizeof(point_t *));
+    writeOutputFileCentroids1[0] = malloc(sizeof(point_t) * 2);
 
-    outputStartingCentroids1[0][0].vector = malloc(sizeof(int64_t) * 3);
-    outputStartingCentroids1[0][0].vector[0] = (int64_t) -2;
-    outputStartingCentroids1[0][0].vector[1] = (int64_t) 4;
-    outputStartingCentroids1[0][0].vector[2] = (int64_t) 3;
+    writeOutputFileCentroids1[0][0].vector = malloc(sizeof(int64_t) * 3);
+    writeOutputFileCentroids1[0][0].vector[0] = (int64_t) -2;
+    writeOutputFileCentroids1[0][0].vector[1] = (int64_t) 4;
+    writeOutputFileCentroids1[0][0].vector[2] = (int64_t) 3;
 
-    outputStartingCentroids1[0][1].vector = malloc(sizeof(point_t) * 3);
+    writeOutputFileCentroids1[0][1].vector = malloc(sizeof(point_t) * 3);
 
-    outputStartingCentroids1[0][1].vector[0] = (int64_t) 6;
-    outputStartingCentroids1[0][1].vector[1] = (int64_t) 2;
-    outputStartingCentroids1[0][1].vector[2] = (int64_t) 1;
+    writeOutputFileCentroids1[0][1].vector[0] = (int64_t) 6;
+    writeOutputFileCentroids1[0][1].vector[1] = (int64_t) 2;
+    writeOutputFileCentroids1[0][1].vector[2] = (int64_t) 1;
 
 
-    outputStartingCentroids2 = (point_t **) malloc(sizeof(point_t *));
-    outputStartingCentroids2[0] = malloc(sizeof(point_t) * 2);
+    writeOutputFileCentroids2 = (point_t **) malloc(sizeof(point_t *));
+    writeOutputFileCentroids2[0] = malloc(sizeof(point_t) * 2);
 
-    outputStartingCentroids2[0][0].vector = malloc(sizeof(int64_t) * 2);
+    writeOutputFileCentroids2[0][0].vector = malloc(sizeof(int64_t) * 2);
 
-    outputStartingCentroids2[0][0].vector[0] = (int64_t) 1;
-    outputStartingCentroids2[0][0].vector[1] = (int64_t) 1;
+    writeOutputFileCentroids2[0][0].vector[0] = (int64_t) 1;
+    writeOutputFileCentroids2[0][0].vector[1] = (int64_t) 1;
 
-    outputStartingCentroids2[0][1].vector = malloc(sizeof(point_t) * 2);
+    writeOutputFileCentroids2[0][1].vector = malloc(sizeof(point_t) * 2);
 
-    outputStartingCentroids2[0][1].vector[0] = (int64_t) 2;
-    outputStartingCentroids2[0][1].vector[1] = (int64_t) 2;
+    writeOutputFileCentroids2[0][1].vector[0] = (int64_t) 2;
+    writeOutputFileCentroids2[0][1].vector[1] = (int64_t) 2;
 
-    outputFile = fopen("tests_files/output_csv/ex1.csv", "w");
+    writeOutputFile = fopen("tests_files/output_csv/ex1.csv", "w");
     return 0;
 }
 
@@ -186,11 +186,11 @@ int32_t teardownCreateOutputFile(void) {
         free(outputKMeansDim3->centroids[i].vector);
     }
     for (int i = 0; i < k; i++) {
-        free(outputStartingCentroids2[0][i].vector);
-        free(outputStartingCentroids1[0][i].vector);
+        free(writeOutputFileCentroids1[0][i].vector);
+        free(writeOutputFileCentroids2[0][i].vector);
     }
-    free(outputStartingCentroids2[0]);
-    free(outputStartingCentroids1[0]);
+    free(writeOutputFileCentroids1[0]);
+    free(writeOutputFileCentroids2[0]);
 
     free(outputKMeansDim2->points);
     free(outputKMeansDim2->centroids);
@@ -207,10 +207,10 @@ int32_t teardownCreateOutputFile(void) {
 
     free(outputKMeansDim3);
 
-    fclose(outputFile);
+    fclose(writeOutputFile);
 
-    free(outputStartingCentroids1);
-    free(outputStartingCentroids2);
+    free(writeOutputFileCentroids1);
+    free(writeOutputFileCentroids2);
 
     return 0;
 }
@@ -222,12 +222,12 @@ int32_t teardownCreateOutputFile(void) {
 void test_createOutputFileDimension2(void) {
     squared_distance_func_t generic_func = squared_manhattan_distance;
     runKMeans(outputKMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
-    writeHeadline(false, outputFile);
+    writeHeadline(false, writeOutputFile);
     point_t **clusters = generateClusters(outputKMeansDim2);
     uint64_t distortionValue = distortion(outputKMeansDim2,
-                                          (squared_distance_func_t (*)(const point_t *, const point_t *,
-                                                                       uint32_t)) generic_func);
-    writeOneKMeans(outputKMeansDim2, false, outputFile, outputStartingCentroids2[0],
+                                          (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t))
+                                                  generic_func);
+    writeOneKMeans(outputKMeansDim2, false, writeOutputFile, writeOutputFileCentroids1[0],
                    clusters, distortionValue);
 
 }

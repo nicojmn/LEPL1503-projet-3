@@ -4,18 +4,18 @@
 point_t **startingCentroids1;
 point_t **startingCentroids2;
 
-data_t *dataTest1;
-FILE *fileForTest1;
+data_t *generateCentroidsDataTest1;
+FILE *generateCentroidsFileForTest1;
 
-data_t *dataTest2;
-FILE *fileForTest2;
+data_t *generateCentroidsDataTest2;
+FILE *generateCentroidsFileForTest2;
 
 int32_t setupGenerateStartingCentroids(void) {
 
-    dataTest1 = (data_t *) malloc(sizeof(data_t));
-    if (dataTest1 == NULL) return -1;
-    fileForTest1 = fopen("tests_files/input_binary/ex1.bin", "r");
-    loadData(fileForTest1, dataTest1);
+    generateCentroidsDataTest1 = (data_t *) malloc(sizeof(data_t));
+    if (generateCentroidsDataTest1 == NULL) return -1;
+    generateCentroidsFileForTest1 = fopen("tests_files/input_binary/ex1.bin", "r");
+    loadData(generateCentroidsFileForTest1, generateCentroidsDataTest1);
 
     uint32_t k = 2;
     uint32_t n = 4;
@@ -23,35 +23,35 @@ int32_t setupGenerateStartingCentroids(void) {
     uint64_t iterationNumber = combinatorial(n, k);
 
     startingCentroids1 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    generateSetOfStartingCentroids(startingCentroids1, dataTest1->vectors, k, n, iterationNumber);
+    generateSetOfStartingCentroids(startingCentroids1, generateCentroidsDataTest1->vectors, k, n, iterationNumber);
 
-    dataTest2 = (data_t *) malloc(sizeof(data_t));
-    if (dataTest2 == NULL) return -1;
-    fileForTest2 = fopen("tests_files/input_binary/ex3.bin", "r");
-    loadData(fileForTest2, dataTest2);
+    generateCentroidsDataTest2 = (data_t *) malloc(sizeof(data_t));
+    if (generateCentroidsDataTest2 == NULL) return -1;
+    generateCentroidsFileForTest2 = fopen("tests_files/input_binary/ex3.bin", "r");
+    loadData(generateCentroidsFileForTest2, generateCentroidsDataTest2);
 
     startingCentroids2 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    generateSetOfStartingCentroids(startingCentroids2, dataTest2->vectors, k, n, iterationNumber);
+    generateSetOfStartingCentroids(startingCentroids2, generateCentroidsDataTest2->vectors, k, n, iterationNumber);
     return 0;
 }
 
 int32_t teardownGenerateStartingCentroids(void) {
 
-    if (0 != fclose(fileForTest1)) return -1;
-    for (uint64_t i = 0; i < dataTest1->size; i++) {
-        free((dataTest1->vectors)[i]);
+    if (0 != fclose(generateCentroidsFileForTest1)) return -1;
+    for (uint64_t i = 0; i < generateCentroidsDataTest1->size; i++) {
+        free((generateCentroidsDataTest1->vectors)[i]);
     }
 
-    free(dataTest1->vectors);
-    free(dataTest1);
+    free(generateCentroidsDataTest1->vectors);
+    free(generateCentroidsDataTest1);
 
-    if (0 != fclose(fileForTest2)) return -1;
-    for (uint64_t i = 0; i < dataTest2->size; i++) {
-        free((dataTest2->vectors)[i]);
+    if (0 != fclose(generateCentroidsFileForTest2)) return -1;
+    for (uint64_t i = 0; i < generateCentroidsDataTest2->size; i++) {
+        free((generateCentroidsDataTest2->vectors)[i]);
     }
 
-    free(dataTest2->vectors);
-    free(dataTest2);
+    free(generateCentroidsDataTest2->vectors);
+    free(generateCentroidsDataTest2);
     uint32_t k = 2;
     uint32_t n = 4;
     uint64_t iterationNumber = combinatorial(n, k);
