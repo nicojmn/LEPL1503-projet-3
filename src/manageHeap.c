@@ -51,9 +51,11 @@ void fullClean(data_t *generalData, point_t **startingCentroids, uint64_t iterat
         fclose(args.output_stream);
     }
     // Freeing the buffer
-    free(buffer->kMeansInstances);
-    free(buffer->clustersOfInstances);
-    free(buffer->distortionValues);
-    free(buffer->indexes);
-    free(buffer);
+    if (buffer != NULL) {
+        free(buffer->kMeansInstances);
+        free(buffer->clustersOfInstances);
+        free(buffer->distortionValues);
+        free(buffer->indexes);
+        free(buffer);
+    }
 }

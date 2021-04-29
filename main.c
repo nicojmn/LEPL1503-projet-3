@@ -27,7 +27,7 @@ uint64_t iterationNumber;
 squared_distance_func_t generic_func;
 
 // Threads
-#define N 2 // places in the buffer
+#define N 2 // size of the buffer
 pthread_mutex_t mutex;
 sem_t empty;
 sem_t full;
@@ -95,14 +95,14 @@ int main(int argc, char *argv[]) {
                 programArguments.n_first_initialization_points, programArguments.k);
         return -1;
     }
-    fprintf(stderr, "\tnumber of threads executing the LLoyd's algorithm in parallel: %" PRIu32 "\n",
+    fprintf(stderr, "\tNumber of threads executing the LLoyd's algorithm in parallel: %" PRIu32 "\n",
             programArguments.n_threads);
-    fprintf(stderr, "\tnumber of clusters (k): %" PRIu32 "\n", programArguments.k);
+    fprintf(stderr, "\tNumber of clusters (k): %" PRIu32 "\n", programArguments.k);
     fprintf(stderr,
-            "\twe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n",
+            "\tWe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n",
             programArguments.n_first_initialization_points);
-    fprintf(stderr, "\tquiet mode: %s\n", programArguments.quiet ? "enabled" : "disabled");
-    fprintf(stderr, "\tsquared distance function: %s\n",
+    fprintf(stderr, "\tQuiet mode: %s\n", programArguments.quiet ? "enabled" : "disabled");
+    fprintf(stderr, "\tSquared distance function: %s\n",
             programArguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
 
     // Collecting data
@@ -123,7 +123,10 @@ int main(int argc, char *argv[]) {
         == -1)
         return -1;
 
-    writeHeadline(programArguments.quiet, programArguments.output_stream);
+    if (writeHeadline(programArguments.quiet, programArguments.output_stream) == -1) {
+        fullClean(generalData, startingCentroids, iterationNumber, programArguments, NULL);
+        return -1;
+    }
 
     // Setup of the threads
     buffer = createBuffer((uint8_t) N);
@@ -154,7 +157,7 @@ int main(int argc, char *argv[]) {
     }
     if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) return -1;
 
-    // Close the threads
+    // Closing the threads
     for (uint32_t i = 0; i < nThreads; i++) {
         if (pthread_join(producerThreads[i], NULL) != 0) return -1;
     }

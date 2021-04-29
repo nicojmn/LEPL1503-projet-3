@@ -10,14 +10,14 @@ int32_t loadData(FILE *inputFile, data_t *generalData) {
     generalData->dimension = (uint32_t) be32toh(*dimension);
 
     // We retrieve the size (number of points)
-    fseek(inputFile, 4, SEEK_SET);
+    if (fseek(inputFile, 4, SEEK_SET) == -1) return -1;
     uint64_t *size = (uint64_t *) malloc(sizeof(uint64_t));
     if (size == NULL) return -1;
     fread(size, 8 * sizeof(char), 1, inputFile);
     generalData->size = (uint64_t) be64toh(*size);
 
     // We retrieve all the points
-    fseek(inputFile, 12, SEEK_SET);
+    if (fseek(inputFile, 12, SEEK_SET) == -1) return -1;
     int64_t *buffer = (int64_t *) malloc((generalData->dimension) * (generalData->size) * sizeof(int64_t));
     if (buffer == NULL) return -1;
 

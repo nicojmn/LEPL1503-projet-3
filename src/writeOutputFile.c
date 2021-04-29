@@ -2,11 +2,11 @@
 
 int32_t writeHeadline(bool quiet, FILE *outputFile) {
     char *dataNames = "initialization centroids,distortion,centroids";
-    fprintf(outputFile, "%s", dataNames);
+    if (fprintf(outputFile, "%s", dataNames) < 0) return -1;
 
     if (!quiet) {
         char *suppDataNames = ",clusters\0";
-        fprintf(outputFile, "%s", suppDataNames);
+        if (fprintf(outputFile, "%s", suppDataNames) < 0) return -1;
     }
     return 0;
 }
