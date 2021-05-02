@@ -2,9 +2,7 @@
 Ce projet a été élaboré par Gille Maes, Loic Spigeleer, Nicolas Jeanmenne,
 Pierre Denoël, Samuel de Meester et Sébastien Mary.
 
-Ce README contient toutes les informations nécessaires quant à la bonne compréhension du projet.
-
-    1. Structures utilisées
+Ce README contient toutes les informations nécessaires quant à la bonne compréhension du projet. 1.Structures utilisées
 
         Toutes nos structures sont définies dans le fichier headers/kmeansStruct.h. Pour plus
         d'informations à leur sujet, consultez le fichier.
@@ -62,6 +60,7 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
         a. Avec 1 thread :
             Python :
             C      :
+            Rapport :
 
         b. Avec 2 threads :
             Python :
@@ -74,6 +73,7 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
         d. Avec 9 threads :
             Python :
             C      :
+            Rapport :
 
         Nous pouvons en conclure qu'en moyenne, le programme en C multithreadé s'effectue #TODO ?
         plus vite que le programme python.
@@ -92,21 +92,8 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
 Si vous avez encore certaines questions concernant le projet, n'hésitez pas à nous contacter aux
 adresses suivantes:
 
-- Questions techniques/lancement projet:
-
     nicolas.jeanmenne@student.uclouvain.be, samuel.demeester@student.uclouvain.be
-
-- Questions sur l'utilisation des threads/concurrence :
-
-    loic.spigeleer@student.uclouvain.be, samuel.demeester@student.uclouvain.be
-
-- Questions sur la structure/design du programme :
-
-    sebastien.mary@student.uclouvain.be
-
-- Pour tout autre renseignement :
-
+    loic.spigeleer@student.uclouvain.be, sebastien.mary@student.uclouvain.be
     pierre.denoel@student.uclouvain.be, gilles.maes@student.uclouvain.be
-
 
 Merci à vous de l'attention que vous apportez à ce projet.
