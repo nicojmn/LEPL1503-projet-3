@@ -55,23 +55,22 @@ n'est évidemment pas souhaité.
 
 Ces tests ont été effectués sur le fichier ex5.bin contenant 50 000 points. Commande utilisée via la terminal :
 (Paramètres utilisés : -k 3 -p 6 -n 4 -q -d euclidean)
+
+* Python : 2m39.422s
+
 1. Avec 1 thread :
-   * Python : 2m39.422s
    * C      : 0m3.660s
    * Gain de performance:
 
 1. Avec 2 threads :
-   * Python :
    * C      : 0m1.994s
    * Gain de performance :
 
 1. Avec 3 threads :
-   * Python :
    * C      : 0m1.869s
    * Gain de performance :
 
 1. Avec 4 threads :
-   * Python :
    * C      : 0m1.891s
    * Gain de performance:
 
