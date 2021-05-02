@@ -3,7 +3,7 @@ Mary.
 
 Ce README contient toutes les informations nécessaires quant à la bonne compréhension du projet.
 
-    1. Structures utilisées
+# Structures utilisées
 
         Toutes nos structures sont définies dans le fichier headers/kmeansStruct.h. Pour plus
         d'informations à leur sujet, consultez le fichier.
@@ -19,7 +19,7 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
         c. data_t : cette structure contient les caractéristiques du problème à traiter (dimension et nombre de points)
         ainsi que tous les points provenant du fichier binaire donné en entrée.
 
-    2. Utilisation des threads
+# Utilisation des threads
 
         Nous avons implémenter une architecture producteurs/consommateurs. Avant le lancement des threads le
         programme effectue deux opérations importantes.
@@ -37,7 +37,7 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
         Consommateur: il n'y a qu'un seul thread consommateur qui s'occupe d'écrire dans le fichier de sortie les
         résultats obtenus par le(s) thread(s) producteur(s).
 
-    3. Gestion de la concurrence
+# Gestion de la concurrence
 
         Nous avons donc d'un côté des threads producteurs et de l'autre un thread consommateur. La communication
         entre ces threads s'opère à l'aide d'un buffer. Cependant l'utilisation d'un même objet par plusieurs
@@ -53,7 +53,7 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
         deux threads producteurs pourraient, par exemple, déposer leurs résultat en même temps
         sur un même emplacement du buffer. Ce qui n'est évidemment pas souhaité.
 
-    4. Tests de performance TODO : faites les tests chez vous et mettez les infos ici pcq chez moi c'est pas optimal
+# Tests de performance TODO : faites les tests chez vous et mettez les infos ici pcq chez moi c'est pas optimal
 
         Ces tests ont été effectués sur le fichier ex5.bin contenant 50 000 points.
         Commande utilisée via la terminal :
@@ -77,7 +77,7 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
         Nous pouvons en conclure qu'en moyenne, le programme en C multithreadé s'effectue #TODO ?
         plus vite que le programme python.
 
-    5. Lancement du programme
+# Lancement du programme
 
         Les trois commandes nécessaires pour faire fonctionner le projet sont les suivantes:
 
@@ -87,6 +87,7 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
 
         Pour de plus amples informations concernant leur utilisation, réferez-vous au Makefile.
 
+# Questions éventuelles
 Si vous avez encore certaines questions concernant le projet, n'hésitez pas à nous contacter aux adresses suivantes:
 
 - Questions techniques/lancement projet:
