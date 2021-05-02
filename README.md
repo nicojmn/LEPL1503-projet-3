@@ -60,19 +60,15 @@ Ces tests ont été effectués sur le fichier ex5.bin contenant 50 000 points. C
 
 1. Avec 1 thread :
    * C      : 0m3.660s
-   * Gain de performance:
 
 1. Avec 2 threads :
    * C      : 0m1.994s
-   * Gain de performance :
 
 1. Avec 3 threads :
    * C      : 0m1.869s
-   * Gain de performance :
 
 1. Avec 4 threads :
    * C      : 0m1.891s
-   * Gain de performance:
 
 Nous pouvons en conclure qu'en moyenne, le programme en C multithreadé s'effectue #TODO ? plus vite que le programme
 python.
