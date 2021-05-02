@@ -5,15 +5,14 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
 
 # Structures utilisées
 
-Toutes nos structures sont définies dans le fichier headers/kmeansStruct.h. Pour plus d'informations à leur sujet,
+Toutes nos structures sont définies dans le fichier headers/kmeansStruct.h. Pour plus d'information à leur sujet,
 consultez le fichier.
 
 1. point_t : cette structure représente un point. Elle est composée d'un vecteur représentant les coordonnées du point
-   ainsi que du centroide le plus proche.
+   ainsi que celles du centroïde le plus proche.
 
 1. kMeans_t : cette structure est composée de toutes les informations nécessaires au déroulement de l'algorithme de
-   Lloyd's. Les noms des composantes de cette structure sont, selon nous, assez clairs pour ne pas expliquer leur
-   fonction.
+   Lloyd's. Le nom des composantes de cette structure est, selon nous, assez clair pour ne pas expliquer leur fonction.
 
 1. data_t : cette structure contient les caractéristiques du problème à traiter (dimension et nombre de points)
    ainsi que tous les points provenant du fichier binaire donné en entrée.
@@ -25,7 +24,7 @@ deux opérations importantes.
 
 1. Extraction des données contenues dans le fichier binaire en entrée.
 
-1. Calcul des différents centroids de départs. (cet étape aurait pu se voir assigner un thread mais on s'est rendu
+1. Calcul des différents centroids de départs. (cette étape aurait pu se voir assigner un thread mais on s'est rendu
    compte en faisant des tests de performance que le temps pris par cette étape était négligeable)
 
 1. Producteurs: Nous avons donc une liste reprenant toutes les suites de centroids de départ. De cette manière, à chaque
@@ -57,24 +56,24 @@ n'est évidemment pas souhaité.
 Ces tests ont été effectués sur le fichier ex5.bin contenant 50 000 points. Commande utilisée via la terminal :
 
 1. Avec 1 thread :
-   Python :
-   C      :
-   Rapport:
+   * Python :
+   * C      :
+   * Gain de performance:
 
 1. Avec 2 threads :
-   Python :
-   C      :
-   Rapport:
+   * Python :
+   * C      :
+   * Gain de performance :
 
 1. Avec 3 threads :
-   Python :
-   C      :
-   Rapport:
+   * Python :
+   * C      :
+   * Gain de performance :
 
 1. Avec 4 threads :
-   Python :
-   C      :
-   Rapport:
+   * Python :
+   * C      :
+   * Gain de performance:
 
 Nous pouvons en conclure qu'en moyenne, le programme en C multithreadé s'effectue #TODO ? plus vite que le programme
 python.
@@ -87,11 +86,12 @@ python.
 1. make tests
 1. make clean
 
-On a ajouté deux autres commandes:
+On a ajouté deux autres commandes :
 
-make valgrind make helgrind
+1. make valgrind : effectue les tests avec valgrind
+1. make helgrind : effectue les tests avec helgrind
 
-Pour de plus amples informations concernant leur utilisation, réferez-vous au Makefile.
+Pour de plus amples informations concernant leur utilisation, référez-vous au Makefile.
 
 # Questions éventuelles
 
