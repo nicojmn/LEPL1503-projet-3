@@ -36,38 +36,12 @@ tests: tests_files/src/tests.c \
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 	./tests
 
-valgrind:
-## ----------------------------------------------------------------------
-## Perform a valgrind test on a selected file
-## level : med or full (the level of inspection, medium or full)
-## log : yes or no (if the result should be logged in tests_files/valgrind-log)
-## filePath : the .c path to file to perform test
-## example : make valgrind level=full log=yes file=tests_files/tests_files.c
-## ----------------------------------------------------------------------
-	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) $(filePath) -o tests/$(notdir $(basename $(filePath))).o $(LIBS)
-	chmod 777 ./tests/$(notdir $(basename $(filePath))).o
-ifeq ($(level), full)
-ifeq ($(log), yes)
-	$(VALGRIND_MEM_FULL) --log-file=tests/valgrind-log/$(notdir $(basename $(filePath))).txt tests/$(notdir $(basename $(filePath))).o $(LIBS)
-else
-	$(VALGRIND_MEM_FULL) tests/$(notdir $(basename $(filePath))).o $(LIBS)
-endif
-endif
-ifeq ($(level), med)
-ifeq ($(log),yes)
-	$(VALGRIND_MEM_MED) --log-file=tests/valgrind-log/$(notdir $(basename $(filePath))).txt tests/$(notdir $(basename $(filePath))).o $(LIBS)
-else
-	$(VALGRIND_MEM_MED) tests/$(notdir $(basename $(filePath))).o $(LIBS)
-endif
-endif
-	rm -f tests/$(notdir $(basename $(filePath))).o
-
-valgrindMain : main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
+valgrind : main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
 ## -----------------------------------/!\--------------------------------
 ## WARNING : this command is used by Jenkins
 ## -----------------------------------/!\--------------------------------
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
-	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./valgrindMain  -k 4 -p 6 -n 1 -d manhattan -f output_csv/kmeans.csv  input_binary/ex3.bin
+	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./valgrind  -k 4 -p 6 -n 1 -d manhattan -f output_csv/kmeans.csv  input_binary/ex3.bin
 	rm -f valgrindMain
 
 helgrind: main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
