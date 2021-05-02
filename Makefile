@@ -37,6 +37,7 @@ valgrind : main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o s
 ## -----------------------------------/!\--------------------------------
 ## WARNING : this command is used by Jenkins
 ## -----------------------------------/!\--------------------------------
+## Performs valgrind (memory check) test
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./valgrind  -k 4 -p 6 -n 4 -d manhattan -f output_csv/kmeans.csv  input_binary/ex3.bin
 	rm -f valgrindMain
@@ -45,6 +46,7 @@ helgrind: main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o sr
 ## -----------------------------------/!\--------------------------------
 ## WARNING : this command is used by Jenkins
 ## -----------------------------------/!\--------------------------------
+## Performs helgrind (safe threads check) test
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 	valgrind --tool=helgrind ./helgrind -k 2 -p 3 -n 2 -d euclidean -f output_csv/kmeans.csv input_binary/ex3.bin
 	rm -f helgrind
