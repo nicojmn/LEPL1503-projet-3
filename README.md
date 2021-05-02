@@ -1,10 +1,9 @@
-
-Ce projet a été élaboré par Gille Maes, Loic Spigeleer, Nicolas Jeanmenne,
-Pierre Denoël, Samuel de Meester et Sébastien Mary.
+Ce projet a été élaboré par Gille Maes, Loic Spigeleer, Nicolas Jeanmenne, Pierre Denoël, Samuel de Meester et Sébastien
+Mary.
 
 Ce README contient toutes les informations nécessaires quant à la bonne compréhension du projet.
 
-    1. Structures utilisées
+# Structures utilisées
 
         Toutes nos structures sont définies dans le fichier headers/kmeansStruct.h. Pour plus
         d'informations à leur sujet, consultez le fichier.
@@ -14,15 +13,15 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
            le plus proche.
 
         b. kMeans_t : cette structure est composée de toutes les informations nécessaires au déroulement de
-           l'algorithme de Lloyd's. Les noms des composantes de cette structure est, selon nous, assez
+           l'algorithme de Lloyd's. Les noms des composantes de cette structure sont, selon nous, assez
            clairs pour ne pas expliquer leur fonction.
 
         c. data_t : cette structure contient les caractéristiques du problème à traiter (dimension et nombre de points)
         ainsi que tous les points provenant du fichier binaire donné en entrée.
 
-    2. Utilisation des threads
+# Utilisation des threads
 
-        Nous avons implémenter une architecture producteurs/consommateurs. Avant le lancement des threads le
+        Nous avons implémenté une architecture producteurs/consommateurs. Avant le lancement des threads le
         programme effectue deux opérations importantes.
 
         a. Extraction des données contenues dans le fichier binaire en entrée.
@@ -38,11 +37,11 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
         Consommateur: il n'y a qu'un seul thread consommateur qui s'occupe d'écrire dans le fichier de sortie les
         résultats obtenus par le(s) thread(s) producteur(s).
 
-    3. Gestion de la concurrence
+# Gestion de la concurrence
 
         Nous avons donc d'un côté des threads producteurs et de l'autre un thread consommateur. La communication
         entre ces threads s'opère à l'aide d'un buffer. Cependant l'utilisation d'un même objet par plusieurs
-        threads est délicat, pour se faire nous avons utiliser:
+        threads est délicat, pour se faire nous avons utilisé:
 
         Deux sémaphores:
 
@@ -54,7 +53,7 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
         deux threads producteurs pourraient, par exemple, déposer leurs résultat en même temps
         sur un même emplacement du buffer. Ce qui n'est évidemment pas souhaité.
 
-    4. Tests de performance TODO : faites les tests chez vous et mettez les infos ici pcq chez moi c'est pas optimal
+# Tests de performance
 
         Ces tests ont été effectués sur le fichier ex5.bin contenant 50 000 points.
         Commande utilisée via la terminal :
@@ -62,51 +61,46 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
         a. Avec 1 thread :
             Python :
             C      :
+            Rapport: 
 
         b. Avec 2 threads :
             Python :
             C      :
+            Rapport: 
 
-        c. Avec 4 threads :
+        c. Avec 3 threads :
             Python :
             C      :
+            Rapport: 
 
-        d. Avec 9 threads :
+        d. Avec 4 threads :
             Python :
             C      :
+            Rapport: 
 
         Nous pouvons en conclure qu'en moyenne, le programme en C multithreadé s'effectue #TODO ?
         plus vite que le programme python.
 
-    5. Lancement du programme
+# Lancement du programme
 
         Les trois commandes nécessaires pour faire fonctionner le projet sont les suivantes:
 
             make
             make tests
             make clean
+        
+        On a ajouté deux autres commandes:
 
+            make valgrind
+            make helgrind
+        
         Pour de plus amples informations concernant leur utilisation, réferez-vous au Makefile.
 
+# Questions éventuelles
 
-Si vous avez encore certaines questions concernant le projet, n'hésitez pas à nous contacter aux
-adresses suivantes:
+Si vous avez encore certaines questions concernant le projet, n'hésitez pas à nous contacter aux adresses suivantes:
 
-- Questions techniques/lancement projet:
-
-    nicolas.jeanmenne@student.uclouvain.be, samuel.demeester@student.uclouvain.be
-
-- Questions sur l'utilisation des threads/concurrence :
-
-    loic.spigeleer@student.uclouvain.be, samuel.demeester@student.uclouvain.be
-
-- Questions sur la structure/design du programme :
-
-    sebastien.mary@student.uclouvain.be
-
-- Pour tout autre renseignement :
-
-    pierre.denoel@student.uclouvain.be, gilles.maes@student.uclouvain.be
-
+nicolas.jeanmenne@student.uclouvain.be, samuel.demeester@student.uclouvain.be loic.spigeleer@student.uclouvain.be,
+sebastien.mary@student.uclouvain.be pierre.denoel@student.uclouvain.be, gilles.maes@student.uclouvain.be
 
 Merci à vous de l'attention que vous apportez à ce projet.
