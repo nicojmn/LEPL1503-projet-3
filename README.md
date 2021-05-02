@@ -54,7 +54,7 @@ n'est évidemment pas souhaité.
 # Tests de performance
 
 Ces tests ont été effectués sur le fichier ex5.bin contenant 50 000 points. Commande utilisée via la terminal :
-
+(Paramètres utilisés : -k 3 -p 6 -n 4 -q -d euclidean)
 1. Avec 1 thread :
    * Python : 2m39.422s
    * C      : 0m3.660s
