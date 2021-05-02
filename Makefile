@@ -10,10 +10,9 @@ VALGRIND_MEM_MED = valgrind --leak-check=full --leak-resolution=med --track-orig
 kmeans: main.c  \
 		src/distance.o src/kMeans.o src/generateStartingCentroids.o \
 		src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
-		# this will run the following command: gcc -Wall -Werror -g -o kmeans other_object_filespresent_above.o ... -lcunit -lpthread
 		$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 
-%.o: %.c                  # if for example you want to compute example.c this will create an object file called example.o in the same directory as example.c. Don't forget to clean it in your "make clean"
+%.o: %.c
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ -c $<
 
 clean:
@@ -52,8 +51,4 @@ helgrind: main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o sr
 	valgrind --tool=helgrind ./helgrind -k 2 -p 3 -n 2 -d euclidean -f output_csv/kmeans.csv input_binary/ex3.bin
 	rm -f helgrind
 
-
-
-
-# a .PHONY target forces make to execute the command even if the target already exists
-.PHONY: clean tests kmeans valgrindMain
+.PHONY: clean tests kmeans valgrind
