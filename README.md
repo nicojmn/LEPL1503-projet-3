@@ -54,7 +54,9 @@ n'est évidemment pas souhaité.
 # Tests de performance
 
 Ces tests ont été effectués sur le fichier ex5.bin contenant 50 000 points. Commande utilisée via la terminal :
-(Paramètres utilisés : -k 3 -p 6 -n 4 -q -d euclidean)
+
+(commande utilisée pour les tests : ./kmeans -k 3 -p 6 -n <1, 2, 3, 4> -q -d euclidean -f ~
+/code/output_csv/ex6_dim5.csv  ~/code/input_binary/ex6_dim5.bin)
 
 * Python : 2m39.422s
 
@@ -70,8 +72,14 @@ Ces tests ont été effectués sur le fichier ex5.bin contenant 50 000 points. C
 1. Avec 4 threads :
    * C      : 0m1.891s
 
-Nous pouvons en conclure qu'en moyenne, le programme en C multithreadé s'effectue #TODO ? plus vite que le programme
-python.
+En augmentant les paramètres à -k 6 - 10 (comparaison pour le code en C uniquement) :
+
+* 1 thread : 2m28.453s
+* 2 threads : 1m17.179s
+* 3 threads : 1m15.007s
+* 4 threads : 1m14.817s
+
+Nous pouvons en conclure qu'en moyenne, le programme en C multithreadé s'effectue plus vite que le programme python.
 
 # Lancement du programme
 
