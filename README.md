@@ -57,39 +57,30 @@ pas souhaité.
 
 Ces tests ont été effectués sur le fichier ex6_dim5.bin contenant 10 000 points en 5 dimensions.
 
-Commande utilisée via la terminal (pour le programme c):
+Commande utilisée via la terminal :
 
 * make
-* ./kmeans -k 3 -p 6 -n <1, 2, 3, 4> -q -d euclidean -f ~
+* ./kmeans -k 6 -p 10 -n <1, 2, 3, 4> -q -d euclidean -f ~
   /code/output_csv/ex6_dim5.csv  ~/code/input_binary/ex6_dim5.bin
 
-## Résultats
-
-* Python : 2m39.422s
-
-1. Avec 1 thread :
-   * C      : 0m3.660s
-
-1. Avec 2 threads :
-   * C      : 0m1.994s
-
-1. Avec 3 threads :
-   * C      : 0m1.869s
-
-1. Avec 4 threads :
-   * C      : 0m1.891s
-
-En augmentant les paramètres à -k 6 - 10 (comparaison pour le code en C uniquement) :
+## Résultats sur raspberry
 
 * 1 thread : 2m28.453s
 * 2 threads : 1m17.179s
 * 3 threads : 1m15.007s
 * 4 threads : 1m14.817s
 
-Ici les tests ont été effectués sur raspberry. On n'arrive plus à améliorer le temps d'exécution à partir de 2 threads
-producteurs (il ne faut pas oublier le thread consommateur et celui derrière l'exécution de main). Il fait alors sens
-que 2 threads producteurs fournissent le meilleur résultat. Sur nos machines personnelles, on observe des gains de
-performance jusqu'à 7 threads producteurs.
+## Résultats sur un ordinateur portable classique
+
+* 1 thread : 0m24.382s
+* 2 threads : 0m14.896s
+* 3 threads : 0m8.904s
+* 4 threads : 0m6.359s
+
+On n'arrive plus à améliorer le temps d'exécution sur raspberry au-delà de 2 threads producteurs. Si l'on prend en
+compte le thread consommateur et celui derrière l'exécution de main, il fait alors sens que 2 threads producteurs
+fournissent le meilleur résultat (puisqu'en réalité 4 threads sont à l'oeuvre). Sur nos machines personnelles, on
+observe des gains de performance jusqu'à 7 threads producteurs.
 
 # Lancement du programme
 
