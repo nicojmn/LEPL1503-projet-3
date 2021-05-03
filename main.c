@@ -1,133 +1,188 @@
 #include <stdio.h>
 #include <stdint.h>
-#include <stdbool.h>
 #include <string.h>
-#include <getopt.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <inttypes.h>
+#include <pthread.h>
+#include <semaphore.h>
+
 #include "headers/distance.h"
+#include "headers/kMeans.h"
+#include "headers/generateStartingCentroids.h"
+#include "headers/readBinaryFile.h"
+#include "headers/writeOutputFile.h"
+#include "headers/manageArgs.h"
+#include "headers/manageHeap.h"
+
+// inputs of the program
+args_t programArguments;
+
+// storage of the points collected from the input binary file
+data_t *generalData;
+
+// general features of the kMeans problem
+point_t **startingCentroids;
+uint32_t k;
+uint64_t iterationNumber;
+squared_distance_func_t generic_func;
+
+// Threads
+#define N 2 // size of the buffer
+pthread_mutex_t mutex;
+sem_t empty;
+sem_t full;
+buffer_t *buffer;
 
 
-typedef struct {
-    FILE *input_stream;
-    FILE *output_stream;
-    uint32_t n_threads;
-    uint32_t k;
-    uint32_t n_first_initialization_points;
-    bool quiet;
-    squared_distance_func_t squared_distance_func;
-} args_t;
+void *produce(void *startEnd) {
+    for (uint32_t i = ((uint32_t *) startEnd)[0]; i < ((uint32_t *) startEnd)[1]; ++i) {
+        kMeans_t *kMeansSimulation = createOneInstance(generalData->vectors, startingCentroids, i, k,
+                                                       generalData->size, generalData->dimension);
+        runKMeans(kMeansSimulation,
+                  (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
 
-
-void usage(char *prog_name) {
-    fprintf(stderr, "USAGE:\n");
-    fprintf(stderr, "    %s [-p n_combinations_points] [-n n_threads] [input_filename]\n", prog_name);
-    fprintf(stderr, "    -k n_clusters (default value: 2): the number of clusters to compute\n");
-    fprintf(stderr, "    -p n_combinations (default value: equal to k): consider the n_combinations first points present in the input to generate possible initializations for the k-means algorithm\n");
-    fprintf(stderr, "    -n n_threads (default value: 4): sets the number of computing threads that will be used to execute the k-means algorithm\n");
-    fprintf(stderr, "    -f output_file (default value: stdout): sets the filename on which to write the csv result\n");
-    fprintf(stderr, "    -q quiet mode: does not output the clusters content (the \"clusters\" column is simply not present in the csv)\n");
-    fprintf(stderr, "    -d distance (manhattan by default): can be either \"euclidean\" or \"manhattan\". Chooses the distance formula to use by the algorithm to compute the distance between the points\n");
+        point_t **clusters = generateClusters(kMeansSimulation);
+        uint64_t distortionValue = distortion(kMeansSimulation,
+                                              (squared_distance_func_t (*)(const point_t *, const point_t *,
+                                                                           uint32_t)) generic_func);
+        sem_wait(&empty);
+        if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
+        (buffer->kMeansInstances)[buffer->head] = kMeansSimulation;
+        (buffer->clustersOfInstances)[buffer->head] = clusters;
+        (buffer->distortionValues)[buffer->head] = distortionValue;
+        (buffer->indexes)[buffer->head] = i;
+        buffer->head = (buffer->head + 1) % N;
+        if (pthread_mutex_unlock(&mutex) != 0) return (void *) -1;
+        sem_post(&full);
+    }
+    return NULL;
 }
 
-int parse_args(args_t *args, int argc, char *argv[]) {
-    memset(args, 0, sizeof(args_t));    // set everything to 0 by default
-    // the default values are the following, they will be changed depending on the arguments given to the program
-    args->k = 2;
-    args->n_first_initialization_points = args->k;
-    args->n_threads = 4;
-    args->output_stream = stdout;
-    args->quiet = false;
-    args->squared_distance_func = squared_manhattan_distance;
-    int opt;
-    while ((opt = getopt(argc, argv, "n:p:k:f:d:q")) != -1) {
-        switch (opt)
-        {
-            case 'n':
-                args->n_threads = atoi(optarg);
-                if (args->n_threads <= 0) {
-                    fprintf(stderr, "Wrong number of threads. Needs a positive integer, received \"%s\"\n", optarg);
-                    return -1;
-                }
-                break;
-            case 'p':
-                args->n_first_initialization_points = atoi(optarg);
-                if (args->n_first_initialization_points <= 0) {
-                    fprintf(stderr, "Wrong number of initialization points. Needs a positive integer, received \"%s\"\n", optarg);
-                    return -1;
-                }
-                break;
-            case 'k':
-                args->k = atoi(optarg);
-                if (args->k <= 0) {
-                    fprintf(stderr, "Wrong k. Needs a positive integer, received \"%s\"\n", optarg);
-                    return -1;
-                }
-                break;
-            case 'f':
-                args->output_stream = fopen(optarg, "w");
-                if (!args->output_stream) {
-                    fprintf(stderr, "could not open output file %s: %s\n", optarg, strerror(errno));
-                    return -1;
-                }
-                break;
-            case 'q':
-                args->quiet = true;
-                break;
-            case 'd':
-                if (strcmp("euclidean", optarg) == 0) {
-                    args->squared_distance_func = squared_euclidean_distance;
-                }
-                break;
-            case '?':
-                usage(argv[0]);
-                return 1;
-            default:
-                usage(argv[0]);
+void *consume(void *useless){
+    uint64_t *nbOfElemToConsume = malloc(sizeof(uint64_t));
+    if (nbOfElemToConsume == NULL) return NULL;
+    *nbOfElemToConsume = iterationNumber;
+    while (*nbOfElemToConsume > 0) {
+        sem_wait(&full);
+        if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
+        uint32_t i = (buffer->indexes)[buffer->tail];
+        kMeans_t *kMeansSimulation = (buffer->kMeansInstances)[buffer->tail];
+        point_t **clusters = (buffer->clustersOfInstances)[buffer->tail];
+        uint64_t distortionValue = (buffer->distortionValues)[buffer->tail];
+        if (writeOneKMeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream,
+                           startingCentroids[i], clusters, distortionValue) == -1) {
+            clean(kMeansSimulation);
+            fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+            return (void *) -1;
         }
+        buffer->tail = (buffer->tail + 1) % N;
+        clean(kMeansSimulation);
+        if (pthread_mutex_unlock(&mutex) != 0) return (void *) -1;
+        sem_post(&empty);
+        (*nbOfElemToConsume)--;
     }
-
-    if (optind == argc) {
-        args->input_stream = stdin;
-    } else {
-        args->input_stream = fopen(argv[optind], "r");
-        if (!args->input_stream) {
-            fprintf(stderr, "could not open file %s: %s\n", argv[optind], strerror(errno));
-            return -1;
-        }
-    }
-
-    return 0;
+    free(nbOfElemToConsume);
+    return NULL;
 }
 
 int main(int argc, char *argv[]) {
-    args_t program_arguments;   // allocate the args on the stack
-    parse_args(&program_arguments, argc, argv);
 
-    if (program_arguments.n_first_initialization_points < program_arguments.k) {
-        fprintf(stderr, "Cannot generate an instance of k-means with less initialization points than needed clusters: %"PRIu32" < %"PRIu32"\n",
-                program_arguments.n_first_initialization_points, program_arguments.k);
+    parse_args(&programArguments, argc, argv);
+
+    if (programArguments.n_first_initialization_points < programArguments.k) {
+        fprintf(stderr,
+                "Cannot generate an instance of k-means with less initialization points than needed clusters: %"PRIu32" < %"PRIu32"\n",
+                programArguments.n_first_initialization_points, programArguments.k);
         return -1;
     }
-    // the following fprintf (and every code already present in this skeleton) can be removed, it is just an example to show you how to use the program arguments
-    fprintf(stderr, "\tnumber of threads executing the LLoyd's algoprithm in parallel: %" PRIu32 "\n", program_arguments.n_threads);
-    fprintf(stderr, "\tnumber of clusters (k): %" PRIu32 "\n", program_arguments.k);
-    fprintf(stderr, "\twe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n", program_arguments.n_first_initialization_points);
-    fprintf(stderr, "\tquiet mode: %s\n", program_arguments.quiet ? "enabled" : "disabled");
-    fprintf(stderr, "\tsquared distance function: %s\n", program_arguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
+    fprintf(stderr, "\tNumber of threads executing the LLoyd's algorithm in parallel: %" PRIu32 "\n",
+            programArguments.n_threads);
+    fprintf(stderr, "\tNumber of clusters (k): %" PRIu32 "\n", programArguments.k);
+    fprintf(stderr,
+            "\tWe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n",
+            programArguments.n_first_initialization_points);
+    fprintf(stderr, "\tQuiet mode: %s\n", programArguments.quiet ? "enabled" : "disabled");
+    fprintf(stderr, "\tSquared distance function: %s\n",
+            programArguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
 
-    // TODO: parse the binary input file, compute the k-means solutions and write the output in a csv
+    // Collecting data
+    generalData = (data_t *) malloc(sizeof(data_t));
+    if (generalData == NULL) return -1;
+    if (loadData(programArguments.input_stream, generalData) == -1) return -1;
 
+    // General features of the kMeans problem
+    generic_func = programArguments.squared_distance_func;
+    k = programArguments.k;
+    uint32_t n = programArguments.n_first_initialization_points;
+    uint32_t nThreads = programArguments.n_threads;
+    iterationNumber = combinatorial(n, k);
 
-
-
-    // close the files opened by parse_args
-    if (program_arguments.input_stream != stdin) {
-        fclose(program_arguments.input_stream);
+    // The time took by the function generateSetOfStartingCentroids is negligible
+    startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
+    if (generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber)
+        == -1) {
+        fullClean(generalData, NULL, iterationNumber, programArguments, NULL);
+        return -1;
     }
-    if (program_arguments.output_stream != stdout) {
-        fclose(program_arguments.output_stream);
+
+    if (writeHeadline(programArguments.quiet, programArguments.output_stream) == -1) {
+        fullClean(generalData, startingCentroids, iterationNumber, programArguments, NULL);
+        return -1;
     }
+
+    // Setup of the threads
+    buffer = createBuffer((uint8_t) N);
+    if (buffer == NULL || pthread_mutex_init(&mutex, NULL) != 0 ||
+        sem_init(&empty, 0, N) != 0 || sem_init(&full, 0, 0) != 0) {
+        fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+        return -1;
+    }
+
+    pthread_t producerThreads[nThreads];
+    pthread_t consumerThread;
+
+    uint32_t amountOfInstancePerThread = (uint32_t) iterationNumber / nThreads;
+    uint16_t rest = (uint16_t) iterationNumber % nThreads;
+    uint32_t start = 0;
+    uint32_t end = amountOfInstancePerThread;
+    uint32_t listOfIndexes[nThreads][2];
+
+    // Launch of the threads
+    for (int i = 0; i < nThreads; i++) {
+        if (rest > 0) {
+            end++;
+            rest--;
+        }
+        listOfIndexes[i][0] = start;
+        listOfIndexes[i][1] = end;
+        if (pthread_create(&producerThreads[i], NULL, &produce, (void *) listOfIndexes[i]) != 0) {
+            fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+            return -1;
+        }
+        start = end;
+        end += amountOfInstancePerThread;
+    }
+    if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) {
+        fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+        return -1;
+    }
+
+    // Closing the threads
+    for (uint32_t i = 0; i < nThreads; i++) {
+        if (pthread_join(producerThreads[i], NULL) != 0) {
+            fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+            return -1;
+        }
+    }
+    if (pthread_join(consumerThread, NULL) != 0) {
+        fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+        return -1;
+    }
+
+    // Closing, freeing, destroying what is necessary
+    fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+    if (pthread_mutex_destroy(&mutex) != 0) return -1;
+
+    printf("The job is done !\n");
     return 0;
 }
