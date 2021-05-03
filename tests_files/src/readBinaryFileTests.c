@@ -8,12 +8,16 @@ FILE *readBinaryFileForTest2;
 data_t *readBinaryFileDataTest2;
 
 int32_t setupBinaryFile(void) {
+    readBinaryFileForTest1 = (FILE *) malloc(sizeof(FILE));
+    if (readBinaryFileForTest1 == NULL) return -1;
     readBinaryFileForTest1 = fopen("tests_files/input_binary/ex1.bin", "r");
     if (readBinaryFileForTest1 == NULL) return -1;
 
     readBinaryFileDataTest1 = (data_t *) malloc(sizeof(data_t));
     if (readBinaryFileDataTest1 == NULL) return -1;
 
+    readBinaryFileForTest2 = (FILE *) malloc(sizeof(FILE));
+    if (readBinaryFileForTest2 == NULL) return -1;
     readBinaryFileForTest2 = fopen("tests_files/input_binary/ex2.bin", "r");
     if (readBinaryFileForTest2 == NULL) return -1;
 

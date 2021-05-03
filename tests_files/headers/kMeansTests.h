@@ -15,4 +15,4 @@ int32_t kMeansTeardown(void);
 void testKMeansDimension2(void);
 
 
-#endif //PROJET_CMAKE_KMEANSTESTS_H
+#endif //KMEANSTESTS_H
