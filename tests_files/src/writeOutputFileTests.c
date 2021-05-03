@@ -3,7 +3,7 @@
 point_t **writeOutputFileCentroids1;
 point_t **writeOutputFileCentroids2;
 
-FILE *writeOutputFile;
+FILE *writeOutputFile = NULL;
 
 kMeans_t *outputKMeansDim2 = NULL;
 kMeans_t *outputKMeansDim3 = NULL;
@@ -170,8 +170,6 @@ int32_t setupCreateOutputFile(void) {
     writeOutputFileCentroids2[0][1].vector[0] = (int64_t) 2;
     writeOutputFileCentroids2[0][1].vector[1] = (int64_t) 2;
 
-    writeOutputFile = (FILE *) malloc(sizeof(FILE));
-    if (writeOutputFile == NULL) return -1;
     writeOutputFile = fopen("tests_files/output_csv/ex1.csv", "w");
     return 0;
 }
@@ -210,6 +208,7 @@ int32_t teardownCreateOutputFile(void) {
     free(outputKMeansDim3);
 
     fclose(writeOutputFile);
+    writeOutputFile = NULL;
 
     free(writeOutputFileCentroids1);
     free(writeOutputFileCentroids2);
