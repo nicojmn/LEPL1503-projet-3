@@ -6,7 +6,7 @@ int32_t kMeansSetup(void) {
     kMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (kMeansDim2 == NULL) return -1;
     kMeansDim2->dimension = (int32_t) 2;
-    kMeansDim2->points = (point_t *) malloc(5 * sizeof(point_t));
+    kMeansDim2->points = (point_t *) malloc(3 * sizeof(point_t));
     kMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
     if (kMeansDim2->points == NULL) return -1;
     kMeansDim2->size = 3;
