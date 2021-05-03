@@ -87,8 +87,9 @@ En augmentant les paramètres à -k 6 - 10 (comparaison pour le code en C unique
 * 4 threads : 1m14.817s
 
 Ici les tests ont été effectués sur raspberry. On n'arrive plus à améliorer le temps d'exécution à partir de 2 threads
-producteurs (il ne faut pas oublier le thread consommateur et celui derrière l'exécution de main) ce qui fait alors
-sens. Sur nos machines personnelles, on observe des gains de performance jusqu'à 7 threads producteurs
+producteurs (il ne faut pas oublier le thread consommateur et celui derrière l'exécution de main). Il fait alors sens
+que 2 threads producteurs fournissent le meilleur résultat. Sur nos machines personnelles, on observe des gains de
+performance jusqu'à 7 threads producteurs.
 
 # Lancement du programme
 
