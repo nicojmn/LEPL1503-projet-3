@@ -47,16 +47,23 @@ faire nous avons utilisé:
 
 1. full: renseigne les threads producteurs sur la présence d'au moins une place disponible sur le buffer
 
-un mutex: il empêche l'utilisation du buffer par plus d'un thread en simultané. Sans cet élément, deux threads
-producteurs pourraient, par exemple, déposer leurs résultat en même temps sur un même emplacement du buffer. Ce qui
-n'est évidemment pas souhaité.
+## Un mutex
+
+Il empêche l'utilisation du buffer par plus d'un thread en simultané. Sans cet élément, deux threads producteurs
+pourraient, par exemple, déposer leurs résultat en même temps sur un même emplacement du buffer. Ce qui n'est évidemment
+pas souhaité.
 
 # Tests de performance
 
-Ces tests ont été effectués sur le fichier ex5.bin contenant 50 000 points. Commande utilisée via la terminal :
+Ces tests ont été effectués sur le fichier ex6_dim5.bin contenant 10 000 points en 5 dimensions.
 
-(commande utilisée pour les tests : ./kmeans -k 3 -p 6 -n <1, 2, 3, 4> -q -d euclidean -f ~
-/code/output_csv/ex6_dim5.csv  ~/code/input_binary/ex6_dim5.bin)
+Commande utilisée via la terminal (pour le programme c):
+
+* make
+* ./kmeans -k 3 -p 6 -n <1, 2, 3, 4> -q -d euclidean -f ~
+  /code/output_csv/ex6_dim5.csv  ~/code/input_binary/ex6_dim5.bin
+
+## Résultats
 
 * Python : 2m39.422s
 
@@ -79,7 +86,9 @@ En augmentant les paramètres à -k 6 - 10 (comparaison pour le code en C unique
 * 3 threads : 1m15.007s
 * 4 threads : 1m14.817s
 
-Nous pouvons en conclure qu'en moyenne, le programme en C multithreadé s'effectue plus vite que le programme python.
+Ici les tests ont été effectués sur raspberry. On n'arrive plus à améliorer le temps d'exécution à partir de 2 threads
+producteurs (il ne faut pas oublier le thread consommateur et celui derrière l'exécution de main) ce qui fait alors
+sens. Sur nos machines personnelles, on observe des gains de performance jusqu'à 7 threads producteurs
 
 # Lancement du programme
 
@@ -91,8 +100,8 @@ Nous pouvons en conclure qu'en moyenne, le programme en C multithreadé s'effect
 
 On a ajouté deux autres commandes :
 
-1. make valgrind : effectue les tests avec valgrind
-1. make helgrind : effectue les tests avec helgrind
+1. make valgrind
+1. make helgrind
 
 Pour de plus amples informations concernant leur utilisation, référez-vous au Makefile.
 
