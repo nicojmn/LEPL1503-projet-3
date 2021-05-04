@@ -41,7 +41,7 @@ void *produce(void *startEnd) {
         runKMeans(kMeansSimulation,
                   (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
 
-        point_t **clusters = generateClusters(kMeansSimulation);
+        point_t **clusters = generateClusters(kMeansSimulation, programArguments.quiet);
         uint64_t distortionValue = distortion(kMeansSimulation,
                                               (squared_distance_func_t (*)(const point_t *, const point_t *,
                                                                            uint32_t)) generic_func);

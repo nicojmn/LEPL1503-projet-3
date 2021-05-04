@@ -224,11 +224,10 @@ void test_createOutputFileDimension2(void) {
     squared_distance_func_t generic_func = squared_manhattan_distance;
     runKMeans(outputKMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
     writeHeadline(false, writeOutputFile);
-    point_t **clusters = generateClusters(outputKMeansDim2);
+    point_t **clusters = generateClusters(outputKMeansDim2, false);
     uint64_t distortionValue = distortion(outputKMeansDim2,
                                           (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t))
                                                   generic_func);
     writeOneKMeans(outputKMeansDim2, false, writeOutputFile, writeOutputFileCentroids1[0],
                    clusters, distortionValue);
-
 }
