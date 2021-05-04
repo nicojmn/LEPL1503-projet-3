@@ -24,8 +24,7 @@ void updateCentroids(kMeans_t *kMeans) {
         for (uint32_t j = 0; j < kMeans->dimension; ++j) {
             /** Comments from the python script:
             /!\ we here use int(a/b) instead of a//b because // implements the floor division and with negative
-             # numbers this is not an integer division as it rounds the result down
-            */
+             # numbers this is not an integer division as it rounds the result down */
             ((kMeans->centroids)[i].vector)[j] = ((kMeans->centroids)[i].vector)[j] /
                                                  (int64_t) (kMeans->clustersSize)[i];
         }

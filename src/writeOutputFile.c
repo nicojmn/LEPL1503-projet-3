@@ -73,11 +73,10 @@ int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *
             }
         }
         if (fprintf(outputPath, "]\"") < 0) return -1;
-
-        for (uint32_t i = 0; i < kMeans->k; ++i) {
-            free(clusters[i]);
-        }
-        free(clusters);
     }
+    for (uint32_t i = 0; i < kMeans->k; ++i) {
+        free(clusters[i]);
+    }
+    free(clusters);
     return 0;
 }
