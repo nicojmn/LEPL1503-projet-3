@@ -27,7 +27,7 @@ int32_t writeHeadline(bool quiet, FILE *outputFile);
  * @param kMeans : one instance of the problem kMeans
  * @param quiet: boolean that decides whether we want to write the points of the simulation
  *                in the output csv file or not
- * @return : returns the final clusters of kMeans
+ * @return : returns the final clusters of kMeans or NULL if quiet is true
  */
 point_t **generateClusters(kMeans_t *kMeans, bool quiet);
 
