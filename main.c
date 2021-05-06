@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
 
     // Launch of the threads
     for (int i = 0; i < nThreads; i++) {
-        // The last thread is our main thread
+        // The last producer thread is our main thread
         if (i == nThreads - 1) {
             // Launch the consumer
             if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) {

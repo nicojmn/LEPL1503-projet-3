@@ -46,7 +46,7 @@ int32_t assignVectorsToCentroids(kMeans_t *kMeans,
                                                            kMeans->dimension);
             if (newDistance < currentDistance) {
                 currentDistance = newDistance;
-                currentCentroid = (int32_t) j;
+                currentCentroid = j;
             }
         }
         (kMeans->points)[i].nearestCentroidID = currentCentroid;
