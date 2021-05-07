@@ -40,8 +40,7 @@ void *produce(void *startEnd) {
                                                        generalData->size, generalData->dimension);
         runKMeans(kMeansSimulation,
                   (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
-
-        point_t **clusters = generateClusters(kMeansSimulation);
+        point_t **clusters = generateClusters(kMeansSimulation, programArguments.quiet);
         uint64_t distortionValue = distortion(kMeansSimulation,
                                               (squared_distance_func_t (*)(const point_t *, const point_t *,
                                                                            uint32_t)) generic_func);
@@ -138,7 +137,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    pthread_t producerThreads[nThreads];
+    pthread_t producerThreads[nThreads - 1]; // nThreads-1 because the main thread is a producer too
     pthread_t consumerThread;
 
     uint32_t amountOfInstancePerThread = (uint32_t) iterationNumber / nThreads;
@@ -149,26 +148,37 @@ int main(int argc, char *argv[]) {
 
     // Launch of the threads
     for (int i = 0; i < nThreads; i++) {
-        if (rest > 0) {
-            end++;
-            rest--;
+        // The last producer thread is our main thread
+        if (i == nThreads - 1) {
+            // Launch the consumer
+            if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) {
+                fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+                return -1;
+            }
+            listOfIndexes[i][0] = start;
+            listOfIndexes[i][1] = end;
+            if (produce((void *) listOfIndexes[i]) == (void *) -1) {
+                fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+                return -1;
+            }
+        } else {
+            if (rest > 0) {
+                end++;
+                rest--;
+            }
+            listOfIndexes[i][0] = start;
+            listOfIndexes[i][1] = end;
+            if (pthread_create(&producerThreads[i], NULL, &produce, (void *) listOfIndexes[i]) != 0) {
+                fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+                return -1;
+            }
+            start = end;
+            end += amountOfInstancePerThread;
         }
-        listOfIndexes[i][0] = start;
-        listOfIndexes[i][1] = end;
-        if (pthread_create(&producerThreads[i], NULL, &produce, (void *) listOfIndexes[i]) != 0) {
-            fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
-            return -1;
-        }
-        start = end;
-        end += amountOfInstancePerThread;
-    }
-    if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) {
-        fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
-        return -1;
     }
 
     // Closing the threads
-    for (uint32_t i = 0; i < nThreads; i++) {
+    for (uint32_t i = 0; i < nThreads - 1; i++) {
         if (pthread_join(producerThreads[i], NULL) != 0) {
             fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
             return -1;

@@ -3,7 +3,7 @@
 point_t **writeOutputFileCentroids1;
 point_t **writeOutputFileCentroids2;
 
-FILE *writeOutputFile;
+FILE *writeOutputFile = NULL;
 
 kMeans_t *outputKMeansDim2 = NULL;
 kMeans_t *outputKMeansDim3 = NULL;
@@ -208,6 +208,7 @@ int32_t teardownCreateOutputFile(void) {
     free(outputKMeansDim3);
 
     fclose(writeOutputFile);
+    writeOutputFile = NULL;
 
     free(writeOutputFileCentroids1);
     free(writeOutputFileCentroids2);
@@ -223,11 +224,10 @@ void test_createOutputFileDimension2(void) {
     squared_distance_func_t generic_func = squared_manhattan_distance;
     runKMeans(outputKMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
     writeHeadline(false, writeOutputFile);
-    point_t **clusters = generateClusters(outputKMeansDim2);
+    point_t **clusters = generateClusters(outputKMeansDim2, false);
     uint64_t distortionValue = distortion(outputKMeansDim2,
                                           (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t))
                                                   generic_func);
     writeOneKMeans(outputKMeansDim2, false, writeOutputFile, writeOutputFileCentroids1[0],
                    clusters, distortionValue);
-
 }

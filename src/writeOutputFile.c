@@ -12,7 +12,9 @@ int32_t writeHeadline(bool quiet, FILE *outputFile) {
 }
 
 
-point_t **generateClusters(kMeans_t *kMeans) {
+point_t **generateClusters(kMeans_t *kMeans, bool quiet) {
+    if (quiet) return NULL;
+
     point_t **clusters = malloc(sizeof(point_t) * kMeans->k);
     if (clusters == NULL) return NULL;
 
@@ -73,11 +75,10 @@ int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *
             }
         }
         if (fprintf(outputPath, "]\"") < 0) return -1;
-
         for (uint32_t i = 0; i < kMeans->k; ++i) {
             free(clusters[i]);
         }
-        free(clusters);
     }
+    free(clusters);
     return 0;
 }

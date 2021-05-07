@@ -1,10 +1,10 @@
 #include "../headers/readBinaryFileTests.h"
 
 /** Testing input file */
-FILE *readBinaryFileForTest1;
+FILE *readBinaryFileForTest1 = NULL;
 data_t *readBinaryFileDataTest1;
 
-FILE *readBinaryFileForTest2;
+FILE *readBinaryFileForTest2 = NULL;
 data_t *readBinaryFileDataTest2;
 
 int32_t setupBinaryFile(void) {
@@ -24,6 +24,7 @@ int32_t setupBinaryFile(void) {
 
 int32_t teardownBinaryFile(void) {
     if (0 != fclose(readBinaryFileForTest1)) return -1;
+    readBinaryFileForTest1 = NULL;
     for (uint64_t i = 0; i < readBinaryFileDataTest1->size; i++) {
         free((readBinaryFileDataTest1->vectors)[i]);
     }
@@ -31,6 +32,7 @@ int32_t teardownBinaryFile(void) {
     free(readBinaryFileDataTest1);
 
     if (0 != fclose(readBinaryFileForTest2)) return -1;
+    readBinaryFileForTest2 = NULL;
     for (uint64_t i = 0; i < readBinaryFileDataTest2->size; i++) {
         free((readBinaryFileDataTest2->vectors)[i]);
     }
