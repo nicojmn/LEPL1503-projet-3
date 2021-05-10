@@ -2,7 +2,7 @@
 
 runOneComparison() {
 
-    echo "Comparison with k = $1, p = $2, n = $3, distance function: $4 and the file $5:"
+    echo "Comparison using: k = $1, p = $2, n = $3, distance function: $4 and the file $5:"
 
     sh tests_files/bash/run.sh python $1 $2 $4 $3 $5
     sh tests_files/bash/run.sh c $1 $2 $4 $3 $5
