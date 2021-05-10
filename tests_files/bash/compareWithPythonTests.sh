@@ -11,21 +11,29 @@ runOneComparison() {
 
     # verify of no error occurred
     if [ $? != 0 ]; then
+      # We delete the previous file
+      rm "tests_files/comparisonResult.txt"
+      # We write the outcome in a file so that our c script can be informed
+      echo "FAIL" >> "tests_files/comparisonResult.txt"
       exit 1
     fi
 }
 
-# Comparison with the simple file ex1.bin
+# Comparison using the simple file ex1.bin
 runOneComparison 2 4 1 ex1.bin
 runOneComparison 2 4 2 ex1.bin
 runOneComparison 2 5 3 ex1.bin
 
-# Comparison with the file ex3.bin
+# Comparison using the file ex3.bin
 runOneComparison 2 4 1 ex3.bin
 runOneComparison 2 4 2 ex3.bin
 runOneComparison 2 5 3 ex3.bin
 
-# Comparison with the file ex6_dim.bin
+# Comparison using the file ex6_dim.bin
 runOneComparison 2 4 4 ex6_dim5.bin
 
+# We delete the previous file
+rm "tests_files/comparisonResult.txt"
+# We write the outcome in a file so that our c script can be informed
+echo "SUCCES" >> "tests_files/comparisonResult.txt"
 exit 0
