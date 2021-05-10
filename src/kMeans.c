@@ -38,10 +38,11 @@ int32_t assignVectorsToCentroids(kMeans_t *kMeans,
     squared_distance_func_t genericDistanceFunction = (squared_distance_func_t) distanceFunction;
     for (uint64_t i = 0; i < kMeans->size; ++i) {
         // Let's find the closest centroid
-        uint64_t currentDistance = UINT64_MAX;
-        uint32_t currentCentroid;
+        uint64_t currentDistance = genericDistanceFunction(&(kMeans->points)[i], &(kMeans->centroids)[0],
+                                                           kMeans->dimension);;
+        uint32_t currentCentroid = 0;
         uint32_t oldCentroid = (kMeans->points)[i].nearestCentroidID;
-        for (uint32_t j = 0; j < kMeans->k; ++j) {
+        for (uint32_t j = 1; j < kMeans->k; ++j) {
             uint64_t newDistance = genericDistanceFunction(&(kMeans->points)[i], &(kMeans->centroids)[j],
                                                            kMeans->dimension);
             if (newDistance < currentDistance) {
@@ -93,6 +94,8 @@ kMeans_t *createOneInstance(int64_t **vectors, point_t **startingCentroidsID, ui
     // setup points
     for (uint64_t i = 0; i < size; ++i) {
         (kMeans->points)[i].vector = vectors[i];
+        // By default all the points are allocated to the first centroid
+        (kMeans->points)[i].nearestCentroidID = 0;
     }
     return kMeans;
 }

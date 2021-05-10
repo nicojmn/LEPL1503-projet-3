@@ -33,9 +33,13 @@ sem_t empty;
 sem_t full;
 buffer_t *buffer;
 
-
-void *produce(void *startEnd) {
-    for (uint32_t i = ((uint32_t *) startEnd)[0]; i < ((uint32_t *) startEnd)[1]; ++i) {
+/**
+ * @param indexes: an array containing the starting index (included) and the end (excluded)
+ * The function calculates a kMeans problem, one by one from [start: end[ and put it on the buffer
+ * each time the calculus is done
+ */
+void *produce(void *indexes) {
+    for (uint32_t i = ((uint32_t *) indexes)[0]; i < ((uint32_t *) indexes)[1]; ++i) {
         kMeans_t *kMeansSimulation = createOneInstance(generalData->vectors, startingCentroids, i, k,
                                                        generalData->size, generalData->dimension);
         runKMeans(kMeansSimulation,
@@ -57,7 +61,10 @@ void *produce(void *startEnd) {
     return NULL;
 }
 
-void *consume(void *useless){
+/**
+ * It writes each kMeans available on the buffer in the output csv file
+ */
+void *consume() {
     uint64_t *nbOfElemToConsume = malloc(sizeof(uint64_t));
     if (nbOfElemToConsume == NULL) return NULL;
     *nbOfElemToConsume = iterationNumber;
