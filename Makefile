@@ -43,7 +43,7 @@ valgrind : main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o s
 ## Performs valgrind (memory check) test
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./valgrind  -k 4 -p 6 -n 4 -d manhattan -f output_csv/kmeans.csv  input_binary/ex3.bin
-	rm -f valgrindMain
+	rm -f valgrind
 
 helgrind: main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
 ## -----------------------------------/!\--------------------------------
