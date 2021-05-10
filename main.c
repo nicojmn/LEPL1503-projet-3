@@ -101,15 +101,19 @@ int main(int argc, char *argv[]) {
                 programArguments.n_first_initialization_points, programArguments.k);
         return -1;
     }
-    fprintf(stderr, "\tNumber of threads executing the LLoyd's algorithm in parallel: %" PRIu32 "\n",
-            programArguments.n_threads);
-    fprintf(stderr, "\tNumber of clusters (k): %" PRIu32 "\n", programArguments.k);
-    fprintf(stderr,
-            "\tWe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n",
-            programArguments.n_first_initialization_points);
-    fprintf(stderr, "\tQuiet mode: %s\n", programArguments.quiet ? "enabled" : "disabled");
-    fprintf(stderr, "\tSquared distance function: %s\n",
-            programArguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
+
+    if (!programArguments.test_mode) {
+        fprintf(stderr, "\tNumber of threads executing the LLoyd's algorithm in parallel: %" PRIu32 "\n",
+                programArguments.n_threads);
+        fprintf(stderr, "\tNumber of clusters (k): %" PRIu32 "\n", programArguments.k);
+        fprintf(stderr,
+                "\tWe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n",
+                programArguments.n_first_initialization_points);
+        fprintf(stderr, "\tQuiet mode: %s\n", programArguments.quiet ? "enabled" : "disabled");
+        fprintf(stderr, "\tSquared distance function: %s\n",
+                programArguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
+    }
+
 
     // Collecting data
     generalData = (data_t *) malloc(sizeof(data_t));
@@ -200,6 +204,8 @@ int main(int argc, char *argv[]) {
     fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
     if (pthread_mutex_destroy(&mutex) != 0) return -1;
 
-    printf("The job is done !\n");
+    if (!programArguments.test_mode) {
+        printf("The job is done !\n");
+    }
     return 0;
 }

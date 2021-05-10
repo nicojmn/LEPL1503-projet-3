@@ -14,6 +14,8 @@ void usage(char *prog_name) {
             "    -q quiet mode: does not output the clusters content (the \"clusters\" column is simply not present in the csv)\n");
     fprintf(stderr,
             "    -d distance (manhattan by default): can be either \"euclidean\" or \"manhattan\". Chooses the distance formula to use by the algorithm to compute the distance between the points\n");
+    fprintf(stderr,
+            "    -t test mode: does not print anything\n");
 }
 
 int parse_args(args_t *args, int argc, char *argv[]) {
@@ -25,8 +27,9 @@ int parse_args(args_t *args, int argc, char *argv[]) {
     args->output_stream = stdout;
     args->quiet = false;
     args->squared_distance_func = squared_manhattan_distance;
+    args->test_mode = false;
     int opt;
-    while ((opt = getopt(argc, argv, "n:p:k:f:d:q")) != -1) {
+    while ((opt = getopt(argc, argv, "n:p:k:f:d:q:t")) != -1) {
         switch (opt) {
             case 'n':
                 args->n_threads = atoi(optarg);
@@ -60,6 +63,9 @@ int parse_args(args_t *args, int argc, char *argv[]) {
                 break;
             case 'q':
                 args->quiet = true;
+                break;
+            case 't':
+                args->test_mode = true;
                 break;
             case 'd':
                 if (strcmp("euclidean", optarg) == 0) {
