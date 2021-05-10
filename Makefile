@@ -34,7 +34,7 @@ test: tests_files/src/tests.c \
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 	./test
 
-tests: kmeans test
+tests: clean kmeans test
 
 valgrind : main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
 ## -----------------------------------/!\--------------------------------
