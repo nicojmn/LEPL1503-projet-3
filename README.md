@@ -95,7 +95,8 @@ On a ajouté deux autres commandes :
 1. make valgrind
 1. make helgrind
 
-Pour de plus amples informations concernant leur utilisation, référez-vous au Makefile.
+La première effectue les tests valgrind (tests de mémoire) sur le fichier ex3.bin. La seconde effectue les tests
+helgrind (test des threads) sur le fichier ex3.bin.
 
 # Questions éventuelles
 

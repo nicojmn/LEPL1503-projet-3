@@ -42,7 +42,7 @@ valgrind : main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o s
 ## -----------------------------------/!\--------------------------------
 ## Performs valgrind (memory check) test
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
-	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./valgrind  -k 4 -p 6 -n 4 -d manhattan -f output_csv/kmeans.csv  input_binary/ex3.bin
+	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./valgrind  -k 4 -p 6 -n 4 -d manhattan -f tests_files/output_csv/kmeans.csv  tests_files/input_binary/ex3.bin
 	rm -f valgrind
 
 helgrind: main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
@@ -51,7 +51,7 @@ helgrind: main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o sr
 ## -----------------------------------/!\--------------------------------
 ## Performs helgrind (safe threads check) test
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
-	valgrind --tool=helgrind ./helgrind -k 2 -p 3 -n 2 -d euclidean -f output_csv/kmeans.csv input_binary/ex3.bin
+	valgrind --tool=helgrind ./helgrind -k 2 -p 3 -n 2 -d euclidean -f tests_files/output_csv/kmeans.csv tests_files/input_binary/ex3.bin
 	rm -f helgrind
 
 .PHONY: clean tests kmeans valgrind run
