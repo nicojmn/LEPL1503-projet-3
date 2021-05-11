@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <inttypes.h>
 #include <string.h>
 #include <stdbool.h>
 #include <getopt.h>
@@ -29,5 +30,7 @@ typedef struct {
 void usage(char *prog_name);
 
 int parse_args(args_t *args, int argc, char *argv[]);
+
+void displayOptions(args_t programArguments);
 
 #endif //MANAGEARGS_H

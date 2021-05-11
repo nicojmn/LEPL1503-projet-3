@@ -91,3 +91,17 @@ int parse_args(args_t *args, int argc, char *argv[]) {
     }
     return 0;
 }
+
+void displayOptions(args_t programArguments) {
+    if (!programArguments.test_mode) {
+        fprintf(stderr, "\tNumber of threads executing the LLoyd's algorithm in parallel: %" PRIu32 "\n",
+                programArguments.n_threads);
+        fprintf(stderr, "\tNumber of clusters (k): %" PRIu32 "\n", programArguments.k);
+        fprintf(stderr,
+                "\tWe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n",
+                programArguments.n_first_initialization_points);
+        fprintf(stderr, "\tQuiet mode: %s\n", programArguments.quiet ? "enabled" : "disabled");
+        fprintf(stderr, "\tSquared distance function: %s\n",
+                programArguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
+    }
+}

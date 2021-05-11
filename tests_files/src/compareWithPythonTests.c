@@ -17,10 +17,10 @@ void testCompare(void) {
     FILE *resultFile = fopen("tests_files/comparisonResult.txt", "r");
     CU_ASSERT_PTR_NOT_NULL(resultFile);
 
-    char result[7];
+    char result[8];
     fgets(result, sizeof(result), resultFile);
 
-    char *expected = "SUCCES\0";
+    char *expected = "SUCCESS\0";
     CU_ASSERT_STRING_EQUAL(result, expected);
 
     fclose(resultFile);
