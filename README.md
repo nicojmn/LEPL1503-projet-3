@@ -57,11 +57,10 @@ pas souhaité.
 
 Ces tests ont été effectués sur le fichier ex6_dim5.bin contenant 10 000 points en 5 dimensions.
 
-Commande utilisée via la terminal :
+Commande utilisée via la terminal (pour lancer ces commandes, vous devez vous situer dans le repertoire "groupeD22").
 
 * make
-* ./kmeans -k 6 -p 10 -n <1, 2, 3, 4> -q -d euclidean -f ~
-  /code/output_csv/ex6_dim5.csv  ~/code/input_binary/ex6_dim5.bin
+* ./kmeans -k 6 -p 10 -n 2 -q -d euclidean -f output_csv/ex6_dim5.csv input_binary/ex6_dim5.bin
 
 ## Résultats sur raspberry
 
