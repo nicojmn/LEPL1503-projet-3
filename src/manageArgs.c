@@ -29,7 +29,7 @@ int parse_args(args_t *args, int argc, char *argv[]) {
     args->squared_distance_func = squared_manhattan_distance;
     args->test_mode = false;
     int opt;
-    while ((opt = getopt(argc, argv, "n:p:k:f:d:q:t")) != -1) {
+    while ((opt = getopt(argc, argv, "n:p:k:f:d:qt")) != -1) {
         switch (opt) {
             case 'n':
                 args->n_threads = atoi(optarg);
