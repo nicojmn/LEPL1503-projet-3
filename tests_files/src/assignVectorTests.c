@@ -91,6 +91,7 @@ void testFirstAssignVectorToCentroids(void) {
     CU_ASSERT_EQUAL((assignVectorKMeansDim2->points)[1].nearestCentroidID, 0);
     CU_ASSERT_EQUAL((assignVectorKMeansDim2->points)[2].nearestCentroidID, 1);
 
+    // Only one iteration is necessary to find a local minimum here so no change can occur
     CU_ASSERT_FALSE(assignVectorsToCentroids(assignVectorKMeansDim2,
                                              (squared_distance_func_t (*)(const point_t *, const point_t *,
                                                                           uint32_t)) generic_func));

@@ -114,6 +114,10 @@ int main(int argc, char *argv[]) {
     generic_func = programArguments.squared_distance_func;
     k = programArguments.k;
     uint32_t n = programArguments.n_first_initialization_points;
+    // We take the minimum between n_first_initialization_points and the number of points
+    if (generalData->size < n) {
+        n = generalData->size;
+    }
     uint32_t nThreads = programArguments.n_threads;
     iterationNumber = combinatorial(n, k);
 

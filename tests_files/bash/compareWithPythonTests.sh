@@ -5,6 +5,11 @@ runOneComparison() {
     echo "================================================================================="
     echo "Comparison using: k = $1, p = $2, n = $3, distance function: $4 and the file $5:"
 
+    # If it is a special case when the number of points < picking limit
+    if [ $# = 6 ]; then
+      echo '/!Special case with a picking limit exceeding the number of points!\'
+    fi
+
     sh tests_files/bash/run.sh python $1 $2 $4 $3 $5
     sh tests_files/bash/run.sh c $1 $2 $4 $3 $5
 
@@ -24,6 +29,9 @@ runOneComparison() {
 runOneComparison 2 4 1 euclidean ex1.bin
 runOneComparison 2 4 2 manhattan ex1.bin
 runOneComparison 2 5 3 euclidean ex1.bin
+
+# Comparison with a picking limit exceeding the number of points
+runOneComparison 3 30 2 euclidean ex1.bin "pickingLimitExceedingNbrPoints"
 
 # Comparison using the file ex3.bin
 runOneComparison 2 4 1 euclidean ex3.bin

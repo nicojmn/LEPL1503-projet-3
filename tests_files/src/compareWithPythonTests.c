@@ -11,6 +11,8 @@ int32_t compareWithPythonTeardown(void) {
 
 void testCompare(void) {
     printf("\n");
+
+    // The comparisons are handled with the bash file compareWithPythonTests.sh
     char *command = "sh tests_files/bash/compareWithPythonTests.sh";
     system(command);
 
@@ -19,8 +21,9 @@ void testCompare(void) {
 
     char result[8];
     fgets(result, sizeof(result), resultFile);
-
     char *expected = "SUCCESS\0";
+
+    // We check if the comparisons went on well
     CU_ASSERT_STRING_EQUAL(result, expected);
 
     fclose(resultFile);
