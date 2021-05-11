@@ -12,6 +12,7 @@
 #include "kMeansTests.h"
 #include "generateCentroidsTests.h"
 #include "readBinaryFileTests.h"
+#include "compareWithPythonTests.h"
 
 int main();
 

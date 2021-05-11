@@ -11,6 +11,7 @@ int main() {
     CU_pSuite binaryFileSuite = NULL;
     CU_pSuite csvFileSuite = NULL;
     CU_pSuite generateStartingCentroidsSuite = NULL;
+    CU_pSuite completeTestSuite = NULL;
 
     /** initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry()) {
@@ -29,10 +30,13 @@ int main() {
     kMeansSuite = CU_add_suite("kMeans test", kMeansSetup, kMeansTeardown);
     binaryFileSuite = CU_add_suite("binary file loading test", setupBinaryFile, teardownBinaryFile);
     csvFileSuite = CU_add_suite("writing into csv file test", setupCreateOutputFile, teardownCreateOutputFile);
+    completeTestSuite = CU_add_suite("Comparison between python and c", compareWithPythonSetup,
+                                     compareWithPythonTeardown);
 
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
-        updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kMeansSuite == NULL
-        || binaryFileSuite == NULL || csvFileSuite == NULL || generateStartingCentroidsSuite == NULL) {
+        updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kMeansSuite == NULL ||
+        binaryFileSuite == NULL || csvFileSuite == NULL || generateStartingCentroidsSuite == NULL ||
+        completeTestSuite == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -50,7 +54,10 @@ int main() {
         (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids)) ||
         (NULL == CU_add_test(kMeansSuite, "One iteration of kMeans", testKMeansDimension2)) ||
         (NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile)) ||
-        (NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2))) {
+        (NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2)) ||
+        (NULL ==
+         CU_add_test(completeTestSuite, "Compare the solutions from c with the ones from python", testCompare))) {
+
         CU_cleanup_registry();
         return CU_get_error();
     }

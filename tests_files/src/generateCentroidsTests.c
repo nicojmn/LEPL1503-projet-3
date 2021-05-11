@@ -70,31 +70,31 @@ int32_t teardownGenerateStartingCentroids(void) {
 void testGenerateStartingCentroids(void) {
 
     // using ex1.bin
-    CU_ASSERT_EQUAL(startingCentroids1[0]->vector[0], 1);
-    CU_ASSERT_EQUAL(startingCentroids1[0]->vector[1], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[0][0].vector[0], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[0][0].vector[1], 1);
 
-    CU_ASSERT_EQUAL(startingCentroids1[1]->vector[0], 1);
-    CU_ASSERT_EQUAL(startingCentroids1[1]->vector[1], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[0][1].vector[0], 2);
+    CU_ASSERT_EQUAL(startingCentroids1[0][1].vector[1], 2);
 
-    CU_ASSERT_EQUAL(startingCentroids1[2]->vector[0], 1);
-    CU_ASSERT_EQUAL(startingCentroids1[2]->vector[1], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[1][0].vector[0], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[1][0].vector[1], 1);
 
-    CU_ASSERT_EQUAL(startingCentroids1[3]->vector[0], 2);
-    CU_ASSERT_EQUAL(startingCentroids1[3]->vector[1], 2);
+    CU_ASSERT_EQUAL(startingCentroids1[1][1].vector[0], 3);
+    CU_ASSERT_EQUAL(startingCentroids1[1][1].vector[1], 4);
 
 
     // using ex3.bin
-    CU_ASSERT_EQUAL(startingCentroids2[0]->vector[0], 2053);
-    CU_ASSERT_EQUAL(startingCentroids2[0]->vector[1], 981);
+    CU_ASSERT_EQUAL(startingCentroids2[0][0].vector[0], 2053);
+    CU_ASSERT_EQUAL(startingCentroids2[0][0].vector[1], 981);
 
-    CU_ASSERT_EQUAL(startingCentroids2[1]->vector[0], 2053);
-    CU_ASSERT_EQUAL(startingCentroids2[1]->vector[1], 981);
+    CU_ASSERT_EQUAL(startingCentroids2[0][1].vector[0], 515);
+    CU_ASSERT_EQUAL(startingCentroids2[0][1].vector[1], 486);
 
-    CU_ASSERT_EQUAL(startingCentroids2[2]->vector[0], 2053);
-    CU_ASSERT_EQUAL(startingCentroids2[2]->vector[1], 981);
+    CU_ASSERT_EQUAL(startingCentroids2[1][0].vector[0], 2053);
+    CU_ASSERT_EQUAL(startingCentroids2[1][0].vector[1], 981);
 
-    CU_ASSERT_EQUAL(startingCentroids2[3]->vector[0], 515);
-    CU_ASSERT_EQUAL(startingCentroids2[3]->vector[1], 486);
+    CU_ASSERT_EQUAL(startingCentroids2[1][1].vector[0], 988);
+    CU_ASSERT_EQUAL(startingCentroids2[1][1].vector[1], 519);
 }
 
 void testCombinatorial() {

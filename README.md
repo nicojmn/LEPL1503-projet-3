@@ -9,7 +9,7 @@ Toutes nos structures sont définies dans le fichier headers/kmeansStruct.h. Pou
 consultez le fichier.
 
 1. point_t : cette structure représente un point. Elle est composée d'un vecteur représentant les coordonnées du point
-   ainsi que celles du centroïde le plus proche.
+   ainsi que l'indice du centroïd le plus proche.
 
 1. kMeans_t : cette structure est composée de toutes les informations nécessaires au déroulement de l'algorithme de
    Lloyd's. Le nom des composantes de cette structure est, selon nous, assez clair pour ne pas expliquer leur fonction.

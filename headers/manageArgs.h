@@ -22,6 +22,7 @@ typedef struct {
     uint32_t k;
     uint32_t n_first_initialization_points;
     bool quiet;
+    bool test_mode;
     squared_distance_func_t squared_distance_func;
 } args_t;
 
