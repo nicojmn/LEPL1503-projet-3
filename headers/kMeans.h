@@ -41,16 +41,17 @@ void runKMeans(kMeans_t *kMeans,
 /**
  * @param vectors : the points of the simulation
  * @param startingCentroidsID : the different set of starting centroids
- * @param index : the iteration index (each iteration has an index so that it can be linked
+ * @param instanceIndex : the iteration instanceIndex (each iteration has an instanceIndex so that it can be linked
  *                                      to its set of starting centroids)
- * @param k : number of cluster
+ * @param kCentroids : number of cluster
  * @param size : the number of points used by the simulation
  * @param dimension : the dimension of each point
  * @return : it returns the structure which will be used by our implementation of
  *           Lloyd's algorithm
  */
-kMeans_t *createOneInstance(int64_t **vectors, point_t **startingCentroidsID, uint32_t index, uint32_t k,
-                            uint64_t size, uint32_t dimension);
+kMeans_t *
+createOneInstance(int64_t **vectors, point_t **startingCentroidsID, uint32_t instanceIndex, uint32_t kCentroids,
+                  uint64_t size, uint32_t dimension);
 
 /**
  * @param clusters : array of clusters

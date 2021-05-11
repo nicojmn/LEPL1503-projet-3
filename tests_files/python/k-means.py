@@ -9,15 +9,16 @@ from typing import List, Tuple
 
 LOG = False
 
-parser = argparse.ArgumentParser(description="Build the k-means")
-parser.add_argument("input_file", help="The path to the binary input file that describe an instance of k-means",
+parser = argparse.ArgumentParser(description="Build the kCentroids-means")
+parser.add_argument("input_file",
+                    help="The path to the binary input file that describe an instance of kCentroids-means",
                     type=argparse.FileType('rb'), default=sys.stdin.buffer)
 parser.add_argument("-f", "--output-file", help="The path to the CSV output file that describes the solutions",
                     type=argparse.FileType('w'), default=sys.stdout)
 parser.add_argument("-d", "--distance",
-                    help="either \"manhattan\" or \"euclidean\": chooses the distance function to use for the k-means algorithm",
+                    help="either \"manhattan\" or \"euclidean\": chooses the distance function to use for the kCentroids-means algorithm",
                     type=str, default="manhattan")
-parser.add_argument("-k", type=int, help="The number of clusters to find")
+parser.add_argument("-kCentroids", type=int, help="The number of clusters to find")
 parser.add_argument("-p", "--picking_limit", help="Only the combinations of vectors with an index in [0, picking_limit["
                                                   " can serve as initial centroids")
 parser.add_argument("-q",
@@ -31,7 +32,7 @@ if not args.t:
 
 binary_data = args.input_file.read()
 
-K = int(args.k)
+K = int(args.kCentroids)
 picking_limit = int(args.picking_limit)
 dimension, nbr_vectors = struct.unpack("!IQ", binary_data[:12])  # Unpack binary data in network-byte order
 if not args.t:
@@ -51,14 +52,14 @@ if LOG:
 def update_centroids(clusters: List[List[Tuple]]) -> List[Tuple]:
     """Compute the new centroids from the the current vectors"""
     centroids = []
-    for k in range(K):
+    for kCentroids in range(K):
         vector_sum = tuple(0 for _ in range(dimension))
-        for vector in clusters[k]:
+        for vector in clusters[kCentroids]:
             vector_sum = tuple(vector_sum[m] + vector[m] for m in range(dimension))
 
         # /!\ we here use int(a/b) instead of a//b because // implements the floor division and with negative
         # numbers this is not an integer division as it rounds the result down
-        centroids.append(tuple(int(vector_sum[m] / len(clusters[k])) for m in range(dimension)))
+        centroids.append(tuple(int(vector_sum[m] / len(clusters[kCentroids])) for m in range(dimension)))
 
     if LOG:
         print(f"\tUpdate centroids to {centroids}", file=sys.stderr)
@@ -122,7 +123,7 @@ def k_means(initial_centroids: List[Tuple]) -> Tuple[List[Tuple], List[List[Tupl
     """
 
     if LOG:
-        print(f"Computing k-means with initial centroids = {initial_centroids}", file=sys.stderr)
+        print(f"Computing kCentroids-means with initial centroids = {initial_centroids}", file=sys.stderr)
     centroids = initial_centroids
     clusters: List[List[Tuple]] = [[] for _ in range(K)]
     clusters[0] = copy.copy(vectors)  # Assign all points to the first cluster
@@ -137,9 +138,9 @@ def k_means(initial_centroids: List[Tuple]) -> Tuple[List[Tuple], List[List[Tupl
 
 def distortion(centroids: List[Tuple], clusters: List[List[Tuple]]) -> int:
     current_sum = 0
-    for k, cluster in enumerate(clusters):
+    for kCentroids, cluster in enumerate(clusters):
         for vector in cluster:
-            current_sum += DISTANCE_SQUARED(vector, centroids[k])
+            current_sum += DISTANCE_SQUARED(vector, centroids[kCentroids])
     return current_sum
 
 

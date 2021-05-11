@@ -22,7 +22,7 @@ data_t *generalData;
 
 // general features of the kMeans problem
 point_t **startingCentroids;
-uint32_t k;
+uint32_t kCentroids;
 uint64_t iterationNumber;
 squared_distance_func_t generic_func;
 
@@ -40,7 +40,7 @@ buffer_t *buffer;
  */
 void *produce(void *indexes) {
     for (uint32_t i = ((uint32_t *) indexes)[0]; i < ((uint32_t *) indexes)[1]; ++i) {
-        kMeans_t *kMeansSimulation = createOneInstance(generalData->vectors, startingCentroids, i, k,
+        kMeans_t *kMeansSimulation = createOneInstance(generalData->vectors, startingCentroids, i, kCentroids,
                                                        generalData->size, generalData->dimension);
         runKMeans(kMeansSimulation,
                   (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t)) generic_func);
@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
 
     if (programArguments.n_first_initialization_points < programArguments.k) {
         fprintf(stderr,
-                "Cannot generate an instance of k-means with less initialization points than needed clusters: %"PRIu32" < %"PRIu32"\n",
+                "Cannot generate an instance of kCentroids-means with less initialization points than needed clusters: %"PRIu32" < %"PRIu32"\n",
                 programArguments.n_first_initialization_points, programArguments.k);
         return -1;
     }
@@ -112,18 +112,19 @@ int main(int argc, char *argv[]) {
 
     // General features of the kMeans problem
     generic_func = programArguments.squared_distance_func;
-    k = programArguments.k;
-    uint32_t n = programArguments.n_first_initialization_points;
+    kCentroids = programArguments.k;
+    uint32_t nFirstPoints = programArguments.n_first_initialization_points;
     // We take the minimum between n_first_initialization_points and the number of points
-    if (generalData->size < n) {
-        n = generalData->size;
+    if (generalData->size < nFirstPoints) {
+        nFirstPoints = generalData->size;
     }
     uint32_t nThreads = programArguments.n_threads;
-    iterationNumber = combinatorial(n, k);
+    iterationNumber = combinatorial(nFirstPoints, kCentroids);
 
     // The time took by the function generateSetOfStartingCentroids is negligible
     startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    if (generateSetOfStartingCentroids(startingCentroids, generalData->vectors, k, n, iterationNumber)
+    if (generateSetOfStartingCentroids(startingCentroids, generalData->vectors, kCentroids, nFirstPoints,
+                                       iterationNumber)
         == -1) {
         fullClean(generalData, NULL, iterationNumber, programArguments, NULL);
         return -1;

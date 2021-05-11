@@ -1,7 +1,7 @@
 ==6910== Memcheck, a memory error detector
 ==6910== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
 ==6910== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
-==6910== Command: ./exe -q -k 2 -p 3 -n 1 -d euclidean -f output_csv/kmeans.csv input_binary/ex1.bin
+==6910== Command: ./exe -q -kCentroids 2 -p 3 -n 1 -d euclidean -f output_csv/kmeans.csv input_binary/ex1.bin
 ==6910== Parent PID: 3642
 ==6910== 
 ==6910== Conditional jump or move depends on uninitialised value(s)

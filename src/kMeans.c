@@ -68,27 +68,28 @@ void runKMeans(kMeans_t *kMeans,
     }
 }
 
-kMeans_t *createOneInstance(int64_t **vectors, point_t **startingCentroidsID, uint32_t index, uint32_t k,
-                            uint64_t size, uint32_t dimension) {
+kMeans_t *
+createOneInstance(int64_t **vectors, point_t **startingCentroidsID, uint32_t instanceIndex, uint32_t kCentroids,
+                  uint64_t size, uint32_t dimension) {
     kMeans_t *kMeans = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (kMeans == NULL) return NULL;
-    kMeans->clustersSize = (uint64_t *) malloc(k * sizeof(uint64_t));
+    kMeans->clustersSize = (uint64_t *) malloc(kCentroids * sizeof(uint64_t));
     if (kMeans->clustersSize == NULL) return NULL;
     kMeans->points = (point_t *) malloc(size * sizeof(point_t));
     if (kMeans->points == NULL) return NULL;
-    kMeans->centroids = (point_t *) malloc(k * sizeof(point_t));
+    kMeans->centroids = (point_t *) malloc(kCentroids * sizeof(point_t));
     if (kMeans->centroids == NULL) return NULL;
 
-    kMeans->k = k;
+    kMeans->k = kCentroids;
     kMeans->size = size;
     kMeans->dimension = dimension;
 
     // setup centroids
-    for (uint32_t i = 0; i < k; ++i) {
+    for (uint32_t i = 0; i < kCentroids; ++i) {
         (kMeans->centroids)[i].vector = (int64_t *) malloc(dimension * sizeof(int64_t));
         if ((kMeans->centroids)[i].vector == NULL) return NULL;
         for (uint32_t j = 0; j < dimension; ++j) {
-            (kMeans->centroids)[i].vector[j] = (startingCentroidsID[index][i].vector)[j];
+            (kMeans->centroids)[i].vector[j] = (startingCentroidsID[instanceIndex][i].vector)[j];
         }
     }
     // setup points
