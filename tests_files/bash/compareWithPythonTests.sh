@@ -2,6 +2,7 @@
 
 runOneComparison() {
 
+    echo "================================================================================="
     echo "Comparison using: k = $1, p = $2, n = $3, distance function: $4 and the file $5:"
 
     sh tests_files/bash/run.sh python $1 $2 $4 $3 $5
@@ -35,5 +36,5 @@ runOneComparison 2 4 4 euclidean ex6_dim5.bin
 # We delete the previous file
 rm "tests_files/comparisonResult.txt"
 # We write the outcome in a file so that our c script can be informed
-echo "SUCCES" >> "tests_files/comparisonResult.txt"
+echo "SUCCESS" >> "tests_files/comparisonResult.txt"
 exit 0
