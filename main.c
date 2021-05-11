@@ -87,6 +87,7 @@ void *consume() {
         sem_post(&empty);
         (*nbOfElemToConsume)--;
     }
+    if (fprintf(programArguments.output_stream, "\n") < 0) return (void *) -1;
     free(nbOfElemToConsume);
     return NULL;
 }
