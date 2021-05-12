@@ -1,5 +1,5 @@
-CC = gcc -std=gnu99
-CFLAGS = -Wall -Werror -g
+CC = gcc
+CFLAGS = -Wall -Werror -g -std=gnu99
 LIBS = -lcunit -lpthread
 INCLUDE_HEADERS_DIRECTORY = -Iheaders
 VALGRIND_MEM_FULL = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose
