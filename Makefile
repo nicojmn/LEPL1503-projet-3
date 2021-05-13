@@ -37,7 +37,8 @@ test: tests_files/src/tests.c \
 
 tests: clean kmeans test
 
-valgrind : main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
+valgrind : main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/buffer.o\
+			src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
 ## -----------------------------------/!\--------------------------------
 ## WARNING : this command is used by Jenkins
 ## -----------------------------------/!\--------------------------------
@@ -46,7 +47,8 @@ valgrind : main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o s
 	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./valgrind  -k 4 -p 6 -n 4 -d manhattan -f tests_files/output_csv/kmeans.csv  tests_files/input_binary/ex3.bin
 	rm -f valgrind
 
-helgrind: main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
+helgrind: main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/buffer.o\
+			src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
 ## -----------------------------------/!\--------------------------------
 ## WARNING : this command is used by Jenkins
 ## -----------------------------------/!\--------------------------------
