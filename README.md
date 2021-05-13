@@ -89,13 +89,16 @@ observe des gains de performance jusqu'à 7 threads producteurs.
 1. make tests
 1. make clean
 
-On a ajouté deux autres commandes :
+On a ajouté trois autres commandes :
 
 1. make valgrind
 1. make helgrind
+1. make performances
 
 La première effectue les tests valgrind (tests de mémoire) sur le fichier ex3.bin. La seconde effectue les tests
-helgrind (test des threads) sur le fichier ex3.bin.
+helgrind (test des threads) sur le fichier ex3.bin. Et la dernière lance le programme plusieurs sur un fichier d'entrée
+de 50 000 points et avec différents nombres de threads. Elle produit ensuite une visualisation avec matplotlib dans le
+dossier tests_files/test_performances.
 
 # Questions éventuelles
 
