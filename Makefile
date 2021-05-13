@@ -57,4 +57,7 @@ helgrind: main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o sr
 	valgrind --tool=helgrind ./helgrind -k 2 -p 3 -n 2 -d euclidean -f tests_files/output_csv/kmeans.csv tests_files/input_binary/ex3.bin
 	rm -f helgrind
 
-.PHONY: clean tests kmeans valgrind
+performances: clean kmeans
+			/bin/sh ./tests_files/test_performances/testPerformances.sh
+
+.PHONY: clean tests kmeans valgrind performances

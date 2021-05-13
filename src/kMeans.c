@@ -1,4 +1,5 @@
 #include "../headers/kMeans.h"
+#include "stdio.h"
 
 void updateCentroids(kMeans_t *kMeans) {
 
