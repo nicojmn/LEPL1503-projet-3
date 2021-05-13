@@ -6,7 +6,7 @@ VALGRIND_MEM_FULL = valgrind --leak-check=full --show-leak-kinds=all --track-ori
 VALGRIND_MEM_MED = valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no
 
 kmeans: main.c  \
-		src/distance.o src/kMeans.o src/generateStartingCentroids.o \
+		src/distance.o src/kMeans.o src/generateStartingCentroids.o src/buffer.o\
 		src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
 		$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 
@@ -20,9 +20,10 @@ clean:
 	rm -f src/*.o
 	rm -f tests_files/src/*.o
 
+## /! WARNING : this command can't be used alone !\ ##
 test: tests_files/src/tests.c \
 	   src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o \
-       src/writeOutputFile.o src/manageArgs.o src/manageHeap.o \
+       src/writeOutputFile.o src/manageArgs.o src/manageHeap.o src/buffer.o\
 	   tests_files/src/distanceTests.o tests_files/src/assignVectorTests.o \
 	   tests_files/src/distortionTests.o tests_files/src/generateCentroidsTests.o \
 	   tests_files/src/kMeansTests.o tests_files/src/writeOutputFileTests.o \

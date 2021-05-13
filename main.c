@@ -12,6 +12,7 @@
 #include "headers/writeOutputFile.h"
 #include "headers/manageArgs.h"
 #include "headers/manageHeap.h"
+#include "headers/buffer.h"
 
 // inputs of the program
 args_t programArguments;
