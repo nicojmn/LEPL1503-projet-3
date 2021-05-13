@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "kmeansStruct.h"
+#include "kMeansStruct.h"
 
 /**
  * @param x : int64_t number

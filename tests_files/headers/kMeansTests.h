@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../headers/kmeansStruct.h"
+#include "../../headers/kMeansStruct.h"
 #include "../../headers/kMeans.h"
 
 int32_t kMeansSetup(void);

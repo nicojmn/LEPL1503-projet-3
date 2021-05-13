@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../headers/kmeansStruct.h"
+#include "../../headers/kMeansStruct.h"
 #include "../../headers/writeOutputFile.h"
 
 int32_t setupCreateOutputFile(void);

@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "kmeansStruct.h"
+#include "kMeansStruct.h"
 #include "distance.h"
 
 

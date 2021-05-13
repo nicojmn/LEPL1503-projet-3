@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "kmeansStruct.h"
+#include "kMeansStruct.h"
 
 /**
  * Calculate a factorial number
