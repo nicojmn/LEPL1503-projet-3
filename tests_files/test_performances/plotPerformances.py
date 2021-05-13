@@ -1,3 +1,9 @@
+import sys
+import subprocess
+
+if "matplotlib" not in sys.modules:
+    subprocess.call(['sh', 'tests_files/test_performances/install_matplotlib.sh'])
+
 import matplotlib.pyplot as plt
 
 with open("tests_files/test_performances/performances.txt", "r") as file:
