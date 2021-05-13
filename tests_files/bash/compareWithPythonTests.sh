@@ -41,6 +41,10 @@ runOneComparison 2 5 3 euclidean ex3.bin
 # Comparison using the file ex6_dim5.bin
 runOneComparison 2 4 4 euclidean ex6_dim5.bin
 
+# Comparison using the file ex7_50Kpoints_dim5.bin
+
+runOneComparison 3 5 7 euclidean ex7_50Kpoints_dim5
+
 # We delete the previous file
 rm "tests_files/comparisonResult.txt"
 # We write the outcome in a file so that our c script can be informed
