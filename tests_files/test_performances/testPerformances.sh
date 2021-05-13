@@ -9,3 +9,4 @@ for nThreads in 1 2 3 4 5 6 7 8; do
 done
 
 python3 tests_files/test_performances/plotPerformances.py
+

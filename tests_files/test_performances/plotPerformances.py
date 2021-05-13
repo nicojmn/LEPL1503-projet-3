@@ -19,8 +19,8 @@ with open("tests_files/test_performances/performances.txt", "r") as file:
             list_plt_thread.append(int(var[i][:-1]))
 
     plt.plot(list_plt_thread, list_plt_real, color='red', label='real')
-    plt.plot(list_plt_thread, list_plt_user, color='green', label='user')
-    plt.plot(list_plt_thread, list_plt_sys, color='blue', label='sys')
+    plt.plot(list_plt_thread, list_plt_user, color='green', label='user', linewidth=0.5)
+    plt.plot(list_plt_thread, list_plt_sys, color='blue', label='sys', linewidth=0.5)
 
     plt.xticks(list_plt_thread)
 
