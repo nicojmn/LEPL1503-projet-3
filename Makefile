@@ -38,7 +38,7 @@ test: tests_files/src/tests.c \
 tests: clean kmeans test
 
 performances: clean kmeans
-	/bin/sh ./tests_files/test_perfomances/testPerfomances.sh
+	/bin/sh ./tests_files/test_performances/testPerformances.sh
 
 valgrind : main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/buffer.o\
 			src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
