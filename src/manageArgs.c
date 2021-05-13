@@ -92,6 +92,16 @@ int parse_args(args_t *args, int argc, char *argv[]) {
     return 0;
 }
 
+int32_t verifyArguments(args_t programArguments) {
+    if (programArguments.n_first_initialization_points < programArguments.k) {
+        fprintf(stderr,
+                "Cannot generate an instance of kCentroids-means with less initialization points than needed clusters: %"PRIu32" < %"PRIu32"\n",
+                programArguments.n_first_initialization_points, programArguments.k);
+        return -1;
+    }
+    return 0;
+}
+
 void displayOptions(args_t programArguments) {
     if (!programArguments.test_mode) {
         fprintf(stderr, "\tNumber of threads executing the LLoyd's algorithm in parallel: %" PRIu32 "\n",
@@ -101,6 +111,7 @@ void displayOptions(args_t programArguments) {
                 "\tWe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n",
                 programArguments.n_first_initialization_points);
         fprintf(stderr, "\tQuiet mode: %s\n", programArguments.quiet ? "enabled" : "disabled");
+        fprintf(stderr, "\tTest mode: %s\n", programArguments.test_mode ? "enabled" : "disabled");
         fprintf(stderr, "\tSquared distance function: %s\n",
                 programArguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
     }

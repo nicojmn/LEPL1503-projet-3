@@ -94,18 +94,16 @@ void *consume() {
 
 int main(int argc, char *argv[]) {
 
+    // Collect the arguments and put them in programArguments
     parse_args(&programArguments, argc, argv);
 
-    if (programArguments.n_first_initialization_points < programArguments.k) {
-        fprintf(stderr,
-                "Cannot generate an instance of kCentroids-means with less initialization points than needed clusters: %"PRIu32" < %"PRIu32"\n",
-                programArguments.n_first_initialization_points, programArguments.k);
-        return -1;
-    }
+    // Check if kCentroids <= nFirstPoints
+    if (verifyArguments(programArguments) == -1) return -1;
 
+    // Display the current options
     displayOptions(programArguments);
 
-    // Collecting data
+    // Collect data from the input binary file
     generalData = (data_t *) malloc(sizeof(data_t));
     if (generalData == NULL) return -1;
     if (loadData(programArguments.input_stream, generalData) == -1) return -1;
@@ -121,15 +119,16 @@ int main(int argc, char *argv[]) {
     uint32_t nThreads = programArguments.n_threads;
     iterationNumber = combinatorial(nFirstPoints, kCentroids);
 
-    // The time took by the function generateSetOfStartingCentroids is negligible
+    // Generate all the starting centroids necessary
+    // The time took by the function generateSetOfStartingCentroids is negligible (no need to allocate a thread)
     startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
     if (generateSetOfStartingCentroids(startingCentroids, generalData->vectors, kCentroids, nFirstPoints,
-                                       iterationNumber)
-        == -1) {
+                                       iterationNumber) == -1) {
         fullClean(generalData, NULL, iterationNumber, programArguments, NULL);
         return -1;
     }
 
+    // Write the headlines in the output csv file
     if (writeHeadline(programArguments.quiet, programArguments.output_stream) == -1) {
         fullClean(generalData, startingCentroids, iterationNumber, programArguments, NULL);
         return -1;

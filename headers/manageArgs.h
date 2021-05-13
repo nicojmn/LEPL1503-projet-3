@@ -31,6 +31,8 @@ void usage(char *prog_name);
 
 int parse_args(args_t *args, int argc, char *argv[]);
 
+int32_t verifyArguments(args_t programArguments);
+
 void displayOptions(args_t programArguments);
 
 #endif //MANAGEARGS_H
