@@ -2,7 +2,7 @@ import sys
 import subprocess
 
 if "matplotib" not in sys.modules:
-    subprocess.call(['sh', 'install'])
+    subprocess.call(['sh', 'install_matplotlib.sh'])
 
 import matplotlib.pyplot as plt
 
