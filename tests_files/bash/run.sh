@@ -1,5 +1,9 @@
 #!/bin/bash
 
+################################################################################
+# this bash script can run either a c or python execution of Lloyd's algorithm #
+################################################################################
+
 # Method used (python or c)
 MODE=$1
 # Number of centroid(s)

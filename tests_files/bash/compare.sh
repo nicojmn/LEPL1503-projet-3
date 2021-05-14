@@ -1,5 +1,9 @@
 #!/bin/bash
 
+######################################################################################
+# This bash script compare the outcome of the c and python script for the same input #
+######################################################################################
+
 ACTUAL="tests_files/output_csv/actual.csv"
 EXPECTED="tests_files/output_csv/expected.csv"
 

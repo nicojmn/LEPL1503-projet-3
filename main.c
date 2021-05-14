@@ -36,10 +36,11 @@ buffer_t *buffer;
 /**
  * @param indexes: an array containing the starting index (included) and the end (excluded)
  * The function calculates a kMeans problem, one by one from [start: end[ and put it on the buffer
- * each time kMeans problem has been calculated
+ * each time a kMeans problem has been calculated
  */
 void *produce(void *indexes) {
     for (uint32_t i = ((uint32_t *) indexes)[0]; i < ((uint32_t *) indexes)[1]; ++i) {
+        // Calculation of a kMeans problem
         kMeans_t *kMeansSimulation = createOneInstance(generalData->vectors, startingCentroids, i, kCentroids,
                                                        generalData->size, generalData->dimension);
         runKMeans(kMeansSimulation,
@@ -48,6 +49,7 @@ void *produce(void *indexes) {
         uint64_t distortionValue = distortion(kMeansSimulation,
                                               (squared_distance_func_t (*)(const point_t *, const point_t *,
                                                                            uint32_t)) generic_func);
+        // Wait for space on the buffer + put the result on the buffer
         sem_wait(&empty);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
         (buffer->kMeansInstances)[buffer->head] = kMeansSimulation;
@@ -76,7 +78,7 @@ void *consume() {
     uint64_t distortionValue;
 
     while (*nbOfElemToConsume > 0) {
-        // We wait for a kMeans problem
+        // Wait for a kMeans problem available on the buffer
         sem_wait(&full);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
         uint32_t i = (buffer->indexes)[buffer->tail];
