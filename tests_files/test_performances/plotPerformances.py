@@ -12,7 +12,7 @@ if missing:
         python = sys.executable
         subprocess.check_call([python, '-m', 'pip3', 'install', *missing], stdout=subprocess.DEVNULL)
     # missing the permission
-    except CalledProcessError:
+    except:
         os.system('pip3 install matplotlib --user')
 
 import matplotlib.pyplot as plt
