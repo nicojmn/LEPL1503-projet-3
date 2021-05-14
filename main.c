@@ -27,7 +27,7 @@ uint64_t iterationNumber;
 squared_distance_func_t generic_func;
 
 // Threads
-#define N 2 // size of the buffer
+uint32_t bufferSize;
 pthread_mutex_t mutex;
 sem_t empty;
 sem_t full;
@@ -36,7 +36,7 @@ buffer_t *buffer;
 /**
  * @param indexes: an array containing the starting index (included) and the end (excluded)
  * The function calculates a kMeans problem, one by one from [start: end[ and put it on the buffer
- * each time the calculus is done
+ * each time kMeans problem has been calculated
  */
 void *produce(void *indexes) {
     for (uint32_t i = ((uint32_t *) indexes)[0]; i < ((uint32_t *) indexes)[1]; ++i) {
@@ -54,7 +54,7 @@ void *produce(void *indexes) {
         (buffer->clustersOfInstances)[buffer->head] = clusters;
         (buffer->distortionValues)[buffer->head] = distortionValue;
         (buffer->indexes)[buffer->head] = i;
-        buffer->head = (buffer->head + 1) % N;
+        buffer->head = (buffer->head + 1) % bufferSize;
         if (pthread_mutex_unlock(&mutex) != 0) return (void *) -1;
         sem_post(&full);
     }
@@ -68,27 +68,39 @@ void *consume() {
     uint64_t *nbOfElemToConsume = malloc(sizeof(uint64_t));
     if (nbOfElemToConsume == NULL) return NULL;
     *nbOfElemToConsume = iterationNumber;
+
+    kMeans_t **kMeansSimulation = malloc(sizeof(kMeans_t *));
+    point_t ***clusters = malloc(sizeof(point_t **));
+
+    if (kMeansSimulation == NULL || clusters == NULL) return (void *) -1;
+    uint64_t distortionValue;
+
     while (*nbOfElemToConsume > 0) {
+        // We wait for a kMeans problem
         sem_wait(&full);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
         uint32_t i = (buffer->indexes)[buffer->tail];
-        kMeans_t *kMeansSimulation = (buffer->kMeansInstances)[buffer->tail];
-        point_t **clusters = (buffer->clustersOfInstances)[buffer->tail];
-        uint64_t distortionValue = (buffer->distortionValues)[buffer->tail];
-        if (writeOneKMeans(kMeansSimulation, programArguments.quiet, programArguments.output_stream,
-                           startingCentroids[i], clusters, distortionValue) == -1) {
-            clean(kMeansSimulation);
+        *kMeansSimulation = (buffer->kMeansInstances)[buffer->tail];
+        *clusters = (buffer->clustersOfInstances)[buffer->tail];
+        distortionValue = (buffer->distortionValues)[buffer->tail];
+        buffer->tail = (buffer->tail + 1) % bufferSize;
+        if (pthread_mutex_unlock(&mutex) != 0) return (void *) -1;
+        sem_post(&empty);
+
+        // We write the kMeans problem into the csv file
+        if (writeOneKMeans(*kMeansSimulation, programArguments.quiet, programArguments.output_stream,
+                           startingCentroids[i], *clusters, distortionValue) == -1) {
+            clean(*kMeansSimulation);
             fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
             return (void *) -1;
         }
-        buffer->tail = (buffer->tail + 1) % N;
-        clean(kMeansSimulation);
-        if (pthread_mutex_unlock(&mutex) != 0) return (void *) -1;
-        sem_post(&empty);
+        clean(*kMeansSimulation);
         (*nbOfElemToConsume)--;
     }
     if (fprintf(programArguments.output_stream, "\n") < 0) return (void *) -1;
     free(nbOfElemToConsume);
+    free(kMeansSimulation);
+    free(clusters);
     return NULL;
 }
 
@@ -135,9 +147,10 @@ int main(int argc, char *argv[]) {
     }
 
     // Setup of the threads
-    buffer = createBuffer((uint8_t) N);
+    bufferSize = nThreads;
+    buffer = createBuffer(bufferSize);
     if (buffer == NULL || pthread_mutex_init(&mutex, NULL) != 0 ||
-        sem_init(&empty, 0, N) != 0 || sem_init(&full, 0, 0) != 0) {
+        sem_init(&empty, 0, bufferSize) != 0 || sem_init(&full, 0, 0) != 0) {
         fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
         return -1;
     }
