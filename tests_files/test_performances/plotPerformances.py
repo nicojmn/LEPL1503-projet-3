@@ -1,3 +1,4 @@
+import os
 import sys
 import subprocess
 import pkg_resources
@@ -7,8 +8,12 @@ installed = {pkg.key for pkg in pkg_resources.working_set}
 missing = required - installed
 
 if missing:
-    python = sys.executable
-    subprocess.check_call([python, '-m', 'pip3', 'install', '--user', *missing], stdout=subprocess.DEVNULL)
+    try:
+        python = sys.executable
+        subprocess.check_call([python, '-m', 'pip3', 'install', *missing], stdout=subprocess.DEVNULL)
+    # missing the permission
+    except CalledProcessError:
+        os.system('pip3 install matplotlib --user')
 
 import matplotlib.pyplot as plt
 
