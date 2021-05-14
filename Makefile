@@ -27,30 +27,29 @@ test: tests_files/src/tests.c \
 	   tests_files/src/kMeansTests.o tests_files/src/writeOutputFileTests.o \
 	   tests_files/src/readBinaryFileTests.o tests_files/src/updateCentroidsTests.o \
 	   tests_files/src/compareWithPythonTests.o
-## -----------------------------------/!\--------------------------------
-## WARNING : this command is used by Jenkins
-## -----------------------------------/!\--------------------------------
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 	./test
-
-tests: clean kmeans test
 
 performances: clean kmeans
 	/bin/sh ./tests_files/test_performances/testPerformances.sh
 
-valgrind : clean kmeans
+## -----------------------------------/!\--------------------------------
+## WARNING : this command is used by Jenkins
+## -----------------------------------/!\--------------------------------
+tests: clean kmeans test
+
 ## -----------------------------------/!\--------------------------------
 ## WARNING : this command is used by Jenkins
 ## -----------------------------------/!\--------------------------------
 ## Performs valgrind (memory check) test with -q and without -q
+valgrind : clean kmeans
 	/bin/sh ./tests_files/bash/valgrind.sh
 
-helgrind: clean kmeans
 ## -----------------------------------/!\--------------------------------
 ## WARNING : this command is used by Jenkins
 ## -----------------------------------/!\--------------------------------
 ## Performs helgrind (safe threads check) test with -q and without -q
-
+helgrind: clean kmeans
 	/bin/sh ./tests_files/bash/helgrind.sh
 
 .PHONY: clean tests kmeans valgrind performances
