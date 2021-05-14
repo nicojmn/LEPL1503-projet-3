@@ -14,8 +14,8 @@ typedef struct {
 } buffer_t;
 
 /**
- * @param bufferSize (because we only have one consumer thread, it's useless to create a large buffer)
- * @return the buffer used by our threads in the producer/consumer process
+ * @param bufferSize: the size of the buffer which equal the number of producer thread
+ * @return the buffer used by our threads during the producers-consumers process
  */
 buffer_t *createBuffer(uint32_t bufferSize);
 

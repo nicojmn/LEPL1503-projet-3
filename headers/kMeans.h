@@ -11,7 +11,7 @@
 
 
 /**
- * @param kMeans: pointer to une instance of kMeans (our problem)
+ * @param kMeans: pointer to one instance of kMeans (our problem)
  *        It calculates the new centroids' coordinates by computing the average
  *        of each dimension of the points from a specific cluster
  */

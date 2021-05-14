@@ -3,6 +3,7 @@ import sys
 import subprocess
 import pkg_resources
 
+# Check of matplotlib in installed on the device
 required = {'matplotlib'}
 installed = {pkg.key for pkg in pkg_resources.working_set}
 missing = required - installed
@@ -17,6 +18,7 @@ if missing:
 
 import matplotlib.pyplot as plt
 
+# Plot the time performances of the different run using different number of thread
 with open("tests_files/test_performances/performances.txt", "r") as file:
     var = file.readlines()
 

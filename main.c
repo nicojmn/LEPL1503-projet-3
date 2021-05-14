@@ -34,8 +34,8 @@ sem_t full;
 buffer_t *buffer;
 
 /**
- * @param indexes: an array containing the starting index (included) and the end (excluded)
- * The function calculates a kMeans problem, one by one from [start: end[ and put it on the buffer
+ * @param indexes: an array containing the starting index (included) and the ending index (excluded)
+ * The function calculates a kMeans problem, one by one [start: end[ and put it on the buffer
  * each time a kMeans problem has been calculated
  */
 void *produce(void *indexes) {
@@ -49,7 +49,7 @@ void *produce(void *indexes) {
         uint64_t distortionValue = distortion(kMeansSimulation,
                                               (squared_distance_func_t (*)(const point_t *, const point_t *,
                                                                            uint32_t)) generic_func);
-        // Wait for space on the buffer + put the result on the buffer
+        // Wait for space on the buffer then put the result on the buffer
         sem_wait(&empty);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
         (buffer->kMeansInstances)[buffer->head] = kMeansSimulation;
@@ -63,9 +63,7 @@ void *produce(void *indexes) {
     return NULL;
 }
 
-/**
- * It writes each kMeans available on the buffer in the output csv file
- */
+/** It writes each kMeans result available on the buffer into the output csv file */
 void *consume() {
     uint64_t *nbOfElemToConsume = malloc(sizeof(uint64_t));
     if (nbOfElemToConsume == NULL) return NULL;
@@ -75,16 +73,15 @@ void *consume() {
     point_t ***clusters = malloc(sizeof(point_t **));
 
     if (kMeansSimulation == NULL || clusters == NULL) return (void *) -1;
-    uint64_t distortionValue;
 
     while (*nbOfElemToConsume > 0) {
-        // Wait for a kMeans problem available on the buffer
+        // Wait for a kMeans problem available on the buffer then take it
         sem_wait(&full);
         if (pthread_mutex_lock(&mutex) != 0) return (void *) -1;
         uint32_t i = (buffer->indexes)[buffer->tail];
         *kMeansSimulation = (buffer->kMeansInstances)[buffer->tail];
         *clusters = (buffer->clustersOfInstances)[buffer->tail];
-        distortionValue = (buffer->distortionValues)[buffer->tail];
+        uint64_t distortionValue = (buffer->distortionValues)[buffer->tail];
         buffer->tail = (buffer->tail + 1) % bufferSize;
         if (pthread_mutex_unlock(&mutex) != 0) return (void *) -1;
         sem_post(&empty);
@@ -108,7 +105,7 @@ void *consume() {
 
 int main(int argc, char *argv[]) {
 
-    // Collect the arguments and put them in programArguments
+    // Collect the arguments and put them into programArguments
     parse_args(&programArguments, argc, argv);
 
     // Check if kCentroids <= nFirstPoints
@@ -133,7 +130,7 @@ int main(int argc, char *argv[]) {
     uint32_t nThreads = programArguments.n_threads;
     iterationNumber = combinatorial(nFirstPoints, kCentroids);
 
-    // Generate all the starting centroids necessary
+    // Generate all starting centroids necessary
     // The time took by the function generateSetOfStartingCentroids is negligible (no need to allocate a thread)
     startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
     if (startingCentroids == NULL || generateSetOfStartingCentroids(startingCentroids, generalData->vectors,
@@ -142,7 +139,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    // Write the headlines in the output csv file
+    // Write the headlines into the output csv file
     if (writeHeadline(programArguments.quiet, programArguments.output_stream) == -1) {
         fullClean(generalData, startingCentroids, iterationNumber, programArguments, NULL);
         return -1;
@@ -182,6 +179,7 @@ int main(int argc, char *argv[]) {
                 return -1;
             }
         } else {
+            // allocate fairly the integer division result to each producer
             if (rest > 0) {
                 end++;
                 rest--;

@@ -42,7 +42,6 @@ int main() {
     }
 
     /** add the tests_files to the suite */
-    /** NOTE - ORDER IS IMPORTANT */
     if ((NULL == CU_add_test(distanceTestSuite, "squared manhattan distance", testManhattan)) ||
         (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
         (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion)) ||

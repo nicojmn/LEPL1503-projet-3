@@ -1,13 +1,11 @@
 #include <CUnit/CUnit.h>
-#include <CUnit/TestRun.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-
 #include "../headers/updateCentroidsTests.h"
 
-kMeans_t *updateCentroidsKMeansDim2 = NULL;
 
+kMeans_t *updateCentroidsKMeansDim2 = NULL;
 
 int32_t updateCentroidsSetup(void) {
     updateCentroidsKMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));

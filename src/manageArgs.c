@@ -15,7 +15,7 @@ void usage(char *prog_name) {
     fprintf(stderr,
             "    -d distance (manhattan by default): can be either \"euclidean\" or \"manhattan\". Chooses the distance formula to use by the algorithm to compute the distance between the points\n");
     fprintf(stderr,
-            "    -t test mode: does not print anything\n");
+            "    -t test mode: does not print anything into the terminal\n");
 }
 
 int parse_args(args_t *args, int argc, char *argv[]) {

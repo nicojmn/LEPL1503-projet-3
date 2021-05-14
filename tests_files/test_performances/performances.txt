@@ -1,32 +1,32 @@
 1
-real 14.01
-user 13.96
-sys 0.00
+real 13.69
+user 13.64
+sys 0.03
 2
-real 7.47
-user 14.56
-sys 0.03
+real 7.01
+user 13.82
+sys 0.01
 3
-real 6.00
-user 14.57
-sys 0.01
+real 6.70
+user 15.92
+sys 0.04
 4
-real 4.96
-user 18.12
-sys 0.04
+real 5.43
+user 19.64
+sys 0.03
 5
-real 4.71
-user 19.96
-sys 0.01
-6
-real 3.98
-user 19.95
-sys 0.03
-7
-real 4.09
-user 23.70
+real 4.43
+user 18.75
 sys 0.04
+6
+real 4.01
+user 20.43
+sys 0.01
+7
+real 3.69
+user 21.90
+sys 0.01
 8
-real 3.83
-user 25.57
-sys 0.03
+real 3.71
+user 24.25
+sys 0.12
