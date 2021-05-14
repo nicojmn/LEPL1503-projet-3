@@ -122,8 +122,8 @@ int main(int argc, char *argv[]) {
     // Generate all the starting centroids necessary
     // The time took by the function generateSetOfStartingCentroids is negligible (no need to allocate a thread)
     startingCentroids = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    if (generateSetOfStartingCentroids(startingCentroids, generalData->vectors, kCentroids, nFirstPoints,
-                                       iterationNumber) == -1) {
+    if (startingCentroids == NULL || generateSetOfStartingCentroids(startingCentroids, generalData->vectors,
+                                                                    kCentroids, nFirstPoints, iterationNumber) == -1) {
         fullClean(generalData, NULL, iterationNumber, programArguments, NULL);
         return -1;
     }

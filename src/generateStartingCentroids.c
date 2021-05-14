@@ -34,9 +34,9 @@ uint64_t combinatorial(uint32_t nFirstPoints, uint32_t kCentroids) {
 }
 
 int32_t generateSetOfStartingCentroids(point_t **startingCentroids, int64_t **vectors,
-                                       uint32_t kCentroids, uint32_t nFirstPoints, uint64_t iterationNbr) {
+                                       uint32_t kCentroids, uint32_t nFirstPoints, uint64_t iterationNumber) {
 
-    for (uint64_t i = 0; i < iterationNbr; ++i) {
+    for (uint64_t i = 0; i < iterationNumber; ++i) {
         startingCentroids[i] = (point_t *) malloc(kCentroids * sizeof(point_t));
         if (startingCentroids[i] == NULL) return -1;
     }
@@ -48,14 +48,14 @@ int32_t generateSetOfStartingCentroids(point_t **startingCentroids, int64_t **ve
         indices[i] = i;
     }
 
-    for (uint64_t i = 0; i < iterationNbr; ++i) {
+    for (uint64_t i = 0; i < iterationNumber; ++i) {
         // Creating the set of centroids for each iteration i
         for (uint32_t l = 0; l < kCentroids; ++l) {
             startingCentroids[i][l].vector = vectors[indices[l]];
         }
         // j can become negative so no uint32_t are allowed here
         int32_t j = (int32_t) kCentroids - 1;
-        while (indices[j] == nFirstPoints - 1 || indices[j] == indices[j + 1] - 1) {
+        while (j > -1 && (indices[j] == nFirstPoints - 1 || indices[j] == indices[j + 1] - 1)) {
             j--;
         }
         indices[j]++;

@@ -2,8 +2,9 @@
 
 runOneComparison() {
 
-  echo "================================================================================="
-  echo "Comparison using: k = $1, p = $2, n = $3, distance function: $4 and the file $5:"
+  echo "============================================================================================================
+|| Comparison using: k = $1, p = $2, n = $3, distance function: $4 and the file $5 ||
+============================================================================================================"
 
   # If it is a special case when the number of points < picking limit
   if [ $# = 6 ]; then
@@ -25,6 +26,8 @@ runOneComparison() {
   fi
 }
 
+# Arguments of runOneComparison: [k] [p] [n] [d] [inputFile]
+
 # Comparison using the simple file ex1.bin
 runOneComparison 2 4 1 euclidean ex1.bin
 runOneComparison 2 4 2 manhattan ex1.bin
@@ -43,7 +46,7 @@ runOneComparison 2 4 4 euclidean ex6_dim5.bin
 
 # Comparison using the file ex7_50Kpoints_dim5.bin
 
-runOneComparison 3 5 7 euclidean ex7_50Kpoints_dim5.bin
+runOneComparison 3 4 7 euclidean ex7_50Kpoints_dim5.bin
 
 # We delete the previous file
 rm "tests_files/comparisonResult.txt"
