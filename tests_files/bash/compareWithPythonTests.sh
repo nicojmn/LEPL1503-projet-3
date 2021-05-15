@@ -44,6 +44,7 @@ runOneComparison 3 30 2 euclidean ex1.bin "pickingLimitExceedingNbrPoints"
 runOneComparison 2 4 1 euclidean ex3.bin
 runOneComparison 2 4 2 manhattan ex3.bin
 runOneComparison 2 5 3 euclidean ex3.bin
+runOneComparison 3 8 4 euclidean ex3.bin
 
 # Comparison using the file ex6_dim5.bin
 runOneComparison 2 4 4 euclidean ex6_dim5.bin

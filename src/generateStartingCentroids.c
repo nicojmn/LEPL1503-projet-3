@@ -55,7 +55,8 @@ int32_t generateSetOfStartingCentroids(point_t **startingCentroids, int64_t **ve
         }
         // j can become negative so no uint32_t are allowed here
         int32_t j = (int32_t) kCentroids - 1;
-        while (j > -1 && (indices[j] == nFirstPoints - 1 || indices[j] == indices[j + 1] - 1)) {
+        while (j > -1 && (indices[j] == nFirstPoints - 1 ||
+                          (j + 1 < kCentroids && indices[j] == indices[j + 1] - 1))) {
             j--;
         }
         indices[j]++;

@@ -1,14 +1,14 @@
 #include "../headers/generateCentroidsTests.h"
 
 
-point_t **startingCentroids1;
-point_t **startingCentroids2;
+point_t **startingCentroids1 = NULL;
+point_t **startingCentroids2 = NULL;
 
-data_t *generateCentroidsDataTest1;
-FILE *generateCentroidsFileForTest1;
+data_t *generateCentroidsDataTest1 = NULL;
+FILE *generateCentroidsFileForTest1 = NULL;
 
-data_t *generateCentroidsDataTest2;
-FILE *generateCentroidsFileForTest2;
+data_t *generateCentroidsDataTest2 = NULL;
+FILE *generateCentroidsFileForTest2 = NULL;
 
 int32_t setupGenerateStartingCentroids(void) {
 
@@ -17,13 +17,15 @@ int32_t setupGenerateStartingCentroids(void) {
     generateCentroidsFileForTest1 = fopen("tests_files/input_binary/ex1.bin", "r");
     loadData(generateCentroidsFileForTest1, generateCentroidsDataTest1);
 
-    uint32_t k = 2;
-    uint32_t n = 4;
+    uint32_t kCentroids = 2;
+    uint32_t nFirstPoints = 4;
 
-    uint64_t iterationNumber = combinatorial(n, k);
+    uint64_t iterationNumber = combinatorial(nFirstPoints, kCentroids);
 
     startingCentroids1 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    generateSetOfStartingCentroids(startingCentroids1, generateCentroidsDataTest1->vectors, k, n, iterationNumber);
+    if (startingCentroids1 == NULL) return -1;
+    generateSetOfStartingCentroids(startingCentroids1, generateCentroidsDataTest1->vectors, kCentroids,
+                                   nFirstPoints, iterationNumber);
 
     generateCentroidsDataTest2 = (data_t *) malloc(sizeof(data_t));
     if (generateCentroidsDataTest2 == NULL) return -1;
@@ -31,7 +33,9 @@ int32_t setupGenerateStartingCentroids(void) {
     loadData(generateCentroidsFileForTest2, generateCentroidsDataTest2);
 
     startingCentroids2 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    generateSetOfStartingCentroids(startingCentroids2, generateCentroidsDataTest2->vectors, k, n, iterationNumber);
+    if (startingCentroids2 == NULL) return -1;
+    generateSetOfStartingCentroids(startingCentroids2, generateCentroidsDataTest2->vectors, kCentroids,
+                                   nFirstPoints, iterationNumber);
     return 0;
 }
 
