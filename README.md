@@ -14,10 +14,12 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
 ### Commande pour l'exécuter avec ses propres arguments: 
 Les arguments précédés de "+" sont optionnels.
 
-./kmeans +[−q show_clusters] [−k n_clusters] +[−p n_combinations_points] [−n n_threads]
-+[−d distance_metric] +[−f output_file] [input_filename]
+./kmeans +[−q show_clusters] +[−k n_clusters] +[−p n_combinations_points] [−n n_threads]
++[−d distance_metric] +[−f output_file] +[input_filename]
 
-Nous avons ajouté la possiblilité de mettre l'argument -t pour afficher le temps d'exécution.
+Par défaut, les clusters ne sont pas repris dans l'output, -k vaut 2, +p vaut la même chose que -k, -n vaut 4, -d vaut
+"manhattan", le résultat est écrit sur la sortie standard et l'entrée standard est lue pour l'input. Nous avons ajouté
+la possibilité de mettre l'argument -t pour afficher le temps d'exécution.
 
 ### Commandes ajoutées :
 
