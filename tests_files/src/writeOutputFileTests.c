@@ -1,15 +1,19 @@
 #include "../headers/writeOutputFileTests.h"
 
 point_t **writeOutputFileCentroids1;
-point_t **writeOutputFileCentroids2;
 
 FILE *writeOutputFile = NULL;
 
 kMeans_t *outputKMeansDim2 = NULL;
-kMeans_t *outputKMeansDim3 = NULL;
 
 int32_t setupCreateOutputFile(void) {
 
+    /**
+     * Creation of a simulation:
+     *    - in 2 dimensions
+     *    - 7 points: [(1, 1), (2, 2), (3, 4), (5, 7), (3, 5), (5, 5), (4, 5)]
+     *    - 2 centroids: [(1, 1), (2, 2)]
+     */
     outputKMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (outputKMeansDim2 == NULL) return -1;
     outputKMeansDim2->dimension = (int32_t) 2;
@@ -26,7 +30,6 @@ int32_t setupCreateOutputFile(void) {
     ((outputKMeansDim2->points)[0].vector)[0] = (int64_t) 1;
     ((outputKMeansDim2->points)[0].vector)[1] = (int64_t) 1;
     (outputKMeansDim2->points)[0].nearestCentroidID = 0;
-
 
     (outputKMeansDim2->points)[1].vector = malloc(2 * sizeof(int64_t));
     if ((outputKMeansDim2->points)[1].vector == NULL) return -1;
@@ -65,7 +68,6 @@ int32_t setupCreateOutputFile(void) {
     ((outputKMeansDim2->points)[6].vector)[1] = (int64_t) 5;
     (outputKMeansDim2->points)[6].nearestCentroidID = -1;
 
-
     (outputKMeansDim2->centroids)[0].vector = malloc(2 * sizeof(int64_t));
     if ((outputKMeansDim2->centroids)[0].vector == NULL) return -1;
     ((outputKMeansDim2->centroids)[0].vector)[0] = (int64_t) 1;
@@ -76,72 +78,7 @@ int32_t setupCreateOutputFile(void) {
     ((outputKMeansDim2->centroids)[1].vector)[0] = (int64_t) 2;
     ((outputKMeansDim2->centroids)[1].vector)[1] = (int64_t) 2;
 
-    outputKMeansDim3 = (kMeans_t *) malloc(sizeof(kMeans_t));
-    if (outputKMeansDim3 == NULL) return -1;
-    outputKMeansDim3->dimension = (int32_t) 3;
-    outputKMeansDim3->points = (point_t *) malloc(6 * sizeof(point_t));
-    outputKMeansDim3->centroids = (point_t *) malloc(2 * sizeof(point_t));
-    if (outputKMeansDim3->points == NULL) return -1;
-    outputKMeansDim3->size = 6;
-    outputKMeansDim3->k = 2;
-    outputKMeansDim3->clustersSize = (uint64_t *) malloc(2 * sizeof(uint64_t *));
-    if (outputKMeansDim3->clustersSize == NULL) return -1;
-
-    (outputKMeansDim3->points)[0].vector = malloc(3 * sizeof(int64_t));
-    if ((outputKMeansDim3->points)[0].vector == NULL) return -1;
-    ((outputKMeansDim3->points)[0].vector)[0] = (int64_t) -1;
-    ((outputKMeansDim3->points)[0].vector)[1] = (int64_t) 4;
-    ((outputKMeansDim3->points)[0].vector)[2] = (int64_t) 4;
-    (outputKMeansDim3->points)[0].nearestCentroidID = 0;
-
-    (outputKMeansDim3->points)[1].vector = malloc(3 * sizeof(int64_t));
-    if ((outputKMeansDim3->points)[1].vector == NULL) return -1;
-    ((outputKMeansDim3->points)[1].vector)[0] = (int64_t) -1;
-    ((outputKMeansDim3->points)[1].vector)[1] = (int64_t) -2;
-    ((outputKMeansDim3->points)[1].vector)[2] = (int64_t) 9;
-    (outputKMeansDim3->points)[1].nearestCentroidID = 0;
-
-    (outputKMeansDim3->points)[2].vector = malloc(3 * sizeof(int64_t));
-    if ((outputKMeansDim3->points)[2].vector == NULL) return -1;
-    ((outputKMeansDim3->points)[2].vector)[0] = (int64_t) 2;
-    ((outputKMeansDim3->points)[2].vector)[1] = (int64_t) 4;
-    ((outputKMeansDim3->points)[2].vector)[2] = (int64_t) 2;
-    (outputKMeansDim3->points)[2].nearestCentroidID = 0;
-
-    (outputKMeansDim3->points)[3].vector = malloc(3 * sizeof(int64_t));
-    if ((outputKMeansDim3->points)[3].vector == NULL) return -1;
-    ((outputKMeansDim3->points)[3].vector)[0] = (int64_t) 6;
-    ((outputKMeansDim3->points)[3].vector)[1] = (int64_t) 2;
-    ((outputKMeansDim3->points)[3].vector)[2] = (int64_t) 1;
-    (outputKMeansDim3->points)[3].nearestCentroidID = 1;
-
-    (outputKMeansDim3->points)[4].vector = malloc(3 * sizeof(int64_t));
-    if ((outputKMeansDim3->points)[4].vector == NULL) return -1;
-    ((outputKMeansDim3->points)[4].vector)[0] = (int64_t) -2;
-    ((outputKMeansDim3->points)[4].vector)[1] = (int64_t) 4;
-    ((outputKMeansDim3->points)[4].vector)[2] = (int64_t) 3;
-    (outputKMeansDim3->points)[4].nearestCentroidID = 1;
-
-    (outputKMeansDim3->points)[5].vector = malloc(3 * sizeof(int64_t));
-    if ((outputKMeansDim3->points)[5].vector == NULL) return -1;
-    ((outputKMeansDim3->points)[5].vector)[0] = (int64_t) 5;
-    ((outputKMeansDim3->points)[5].vector)[1] = (int64_t) 5;
-    ((outputKMeansDim3->points)[5].vector)[2] = (int64_t) 5;
-    (outputKMeansDim3->points)[5].nearestCentroidID = 1;
-
-    (outputKMeansDim3->centroids)[0].vector = malloc(2 * sizeof(int64_t));
-    if ((outputKMeansDim3->centroids)[0].vector == NULL) return -1;
-    ((outputKMeansDim3->centroids)[0].vector)[0] = (int64_t) -2;
-    ((outputKMeansDim3->centroids)[0].vector)[1] = (int64_t) 4;
-    ((outputKMeansDim3->centroids)[0].vector)[1] = (int64_t) 3;
-
-    (outputKMeansDim3->centroids)[1].vector = malloc(2 * sizeof(int64_t));
-    if ((outputKMeansDim3->centroids)[1].vector == NULL) return -1;
-    ((outputKMeansDim3->centroids)[1].vector)[0] = (int64_t) 6;
-    ((outputKMeansDim3->centroids)[1].vector)[1] = (int64_t) 2;
-    ((outputKMeansDim3->centroids)[0].vector)[1] = (int64_t) 1;
-
-
+    /** We record the starting centroids */
     writeOutputFileCentroids1 = (point_t **) malloc(sizeof(point_t *));
     writeOutputFileCentroids1[0] = malloc(sizeof(point_t) * 2);
 
@@ -156,20 +93,6 @@ int32_t setupCreateOutputFile(void) {
     writeOutputFileCentroids1[0][1].vector[1] = (int64_t) 2;
     writeOutputFileCentroids1[0][1].vector[2] = (int64_t) 1;
 
-
-    writeOutputFileCentroids2 = (point_t **) malloc(sizeof(point_t *));
-    writeOutputFileCentroids2[0] = malloc(sizeof(point_t) * 2);
-
-    writeOutputFileCentroids2[0][0].vector = malloc(sizeof(int64_t) * 2);
-
-    writeOutputFileCentroids2[0][0].vector[0] = (int64_t) 1;
-    writeOutputFileCentroids2[0][0].vector[1] = (int64_t) 1;
-
-    writeOutputFileCentroids2[0][1].vector = malloc(sizeof(point_t) * 2);
-
-    writeOutputFileCentroids2[0][1].vector[0] = (int64_t) 2;
-    writeOutputFileCentroids2[0][1].vector[1] = (int64_t) 2;
-
     writeOutputFile = fopen("tests_files/output_csv/ex1.csv", "w");
     return 0;
 }
@@ -183,35 +106,21 @@ int32_t teardownCreateOutputFile(void) {
     }
     for (int i = 0; i < k; i++) {
         free(outputKMeansDim2->centroids[i].vector);
-        free(outputKMeansDim3->centroids[i].vector);
     }
     for (int i = 0; i < k; i++) {
         free(writeOutputFileCentroids1[0][i].vector);
-        free(writeOutputFileCentroids2[0][i].vector);
     }
     free(writeOutputFileCentroids1[0]);
-    free(writeOutputFileCentroids2[0]);
 
     free(outputKMeansDim2->points);
     free(outputKMeansDim2->centroids);
     free(outputKMeansDim2->clustersSize);
     free(outputKMeansDim2);
 
-    numberOfPoints = 6;
-    for (int i = 0; i < numberOfPoints; i++) {
-        free(outputKMeansDim3->points[i].vector);
-    }
-    free(outputKMeansDim3->points);
-    free((outputKMeansDim3->centroids));
-    free(outputKMeansDim3->clustersSize);
-
-    free(outputKMeansDim3);
-
     fclose(writeOutputFile);
     writeOutputFile = NULL;
 
     free(writeOutputFileCentroids1);
-    free(writeOutputFileCentroids2);
 
     return 0;
 }
@@ -228,6 +137,6 @@ void test_createOutputFileDimension2(void) {
     uint64_t distortionValue = distortion(outputKMeansDim2,
                                           (squared_distance_func_t (*)(const point_t *, const point_t *, uint32_t))
                                                   generic_func);
-    writeOneKMeans(outputKMeansDim2, false, writeOutputFile, writeOutputFileCentroids1[0],
-                   clusters, distortionValue);
+    CU_ASSERT_EQUAL(writeOneKMeans(outputKMeansDim2, false, writeOutputFile, writeOutputFileCentroids1[0],
+                                   clusters, distortionValue), 0);
 }

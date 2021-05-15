@@ -3,6 +3,8 @@
 
 int main(int argc, char **argv) {
 
+    /** We run valgrind on the test but we don't want to use valgrind on the comparison
+     * between the python and c because it takes too much time and it's already checked by make valgrind */
     bool valgrindTest = false;
     int opt;
     while ((opt = getopt(argc, argv, "v")) != -1) {

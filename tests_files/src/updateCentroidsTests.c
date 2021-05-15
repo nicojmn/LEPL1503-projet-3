@@ -8,10 +8,17 @@
 kMeans_t *updateCentroidsKMeansDim2 = NULL;
 
 int32_t updateCentroidsSetup(void) {
+
+    /**
+     * Creation of a simulation:
+     *    - in 2 dimensions
+     *    - 3 points: [(1, 2), (-1, 4), (-4, 10)]
+     *    - 2 centroids: [(1, 2), (-3, 9)]
+     */
     updateCentroidsKMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (updateCentroidsKMeansDim2 == NULL) return -1;
     updateCentroidsKMeansDim2->dimension = (int32_t) 2;
-    updateCentroidsKMeansDim2->points = (point_t *) malloc(5 * sizeof(point_t));
+    updateCentroidsKMeansDim2->points = (point_t *) malloc(3 * sizeof(point_t));
     updateCentroidsKMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
     if (updateCentroidsKMeansDim2->points == NULL) return -1;
     updateCentroidsKMeansDim2->size = 3;

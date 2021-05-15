@@ -4,10 +4,16 @@ kMeans_t *distortionKMeansDim2 = NULL;
 
 int32_t distortionSetup(void) {
 
+    /**
+     * Creation of a simulation:
+     *    - in 2 dimensions
+     *    - 3 points: [(1, 2), (-1, 4), (-4, 10)]
+     *    - 2 centroids: [(1, 2), (-3, 9)]
+     */
     distortionKMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (distortionKMeansDim2 == NULL) return -1;
     distortionKMeansDim2->dimension = (int32_t) 2;
-    distortionKMeansDim2->points = (point_t *) malloc(5 * sizeof(point_t));
+    distortionKMeansDim2->points = (point_t *) malloc(3 * sizeof(point_t));
     distortionKMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
     if (distortionKMeansDim2->points == NULL) return -1;
     distortionKMeansDim2->size = 3;

@@ -1,6 +1,7 @@
 #ifndef OUTPUTCSVTESTS_H
 #define OUTPUTCSVTESTS_H
 
+#include <CUnit/CUnit.h>
 #include <stdio.h>
 #include <stdlib.h>
 

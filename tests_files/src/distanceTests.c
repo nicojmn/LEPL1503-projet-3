@@ -5,6 +5,11 @@ kMeans_t *distanceKMeansDim2 = NULL;
 kMeans_t *distanceKMeansDim3 = NULL;
 
 int32_t distanceSetup(void) {
+    /**
+     * Creation of a simulation:
+     *    - in 1 dimension
+     *    - 2 points: [(1), (2)]
+     */
     distanceKMeansDim1 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (distanceKMeansDim1 == NULL) return -1;
     distanceKMeansDim1->dimension = (int32_t) 1;
@@ -19,6 +24,11 @@ int32_t distanceSetup(void) {
     if ((distanceKMeansDim1->points)[1].vector == NULL) return -1;
     ((distanceKMeansDim1->points)[1].vector)[0] = (int64_t) 2;
 
+    /**
+     * Creation of a simulation:
+     *    - in 2 dimensions
+     *    - 2 points: [(1, 2), (-1, 4)]
+     */
     distanceKMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (distanceKMeansDim2 == NULL) return -1;
     distanceKMeansDim2->dimension = (int32_t) 2;
@@ -37,6 +47,11 @@ int32_t distanceSetup(void) {
     ((distanceKMeansDim2->points)[1].vector)[1] = (int64_t) 4;
     (distanceKMeansDim2->points)[1].nearestCentroidID = 0;
 
+    /**
+     * Creation of a simulation:
+     *    - in 3 dimensions
+     *    - 2 points: [(-1, 4, 4), (-1, -2, 9)]
+     */
     distanceKMeansDim3 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (distanceKMeansDim3 == NULL) return -1;
     distanceKMeansDim3->dimension = (int32_t) 3;

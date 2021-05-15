@@ -44,7 +44,11 @@ int32_t teardownBinaryFile(void) {
 /** We've used the corresponding json file to check the correct values */
 void testReadBinaryFile(void) {
 
-    loadData(readBinaryFileForTest1, readBinaryFileDataTest1);
+    /**
+     * We've used the corresponding json file into input_json to verify the correct output
+     */
+
+    CU_ASSERT_EQUAL(loadData(readBinaryFileForTest1, readBinaryFileDataTest1), 0);
     CU_ASSERT_EQUAL(readBinaryFileDataTest1->dimension, 2);
     CU_ASSERT_EQUAL(readBinaryFileDataTest1->size, 7);
     CU_ASSERT_EQUAL((readBinaryFileDataTest1->vectors)[0][0], 1);
@@ -54,7 +58,7 @@ void testReadBinaryFile(void) {
     CU_ASSERT_EQUAL((readBinaryFileDataTest1->vectors)[6][0], 4);
     CU_ASSERT_EQUAL((readBinaryFileDataTest1->vectors)[6][1], 5);
 
-    loadData(readBinaryFileForTest2, readBinaryFileDataTest2);
+    CU_ASSERT_EQUAL(loadData(readBinaryFileForTest2, readBinaryFileDataTest2), 0)
     CU_ASSERT_EQUAL(readBinaryFileDataTest2->dimension, 2);
     CU_ASSERT_EQUAL(readBinaryFileDataTest2->size, 13);
     CU_ASSERT_EQUAL((readBinaryFileDataTest2->vectors)[0][0], 1);

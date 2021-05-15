@@ -12,21 +12,23 @@ FILE *generateCentroidsFileForTest2 = NULL;
 
 int32_t setupGenerateStartingCentroids(void) {
 
+    // General features
+    uint32_t kCentroids = 2;
+    uint32_t nFirstPoints = 4;
+    uint64_t iterationNumber = combinatorial(nFirstPoints, kCentroids);
+
+    // Simulation using ex1.bin
     generateCentroidsDataTest1 = (data_t *) malloc(sizeof(data_t));
     if (generateCentroidsDataTest1 == NULL) return -1;
     generateCentroidsFileForTest1 = fopen("tests_files/input_binary/ex1.bin", "r");
     loadData(generateCentroidsFileForTest1, generateCentroidsDataTest1);
-
-    uint32_t kCentroids = 2;
-    uint32_t nFirstPoints = 4;
-
-    uint64_t iterationNumber = combinatorial(nFirstPoints, kCentroids);
 
     startingCentroids1 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
     if (startingCentroids1 == NULL) return -1;
     generateSetOfStartingCentroids(startingCentroids1, generateCentroidsDataTest1->vectors, kCentroids,
                                    nFirstPoints, iterationNumber);
 
+    // Simulation using ex3.bin
     generateCentroidsDataTest2 = (data_t *) malloc(sizeof(data_t));
     if (generateCentroidsDataTest2 == NULL) return -1;
     generateCentroidsFileForTest2 = fopen("tests_files/input_binary/ex3.bin", "r");
