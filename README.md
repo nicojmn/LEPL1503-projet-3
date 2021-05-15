@@ -69,13 +69,13 @@ Nous avons donc d'un côté des threads producteurs et de l'autre un thread cons
 threads s'opère à l'aide d'un buffer. Cependant l'utilisation d'un même objet par plusieurs threads est délicat, pour se
 faire nous avons utilisé:
 
-## Deux sémaphores:
+### Deux sémaphores:
 
 1. empty: renseigne le thread consommateur sur la présence d'au moins un élément à consommer sur le buffer
 
 1. full: renseigne les threads producteurs sur la présence d'au moins une place disponible sur le buffer
 
-## Un mutex
+### Un mutex
 
 Il empêche l'utilisation du buffer par plus d'un thread en simultané. Sans cet élément, deux threads producteurs
 pourraient, par exemple, déposer leurs résultat en même temps sur un même emplacement du buffer. Ce qui n'est évidemment
@@ -90,14 +90,14 @@ Commande utilisée via la terminal (pour lancer ces commandes, vous devez vous s
 * make
 * ./kmeans -k 6 -p 10 -n 2 -q -d euclidean -f output_csv/ex6_dim5.csv input_binary/ex6_dim5.bin
 
-## Résultats sur raspberry
+### Résultats sur raspberry
 
 * 1 thread : 2m28.453s
 * 2 threads : 1m17.179s
 * 3 threads : 1m15.007s
 * 4 threads : 1m14.817s
 
-## Résultats sur un ordinateur portable classique
+### Résultats sur un ordinateur portable classique
 
 * 1 thread : 0m24.382s
 * 2 threads : 0m14.896s
