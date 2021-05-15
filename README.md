@@ -11,7 +11,7 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
 1. make tests
 1. make clean
 
-### Commande pour l'exécuter avec ses propres arguments: 
+### Commande pour l'exécuter avec ses propres arguments : 
 Les arguments précédés de "+" sont optionnels.
 
 ./kmeans +[−q show_clusters] +[−k n_clusters] +[−p n_combinations_points] [−n n_threads]
@@ -28,10 +28,11 @@ la possibilité de mettre l'argument -t pour afficher le temps d'exécution.
 1. make helgrind
 1. make performances
 
-La première effectue les tests valgrind (tests de mémoire) sur le fichier ex3.bin. La seconde effectue les tests
-helgrind (test des threads) sur le fichier ex3.bin. Et la dernière lance le programme plusieurs sur un fichier d'entrée
-de 50 000 points et avec différents nombres de threads. Elle produit ensuite une visualisation avec matplotlib dans le
-dossier tests_files/test_performances.
+La première effectue les tests Valgrind (tests sur la gestion de la mémoire) sur le fichier ex3.bin. La deuxième 
+// TODO ajouter ce que fais valgrindForTests
+La troisième effectue les tests Helgrind (test des threads) sur le fichier ex3.bin. Et la dernière lance le programme plusieurs fois sur un 
+fichier d'entrée de 50 000 points et avec différents nombres de threads. Elle produit ensuite une visualisation avec 
+matplotlib dans le dossier tests_files/test_performances.
 
 # Structures utilisées
 
@@ -57,49 +58,49 @@ deux opérations importantes.
 1. Calcul des différents centroids de départs. (cette étape aurait pu se voir assigner un thread mais on s'est rendu
    compte en faisant des tests de performance que le temps pris par cette étape était négligeable)
 
-1. Producteurs: Nous avons donc une liste reprenant toutes les suites de centroids de départ. De cette manière, à chaque
+1. Producteurs : Nous avons donc une liste reprenant toutes les suites de centroids de départ. De cette manière, à chaque
    instance kMeans à traiter, correspond un indice. On transmet alors à chaque thread producteur les indices de début et
    de fin (fin non comprise). Chaque thread a alors pour mission d'exécuter et résoudre toutes les instances du problème
    kMeans compris entre les indices début et fin (non compris).
 
-1. Consommateur: il n'y a qu'un seul thread consommateur qui s'occupe d'écrire dans le fichier de sortie les résultats
+1. Consommateur : il n'y a qu'un seul thread consommateur qui s'occupe d'écrire dans le fichier de sortie les résultats
    obtenus par le(s) thread(s) producteur(s).
 
 # Gestion de la concurrence
 
 Nous avons donc d'un côté des threads producteurs et de l'autre un thread consommateur. La communication entre ces
 threads s'opère à l'aide d'un buffer. Cependant l'utilisation d'un même objet par plusieurs threads est délicat, pour se
-faire nous avons utilisé:
+faire nous avons utilisé :
 
-### Deux sémaphores:
+### Deux sémaphores :
 
 1. empty: renseigne le thread consommateur sur la présence d'au moins un élément à consommer sur le buffer
 
 1. full: renseigne les threads producteurs sur la présence d'au moins une place disponible sur le buffer
 
-### Un mutex
+### Un mutex :
 
 Il empêche l'utilisation du buffer par plus d'un thread en simultané. Sans cet élément, deux threads producteurs
-pourraient, par exemple, déposer leurs résultat en même temps sur un même emplacement du buffer. Ce qui n'est évidemment
+pourraient, par exemple, déposer leurs résultats en même temps sur un même emplacement du buffer. Ce qui n'est évidemment
 pas souhaité.
 
 # Tests de performance
 
 // TODO : UPDATE Ces tests ont été effectués sur le fichier ex6_dim5.bin contenant 10 000 points en 5 dimensions.
 
-Commande utilisée via la terminal (pour lancer ces commandes, vous devez vous situer dans le repertoire "groupeD22").
+Commandes utilisées via la terminal (pour lancer ces commandes, vous devez vous situer dans le repertoire "groupeD22").
 
 * make
 * ./kmeans -k 6 -p 10 -n 2 -q -d euclidean -f output_csv/ex6_dim5.csv input_binary/ex6_dim5.bin
 
-### Résultats sur raspberry
+### Résultats sur raspberry :
 
 * 1 thread : 2m28.453s
 * 2 threads : 1m17.179s
 * 3 threads : 1m15.007s
 * 4 threads : 1m14.817s
 
-### Résultats sur un ordinateur portable classique
+### Résultats sur un ordinateur portable classique :
 
 * 1 thread : 0m24.382s
 * 2 threads : 0m14.896s
@@ -113,7 +114,7 @@ observe des gains de performance jusqu'à 7 threads producteurs.
 
 # Questions éventuelles
 
-Si vous avez encore certaines questions concernant le projet, n'hésitez pas à nous contacter aux adresses suivantes:
+Si vous avez encore certaines questions concernant le projet, n'hésitez pas à nous contacter aux adresses suivantes :
 
 nicolas.jeanmenne@student.uclouvain.be, samuel.demeester@student.uclouvain.be loic.spigeleer@student.uclouvain.be,
 sebastien.mary@student.uclouvain.be pierre.denoel@student.uclouvain.be, gilles.maes@student.uclouvain.be
