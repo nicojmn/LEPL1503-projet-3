@@ -52,7 +52,8 @@ valgrind : clean kmeans
 helgrind: clean kmeans
 	/bin/sh ./tests_files/bash/helgrindTests.sh
 
+# Performs a valgrind check on the unit tests
 valgrindForTests : clean kmeans test
 	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./test -v
 
-.PHONY: clean tests kmeans valgrind performances valgrindTests
+.PHONY: kmeans clean tests valgrind helgrind performances valgrindForTests
