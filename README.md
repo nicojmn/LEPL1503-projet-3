@@ -19,7 +19,7 @@ consultez le fichier.
 
 # Utilisation des threads
 
-Nous avons implémenté une architecture producteurs/consommateurs. Avant le lancement des threads le programme effectue
+Nous avons implémenté une architecture producteurs-consommateurs. Avant le lancement des threads le programme effectue
 deux opérations importantes.
 
 1. Extraction des données contenues dans le fichier binaire en entrée.
@@ -55,7 +55,7 @@ pas souhaité.
 
 # Tests de performance
 
-Ces tests ont été effectués sur le fichier ex6_dim5.bin contenant 10 000 points en 5 dimensions.
+// TODO : UPDATE Ces tests ont été effectués sur le fichier ex6_dim5.bin contenant 10 000 points en 5 dimensions.
 
 Commande utilisée via la terminal (pour lancer ces commandes, vous devez vous situer dans le repertoire "groupeD22").
 
@@ -92,6 +92,7 @@ observe des gains de performance jusqu'à 7 threads producteurs.
 On a ajouté trois autres commandes :
 
 1. make valgrind
+1. make valgrindForTests
 1. make helgrind
 1. make performances
 
