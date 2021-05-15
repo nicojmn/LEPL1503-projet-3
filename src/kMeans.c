@@ -35,7 +35,7 @@ int32_t assignVectorsToCentroids(kMeans_t *kMeans,
     int32_t hasChanged = 0;
     squared_distance_func_t genericDistanceFunction = (squared_distance_func_t) distanceFunction;
     for (uint64_t i = 0; i < kMeans->size; ++i) {
-        // Let's find the closest centroid
+        // Let's find the closest centroid of the point (kMeans->points)[i]
         uint64_t currentDistance = genericDistanceFunction(&(kMeans->points)[i], &(kMeans->centroids)[0],
                                                            kMeans->dimension);
         uint32_t currentCentroid = 0;
