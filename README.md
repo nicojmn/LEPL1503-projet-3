@@ -28,11 +28,12 @@ la possibilité de mettre l'argument -t pour afficher le temps d'exécution.
 1. make helgrind
 1. make performances
 
-La première effectue les tests Valgrind (tests sur la gestion de la mémoire) sur le fichier ex3.bin. La deuxième 
-// TODO ajouter ce que fais valgrindForTests
-La troisième effectue les tests Helgrind (test des threads) sur le fichier ex3.bin. Et la dernière lance le programme plusieurs fois sur un 
-fichier d'entrée de 50 000 points et avec différents nombres de threads. Elle produit ensuite une visualisation avec 
-matplotlib dans le dossier tests_files/test_performances.
+La première effectue les tests Valgrind (tests sur la gestion de la mémoire) sur le fichier ex3.bin. La deuxième
+effectue les tests Valgrind pour les tests unitaires. La troisième effectue les tests Helgrind (test des threads) sur le
+fichier ex3.bin. La dernière lance le programme plusieurs fois sur un fichier d'entrée de 50 000 points et avec
+différents nombres de threads. Elle produit ensuite une visualisation avec matplotlib dans le dossier
+tests_files/test_performances. Notez que cette commande ne fonctionne pas sur le Raspberry car la commande time n'a pas
+d'argument sur Raspian.
 
 # Structures utilisées
 
@@ -40,7 +41,7 @@ Toutes nos structures sont définies dans le fichier headers/kmeansStruct.h. Pou
 consultez le fichier.
 
 1. point_t : cette structure représente un point. Elle est composée d'un vecteur représentant les coordonnées du point
-   ainsi que l'indice du centroïd le plus proche.
+   ainsi que l'indice du centroïde le plus proche.
 
 1. kMeans_t : cette structure est composée de toutes les informations nécessaires au déroulement de l'algorithme de
    Lloyd's. Le nom des composantes de cette structure est, selon nous, assez clair pour ne pas expliquer leur fonction.
