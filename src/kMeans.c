@@ -22,11 +22,9 @@ void updateCentroids(kMeans_t *kMeans) {
     // Computing the average
     for (uint32_t i = 0; i < kMeans->k; ++i) {
         for (uint32_t j = 0; j < kMeans->dimension; ++j) {
-            /** Comments from the python script:
-            /!\ we here use int(a/b) instead of a//b because // implements the floor division and with negative
-             # numbers this is not an integer division as it rounds the result down */
-            ((kMeans->centroids)[i].vector)[j] = ((kMeans->centroids)[i].vector)[j] /
-                                                 (int64_t) (kMeans->clustersSize)[i];
+            // Integer division
+            ((kMeans->centroids)[i].vector)[j] = (int64_t) (((kMeans->centroids)[i].vector)[j] /
+                                                            (int64_t) (kMeans->clustersSize)[i]);
         }
     }
 }
@@ -39,7 +37,7 @@ int32_t assignVectorsToCentroids(kMeans_t *kMeans,
     for (uint64_t i = 0; i < kMeans->size; ++i) {
         // Let's find the closest centroid
         uint64_t currentDistance = genericDistanceFunction(&(kMeans->points)[i], &(kMeans->centroids)[0],
-                                                           kMeans->dimension);;
+                                                           kMeans->dimension);
         uint32_t currentCentroid = 0;
         uint32_t oldCentroid = (kMeans->points)[i].nearestCentroidID;
         for (uint32_t j = 1; j < kMeans->k; ++j) {
@@ -80,6 +78,7 @@ createOneInstance(int64_t **vectors, point_t **startingCentroidsID, uint32_t ins
     kMeans->centroids = (point_t *) malloc(kCentroids * sizeof(point_t));
     if (kMeans->centroids == NULL) return NULL;
 
+    // Different features of the problem
     kMeans->k = kCentroids;
     kMeans->size = size;
     kMeans->dimension = dimension;

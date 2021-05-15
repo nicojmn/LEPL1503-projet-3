@@ -1,7 +1,17 @@
 #include "../headers/tests.h"
 
 
-int main() {
+int main(int argc, char **argv) {
+
+    bool valgrindTest = false;
+    int opt;
+    while ((opt = getopt(argc, argv, "v")) != -1) {
+        if (opt == 'v') {
+            valgrindTest = true;
+            break;
+        }
+    }
+
 
     CU_pSuite distanceTestSuite = NULL;
     CU_pSuite distortionTestSuite = NULL;
@@ -30,15 +40,22 @@ int main() {
     kMeansSuite = CU_add_suite("kMeans test", kMeansSetup, kMeansTeardown);
     binaryFileSuite = CU_add_suite("binary file loading test", setupBinaryFile, teardownBinaryFile);
     csvFileSuite = CU_add_suite("writing into csv file test", setupCreateOutputFile, teardownCreateOutputFile);
-    completeTestSuite = CU_add_suite("Comparison between python and c", compareWithPythonSetup,
-                                     compareWithPythonTeardown);
+    if (!valgrindTest) {
+        completeTestSuite = CU_add_suite("Comparison between python and c", compareWithPythonSetup,
+                                         compareWithPythonTeardown);
+    }
 
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
         updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kMeansSuite == NULL ||
-        binaryFileSuite == NULL || csvFileSuite == NULL || generateStartingCentroidsSuite == NULL ||
-        completeTestSuite == NULL) {
+        binaryFileSuite == NULL || csvFileSuite == NULL || generateStartingCentroidsSuite == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
+    }
+    if (!valgrindTest) {
+        if (completeTestSuite == NULL) {
+            CU_cleanup_registry();
+            return CU_get_error();
+        }
     }
 
     /** add the tests_files to the suite */
@@ -53,12 +70,17 @@ int main() {
         (NULL == CU_add_test(assignVectorSuite, "assign vector first", testFirstAssignVectorToCentroids)) ||
         (NULL == CU_add_test(kMeansSuite, "One iteration of kMeans", testKMeansDimension2)) ||
         (NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile)) ||
-        (NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2)) ||
-        (NULL ==
-         CU_add_test(completeTestSuite, "Compare the solutions from c with the ones from python", testCompare))) {
+        (NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2))) {
 
         CU_cleanup_registry();
         return CU_get_error();
+    }
+    if (!valgrindTest) {
+        if (NULL ==
+            CU_add_test(completeTestSuite, "Compare the solutions from c with the ones from python", testCompare)) {
+            CU_cleanup_registry();
+            return CU_get_error();
+        }
     }
 
     /** Run all tests_files using the CUnit Basic interface */
