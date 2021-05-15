@@ -3,6 +3,34 @@ Mary.
 
 Ce README contient toutes les informations nécessaires quant à la bonne compréhension du projet.
 
+# Lancement du programme
+
+### Commandes nécessaires au fonctionnement du projet :
+
+1. make
+1. make tests
+1. make clean
+
+### Commande pour l'exécuter avec ses propres arguments: 
+Les arguments précédés de "+" sont optionnels.
+
+./kmeans +[−q show_clusters] [−k n_clusters] +[−p n_combinations_points] [−n n_threads]
++[−d distance_metric] +[−f output_file] [input_filename]
+
+Nous avons ajouté la possiblilité de mettre l'argument -t pour afficher le temps d'exécution.
+
+### Commandes ajoutées :
+
+1. make valgrind
+1. make valgrindForTests
+1. make helgrind
+1. make performances
+
+La première effectue les tests valgrind (tests de mémoire) sur le fichier ex3.bin. La seconde effectue les tests
+helgrind (test des threads) sur le fichier ex3.bin. Et la dernière lance le programme plusieurs sur un fichier d'entrée
+de 50 000 points et avec différents nombres de threads. Elle produit ensuite une visualisation avec matplotlib dans le
+dossier tests_files/test_performances.
+
 # Structures utilisées
 
 Toutes nos structures sont définies dans le fichier headers/kmeansStruct.h. Pour plus d'information à leur sujet,
@@ -80,26 +108,6 @@ On n'arrive plus à améliorer le temps d'exécution sur raspberry au-delà de 2
 compte le thread consommateur et celui derrière l'exécution de main, il fait alors sens que 2 threads producteurs
 fournissent le meilleur résultat (puisqu'en réalité 4 threads sont à l'oeuvre). Sur nos machines personnelles, on
 observe des gains de performance jusqu'à 7 threads producteurs.
-
-# Lancement du programme
-
-## Les trois commandes nécessaires pour faire fonctionner le projet sont les suivantes:
-
-1. make
-1. make tests
-1. make clean
-
-On a ajouté trois autres commandes :
-
-1. make valgrind
-1. make valgrindForTests
-1. make helgrind
-1. make performances
-
-La première effectue les tests valgrind (tests de mémoire) sur le fichier ex3.bin. La seconde effectue les tests
-helgrind (test des threads) sur le fichier ex3.bin. Et la dernière lance le programme plusieurs sur un fichier d'entrée
-de 50 000 points et avec différents nombres de threads. Elle produit ensuite une visualisation avec matplotlib dans le
-dossier tests_files/test_performances.
 
 # Questions éventuelles
 
