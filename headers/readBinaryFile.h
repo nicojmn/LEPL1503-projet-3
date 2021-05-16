@@ -11,6 +11,7 @@
 
 #include "kMeans.h"
 
+
 /**
  * Loads the data from the binary input file and store it in the data_t structure
  * @param inputFile : the binary input file to read

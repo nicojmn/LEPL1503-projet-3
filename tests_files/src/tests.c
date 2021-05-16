@@ -13,8 +13,7 @@ int main(int argc, char **argv) {
             break;
         }
     }
-
-
+    
     CU_pSuite distanceTestSuite = NULL;
     CU_pSuite distortionTestSuite = NULL;
     CU_pSuite updateCentroidsTestSuite = NULL;

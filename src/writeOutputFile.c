@@ -1,5 +1,6 @@
 #include "../headers/writeOutputFile.h"
 
+
 int32_t writeHeadline(bool quiet, FILE *outputFile) {
     char *dataNames = "initialization centroids,distortion,centroids";
     if (fprintf(outputFile, "%s", dataNames) < 0) return -1;
@@ -10,7 +11,6 @@ int32_t writeHeadline(bool quiet, FILE *outputFile) {
     }
     return 0;
 }
-
 
 point_t **generateClusters(kMeans_t *kMeans, bool quiet) {
     if (quiet) return NULL;
@@ -36,7 +36,6 @@ point_t **generateClusters(kMeans_t *kMeans, bool quiet) {
     return clusters;
 }
 
-
 int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint64_t size, FILE *outputFile) {
 
     for (uint64_t vectors = 0; vectors < size; ++vectors) {
@@ -58,21 +57,21 @@ int32_t writeVectorList(point_t *listOfVectors, uint32_t dimension, uint64_t siz
 
 int32_t writeOneKMeans(kMeans_t *kMeans, bool quiet, FILE *outputPath, point_t *startingCentroids,
                        point_t **clusters, uint64_t distortionValue) {
-    // writes the starting centroids
+    // Writes the starting centroids
     if (fprintf(outputPath, "\n") < 0) return -1;
     if (fprintf(outputPath, "\"[") < 0) return -1;
     if (writeVectorList(startingCentroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;
     if (fprintf(outputPath, "]\",") < 0) return -1;
 
-    // writes the distortion
+    // Writes the distortion
     if (fprintf(outputPath, "%" PRIu64, distortionValue) < 0) return -1;
     if (fprintf(outputPath, ",\"[") < 0) return -1;
 
-    // writes the final centroids
+    // Writes the final centroids
     if (writeVectorList(kMeans->centroids, kMeans->dimension, kMeans->k, outputPath) < 0) return -1;
     if (fprintf(outputPath, "]\"") < 0) return -1;
 
-    // we write each points into its cluster only in non quiet mode
+    // We write each points into its cluster only in non quiet mode
     if (!quiet) {
         if (fprintf(outputPath, ",\"[") < 0) return -1;
         for (uint32_t i = 0; i < kMeans->k; i++) {

@@ -20,7 +20,8 @@ void usage(char *prog_name) {
 
 int parse_args(args_t *args, int argc, char *argv[]) {
     memset(args, 0, sizeof(args_t));    // set everything to 0 by default
-    // the default values are the following, they will be changed depending on the arguments given to the program
+    // The default values are the following, they will be changed depending
+    // on the arguments given to the program
     args->k = 2;
     args->n_first_initialization_points = args->k;
     args->n_threads = 4;

@@ -6,6 +6,7 @@ FILE *writeOutputFile = NULL;
 
 kMeans_t *outputKMeansDim2 = NULL;
 
+
 int32_t setupCreateOutputFile(void) {
 
     /**

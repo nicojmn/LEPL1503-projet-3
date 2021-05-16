@@ -1,5 +1,6 @@
 #include "../headers/manageHeap.h"
 
+
 void clean(kMeans_t *kMeans) {
     for (uint32_t i = 0; i < kMeans->k; ++i) {
         free((kMeans->centroids)[i].vector);
