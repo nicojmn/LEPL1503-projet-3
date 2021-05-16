@@ -153,8 +153,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    pthread_t producerThreads[nThreads - 1]; // nThreads-1 because the main thread is a producer too
-    pthread_t consumerThread;
+    pthread_t producerThreads[nThreads];
 
     uint32_t amountOfInstancePerThread = (uint32_t) iterationNumber / nThreads;
     uint16_t rest = (uint16_t) iterationNumber % nThreads;
@@ -162,48 +161,34 @@ int main(int argc, char *argv[]) {
     uint32_t end = amountOfInstancePerThread;
     uint32_t listOfIndexes[nThreads][2];
 
-    // Launch of the threads
+    // Launch of the producer threads
     for (int i = 0; i < nThreads; i++) {
-        // The last producer thread is our main thread
-        if (i == nThreads - 1) {
-            // Launch the consumer
-            if (pthread_create(&consumerThread, NULL, &consume, NULL) != 0) {
-                fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
-                return -1;
-            }
-            listOfIndexes[i][0] = start;
-            listOfIndexes[i][1] = end;
-            if (produce((void *) listOfIndexes[i]) == (void *) -1) {
-                fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
-                return -1;
-            }
-        } else {
-            // allocate fairly the integer division rest to each producer (17//3 -> 6 6 5)
-            if (rest > 0) {
-                end++;
-                rest--;
-            }
-            listOfIndexes[i][0] = start;
-            listOfIndexes[i][1] = end;
-            if (pthread_create(&producerThreads[i], NULL, &produce, (void *) listOfIndexes[i]) != 0) {
-                fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
-                return -1;
-            }
-            start = end;
-            end += amountOfInstancePerThread;
+        // Allocate fairly the integer division rest to each producer (17//3 -> 6 6 5)
+        if (rest > 0) {
+            end++;
+            rest--;
         }
+        listOfIndexes[i][0] = start;
+        listOfIndexes[i][1] = end;
+        if (pthread_create(&producerThreads[i], NULL, &produce, (void *) listOfIndexes[i]) != 0) {
+            fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+            return -1;
+        }
+        start = end;
+        end += amountOfInstancePerThread;
+    }
+    // Launch the consumer thread which is the main thread
+    if (consume() == (void *) -1) {
+        fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
+        return -1;
     }
 
-    // Closing the threads
-    for (uint32_t i = 0; i < nThreads - 1; i++) {
+    // Closing the producer threads
+    for (uint32_t i = 0; i < nThreads; i++) {
         if (pthread_join(producerThreads[i], NULL) != 0) {
             fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
             return -1;
         }
-    }
-    if (pthread_join(consumerThread, NULL) != 0) {
-        fullClean(generalData, startingCentroids, iterationNumber, programArguments, buffer);
-        return -1;
     }
 
     // Closing, freeing, destroying what is necessary

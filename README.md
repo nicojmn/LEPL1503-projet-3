@@ -102,18 +102,19 @@ pourraient, par exemple, déposer leurs résultats en même temps sur un même e
 # Tests de performance
 
 Commandes utilisées via la terminal pour lancer notre programme:  
-*Pour lancer ces commandes, vous devez vous situer dans le repertoire "groupeD22". Aussi, changez le fichier d'entrée
-pour tester avec différentes tailles de fichiers*
+*Pour lancer ces commandes, vous devez vous situer dans le repertoire contenant Makefile. Aussi, changez le fichier
+d'entrée pour tester avec différentes tailles de fichiers*
 
-* make
-* ./kmeans -k 5 -p 8 -n 2 -q -d euclidean -f output_csv/ex6_dim5.csv input_binary/ex6_dim5.bin
+* make performances
 
-Nos tests ont été effectués sur un fichier ex7_dim5.bin contenant 50 000 points en 5 dimensions.
+Nos tests de performances ont été effectués sur le fichier ex7_50Kpoints_dim5.bin contenant 50 000 points en 5
+dimensions.
 
 ### Résultats sur raspberry :
 
 * 1 thread : 3m0.517s
 * 2 threads : 1m40.913s
+* 3 threads : 1m22.046s
 * 4 threads : 0m55.054s
 * 8 threads : 0m53.222s
 
@@ -121,6 +122,7 @@ Nos tests ont été effectués sur un fichier ex7_dim5.bin contenant 50 000 poin
 
 * 1 thread : 0m11.23s
 * 2 threads : 0m5.78s
+* 3 threads : 0m4.90s
 * 4 threads : 0m3.54s
 * 8 threads : 0m2.73s
 
