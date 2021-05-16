@@ -15,7 +15,7 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
 Les arguments précédés de "+" sont optionnels.
 
 ./kmeans +[−q show_clusters] +[−k n_clusters] +[−p n_combinations_points] +[−n n_threads]
-+[−d distance_metric] +[−f output_file] [input_filename]
++[−d distance_metric] + [−f output_file] [input_filename]
 
 Par défaut, les clusters sont repris dans le fichier output, -k vaut 2, -p vaut la même chose que -k, -n vaut 4, -d vaut
 "manhattan", le résultat est écrit sur la sortie standard et l'entrée standard est lue pour l'input. Nous avons ajouté
@@ -29,8 +29,8 @@ l'affichage).
 3. make helgrind
 4. make performances
 
-La première effectue les tests Valgrind (tests sur la gestion de la mémoire) sur le fichier ex3.bin avec et sans
-l'option
+La première effectue les tests Valgrind (tests sur la gestion de la mémoire, détection de fuites mémoires) sur le
+fichier ex3.bin avec et sans l'option
 "-q". La deuxième effectue les tests Valgrind pour les tests unitaires. La troisième effectue les tests Helgrind (test
 des threads) sur le fichier ex3.bin avec et sans "-q" et avec différents nombres de threads. La dernière lance le
 programme plusieurs fois sur un fichier d'entrée de 50 000 points en 5 dimensions et avec un nombre de thread producteur
