@@ -3,14 +3,19 @@ CFLAGS = -Wall -Werror -g -std=gnu99
 LIBS = -lcunit -lpthread
 INCLUDE_HEADERS_DIRECTORY = -Iheaders
 
+
+# kmeans command link all source files and headers with main.c file
+# and compile them in a file named kmeans
 kmeans: main.c  \
 		src/distance.o src/kMeans.o src/generateStartingCentroids.o src/buffer.o\
 		src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
 		$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 
+# This command take a C source file and compile it to return a .o file
 %.o: %.c
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ -c $<
 
+# This command clean the project by deleting output file
 clean:
 	rm -f kmeans
 	rm -f test
@@ -29,25 +34,20 @@ test: tests_files/src/tests.c \
 	   tests_files/src/compareWithPythonTests.o
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 
+# Run benchmark test and create a matplotlib graph with execution time
 performances: clean kmeans
 	/bin/sh ./tests_files/test_performances/testPerformances.sh
 
-## -----------------------------------/!\--------------------------------
-## WARNING : this command is used by Jenkins
-## -----------------------------------/!\--------------------------------
+# Run unittests and compare solution with python code
 tests: clean kmeans test
 	./test
 
-## -----------------------------------/!\--------------------------------
-## WARNING : this command is used by Jenkins
-## -----------------------------------/!\--------------------------------
+
 ## Performs valgrind (memory check) test with -q and without -q
 valgrind : clean kmeans
 	/bin/sh ./tests_files/bash/valgrindTests.sh
 
-## -----------------------------------/!\--------------------------------
-## WARNING : this command is used by Jenkins
-## -----------------------------------/!\--------------------------------
+
 ## Performs helgrind (safe threads check) test with -q and without -q
 helgrind: clean kmeans
 	/bin/sh ./tests_files/bash/helgrindTests.sh
