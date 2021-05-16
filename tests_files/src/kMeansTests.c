@@ -3,12 +3,20 @@
 kMeans_t *kMeansDim2 = NULL;
 
 int32_t kMeansSetup(void) {
+
+    /**
+     * Creation of a simulation:
+     *    - in 2 dimensions
+     *    - 3 points: [(1, 2), (-1, 4), (-4, 10)]
+     *    - 2 centroids: [(1, 2), (-3, 9)]
+     */
     kMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (kMeansDim2 == NULL) return -1;
     kMeansDim2->dimension = (int32_t) 2;
     kMeansDim2->points = (point_t *) malloc(3 * sizeof(point_t));
-    kMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
     if (kMeansDim2->points == NULL) return -1;
+    kMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
+    if (kMeansDim2->centroids == NULL) return -1;
     kMeansDim2->size = 3;
     kMeansDim2->k = 2;
     kMeansDim2->clustersSize = (uint64_t *) malloc(2 * sizeof(uint64_t *));
@@ -57,14 +65,14 @@ int32_t kMeansTeardown(void) {
     return 0;
 }
 
-/** Testing with different dimensions
+/**
     We've used the corresponding python function to get the correct value
 */
 void testKMeansDimension2(void) {
     squared_distance_func_t generic_func = squared_euclidean_distance;
+
     runKMeans(kMeansDim2, (squared_distance_func_t (*)(const point_t *, const point_t *,
                                                        uint32_t)) generic_func);
-
     // testing the centroids
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[0], (int64_t) 0);
     CU_ASSERT_EQUAL((kMeansDim2->centroids)[0].vector[1], (int64_t) 3);

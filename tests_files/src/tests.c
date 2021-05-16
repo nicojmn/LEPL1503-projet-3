@@ -1,8 +1,19 @@
 #include "../headers/tests.h"
 
+int main(int argc, char **argv) {
 
-int main() {
+    /** We run valgrind on the test but we don't want to use valgrind on the comparison
+     * between the python and c because it takes too much time and it's already checked by make valgrind */
+    bool valgrindTest = false;
+    int opt;
+    while ((opt = getopt(argc, argv, "v")) != -1) {
+        if (opt == 'v') {
+            valgrindTest = true;
+            break;
+        }
+    }
 
+    /** Initialize the CUnit suite */
     CU_pSuite distanceTestSuite = NULL;
     CU_pSuite distortionTestSuite = NULL;
     CU_pSuite updateCentroidsTestSuite = NULL;
@@ -11,6 +22,7 @@ int main() {
     CU_pSuite binaryFileSuite = NULL;
     CU_pSuite csvFileSuite = NULL;
     CU_pSuite generateStartingCentroidsSuite = NULL;
+    CU_pSuite completeTestSuite = NULL;
 
     /** initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry()) {
@@ -29,16 +41,26 @@ int main() {
     kMeansSuite = CU_add_suite("kMeans test", kMeansSetup, kMeansTeardown);
     binaryFileSuite = CU_add_suite("binary file loading test", setupBinaryFile, teardownBinaryFile);
     csvFileSuite = CU_add_suite("writing into csv file test", setupCreateOutputFile, teardownCreateOutputFile);
+    if (!valgrindTest) {
+        completeTestSuite = CU_add_suite("Comparison between python and c", compareWithPythonSetup,
+                                         compareWithPythonTeardown);
+    }
 
+    /** Check if tests suites are correctly added **/
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
-        updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kMeansSuite == NULL
-        || binaryFileSuite == NULL || csvFileSuite == NULL || generateStartingCentroidsSuite == NULL) {
+        updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kMeansSuite == NULL ||
+        binaryFileSuite == NULL || csvFileSuite == NULL || generateStartingCentroidsSuite == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
+    if (!valgrindTest) {
+        if (completeTestSuite == NULL) {
+            CU_cleanup_registry();
+            return CU_get_error();
+        }
+    }
 
     /** add the tests_files to the suite */
-    /** NOTE - ORDER IS IMPORTANT */
     if ((NULL == CU_add_test(distanceTestSuite, "squared manhattan distance", testManhattan)) ||
         (NULL == CU_add_test(distanceTestSuite, "squared euclidean distance", testEuclidean)) ||
         (NULL == CU_add_test(distortionTestSuite, "distortion", testDistortion)) ||
@@ -51,8 +73,16 @@ int main() {
         (NULL == CU_add_test(kMeansSuite, "One iteration of kMeans", testKMeansDimension2)) ||
         (NULL == CU_add_test(binaryFileSuite, "Test of loadingData", testReadBinaryFile)) ||
         (NULL == CU_add_test(csvFileSuite, "test of writing into csv", test_createOutputFileDimension2))) {
+
         CU_cleanup_registry();
         return CU_get_error();
+    }
+    if (!valgrindTest) {
+        if (NULL ==
+            CU_add_test(completeTestSuite, "Compare the solutions from c with the ones from python", testCompare)) {
+            CU_cleanup_registry();
+            return CU_get_error();
+        }
     }
 
     /** Run all tests_files using the CUnit Basic interface */

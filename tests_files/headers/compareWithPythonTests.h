@@ -1,27 +1,25 @@
-#ifndef READBINARYFILETESTS_H
-#define READBINARYFILETESTS_H
+#ifndef COMPAREWITHPYTHONTESTS_H
+#define COMPAREWITHPYTHONTESTS_H
 
 #include <CUnit/CUnit.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../headers/readBinaryFile.h"
-
 /**
  * Function to prepare tests (malloc(), assigning variables)
  * @return 0 if everything goes well, -1 if an error occurs
  */
-int32_t setupBinaryFile(void);
+int32_t compareWithPythonSetup(void);
 
 /**
  * Function to clean memory after tests
  * @return 0
  */
-int32_t teardownBinaryFile(void);
+int32_t compareWithPythonTeardown(void);
 
 /**
- * Check if binary file is correctly read
+ * Compare C solution with python solution
  */
-void testReadBinaryFile(void);
+void testCompare(void);
 
-#endif
+#endif // COMPAREWITHPYTHONTESTS_H

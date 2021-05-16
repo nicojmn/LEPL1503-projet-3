@@ -1,54 +1,59 @@
-CC = gcc -std=gnu99
-CFLAGS = -Wall -Werror -g
+CC = gcc
+CFLAGS = -Wall -Werror -g -std=gnu99
 LIBS = -lcunit -lpthread
 INCLUDE_HEADERS_DIRECTORY = -Iheaders
-VALGRIND_MEM_FULL = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose
-VALGRIND_MEM_MED = valgrind --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no
 
+
+# kmeans command link all source files and headers with main.c file
+# and compile them in a file named kmeans
 kmeans: main.c  \
-		src/distance.o src/kMeans.o src/generateStartingCentroids.o \
+		src/distance.o src/kMeans.o src/generateStartingCentroids.o src/buffer.o\
 		src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
 		$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
 
+# This command take a C source file and compile it to return a .o file
 %.o: %.c
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ -c $<
 
+# This command clean the project by deleting output file
 clean:
 	rm -f kmeans
-	rm -f tests
+	rm -f test
 	rm -f *.o
 	rm -f src/*.o
 	rm -f tests_files/src/*.o
 
-tests: tests_files/src/tests.c \
+## /! WARNING : this command can't be used alone !\ ##
+test: tests_files/src/tests.c \
 	   src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o \
-	   src/writeOutputFile.o src/manageArgs.o src/manageHeap.o \
+       src/writeOutputFile.o src/manageArgs.o src/manageHeap.o src/buffer.o\
 	   tests_files/src/distanceTests.o tests_files/src/assignVectorTests.o \
 	   tests_files/src/distortionTests.o tests_files/src/generateCentroidsTests.o \
 	   tests_files/src/kMeansTests.o tests_files/src/writeOutputFileTests.o \
-	   tests_files/src/readBinaryFileTests.o tests_files/src/updateCentroidsTests.o
-## -----------------------------------/!\--------------------------------
-## WARNING : this command is used by Jenkins
-## -----------------------------------/!\--------------------------------
+	   tests_files/src/readBinaryFileTests.o tests_files/src/updateCentroidsTests.o \
+	   tests_files/src/compareWithPythonTests.o
 	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
-	./tests
 
-valgrind : main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
-## -----------------------------------/!\--------------------------------
-## WARNING : this command is used by Jenkins
-## -----------------------------------/!\--------------------------------
-## Performs valgrind (memory check) test
-	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
-	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./valgrind  -k 4 -p 6 -n 4 -d manhattan -f output_csv/kmeans.csv  input_binary/ex3.bin
-	rm -f valgrindMain
+# Run benchmark test and create a matplotlib graph with execution time
+performances: clean kmeans
+	/bin/sh ./tests_files/test_performances/testPerformances.sh
 
-helgrind: main.c  src/distance.o src/kMeans.o src/generateStartingCentroids.o src/readBinaryFile.o src/writeOutputFile.o src/manageArgs.o src/manageHeap.o
-## -----------------------------------/!\--------------------------------
-## WARNING : this command is used by Jenkins
-## -----------------------------------/!\--------------------------------
-## Performs helgrind (safe threads check) test
-	$(CC) $(INCLUDE_HEADERS_DIRECTORY) $(CFLAGS) -o $@ $^ $(LIBS)
-	valgrind --tool=helgrind ./helgrind -k 2 -p 3 -n 2 -d euclidean -f output_csv/kmeans.csv input_binary/ex3.bin
-	rm -f helgrind
+# Run unittests and compare solution with python code
+tests: clean kmeans test
+	./test
 
-.PHONY: clean tests kmeans valgrind run
+
+## Performs valgrind (memory check) test with -q and without -q
+valgrind : clean kmeans
+	/bin/sh ./tests_files/bash/valgrindTests.sh
+
+
+## Performs helgrind (safe threads check) test with -q and without -q
+helgrind: clean kmeans
+	/bin/sh ./tests_files/bash/helgrindTests.sh
+
+# Performs a valgrind check on the unit tests
+valgrindForTests : clean kmeans test
+	valgrind  --leak-check=full --leak-resolution=med --track-origins=yes --vgdb=no ./test -v
+
+.PHONY: kmeans clean tests valgrind helgrind performances valgrindForTests

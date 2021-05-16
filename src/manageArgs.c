@@ -14,19 +14,23 @@ void usage(char *prog_name) {
             "    -q quiet mode: does not output the clusters content (the \"clusters\" column is simply not present in the csv)\n");
     fprintf(stderr,
             "    -d distance (manhattan by default): can be either \"euclidean\" or \"manhattan\". Chooses the distance formula to use by the algorithm to compute the distance between the points\n");
+    fprintf(stderr,
+            "    -t test mode: does not print anything into the terminal\n");
 }
 
 int parse_args(args_t *args, int argc, char *argv[]) {
     memset(args, 0, sizeof(args_t));    // set everything to 0 by default
-    // the default values are the following, they will be changed depending on the arguments given to the program
+    // The default values are the following, they will be changed depending
+    // on the arguments given to the program
     args->k = 2;
     args->n_first_initialization_points = args->k;
     args->n_threads = 4;
     args->output_stream = stdout;
     args->quiet = false;
     args->squared_distance_func = squared_manhattan_distance;
+    args->test_mode = false;
     int opt;
-    while ((opt = getopt(argc, argv, "n:p:k:f:d:q")) != -1) {
+    while ((opt = getopt(argc, argv, "n:p:k:f:d:qt")) != -1) {
         switch (opt) {
             case 'n':
                 args->n_threads = atoi(optarg);
@@ -61,6 +65,9 @@ int parse_args(args_t *args, int argc, char *argv[]) {
             case 'q':
                 args->quiet = true;
                 break;
+            case 't':
+                args->test_mode = true;
+                break;
             case 'd':
                 if (strcmp("euclidean", optarg) == 0) {
                     args->squared_distance_func = squared_euclidean_distance;
@@ -84,4 +91,29 @@ int parse_args(args_t *args, int argc, char *argv[]) {
         }
     }
     return 0;
+}
+
+int32_t verifyArguments(args_t programArguments) {
+    if (programArguments.n_first_initialization_points < programArguments.k) {
+        fprintf(stderr,
+                "Cannot generate an instance of kCentroids-means with less initialization points than needed clusters: %"PRIu32" < %"PRIu32"\n",
+                programArguments.n_first_initialization_points, programArguments.k);
+        return -1;
+    }
+    return 0;
+}
+
+void displayOptions(args_t programArguments) {
+    if (!programArguments.test_mode) {
+        fprintf(stderr, "\tNumber of threads executing the LLoyd's algorithm in parallel: %" PRIu32 "\n",
+                programArguments.n_threads);
+        fprintf(stderr, "\tNumber of clusters (k): %" PRIu32 "\n", programArguments.k);
+        fprintf(stderr,
+                "\tWe consider all the combinations of the %" PRIu32 " first points of the input as initializations of the Lloyd's algorithm\n",
+                programArguments.n_first_initialization_points);
+        fprintf(stderr, "\tQuiet mode: %s\n", programArguments.quiet ? "enabled" : "disabled");
+        fprintf(stderr, "\tTest mode: %s\n", programArguments.test_mode ? "enabled" : "disabled");
+        fprintf(stderr, "\tSquared distance function: %s\n",
+                programArguments.squared_distance_func == squared_manhattan_distance ? "manhattan" : "euclidean");
+    }
 }

@@ -1,37 +1,43 @@
 #include "../headers/generateCentroidsTests.h"
 
 
-point_t **startingCentroids1;
-point_t **startingCentroids2;
+point_t **startingCentroids1 = NULL;
+point_t **startingCentroids2 = NULL;
 
-data_t *generateCentroidsDataTest1;
-FILE *generateCentroidsFileForTest1;
+data_t *generateCentroidsDataTest1 = NULL;
+FILE *generateCentroidsFileForTest1 = NULL;
 
-data_t *generateCentroidsDataTest2;
-FILE *generateCentroidsFileForTest2;
+data_t *generateCentroidsDataTest2 = NULL;
+FILE *generateCentroidsFileForTest2 = NULL;
 
 int32_t setupGenerateStartingCentroids(void) {
 
+    // General features
+    uint32_t kCentroids = 2;
+    uint32_t nFirstPoints = 4;
+    uint64_t iterationNumber = combinatorial(nFirstPoints, kCentroids);
+
+    // Simulation using ex1.bin
     generateCentroidsDataTest1 = (data_t *) malloc(sizeof(data_t));
     if (generateCentroidsDataTest1 == NULL) return -1;
     generateCentroidsFileForTest1 = fopen("tests_files/input_binary/ex1.bin", "r");
     loadData(generateCentroidsFileForTest1, generateCentroidsDataTest1);
 
-    uint32_t k = 2;
-    uint32_t n = 4;
-
-    uint64_t iterationNumber = combinatorial(n, k);
-
     startingCentroids1 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    generateSetOfStartingCentroids(startingCentroids1, generateCentroidsDataTest1->vectors, k, n, iterationNumber);
+    if (startingCentroids1 == NULL) return -1;
+    generateSetOfStartingCentroids(startingCentroids1, generateCentroidsDataTest1->vectors, kCentroids,
+                                   nFirstPoints, iterationNumber);
 
+    // Simulation using ex3.bin
     generateCentroidsDataTest2 = (data_t *) malloc(sizeof(data_t));
     if (generateCentroidsDataTest2 == NULL) return -1;
     generateCentroidsFileForTest2 = fopen("tests_files/input_binary/ex3.bin", "r");
     loadData(generateCentroidsFileForTest2, generateCentroidsDataTest2);
 
     startingCentroids2 = (point_t **) malloc(iterationNumber * sizeof(point_t *));
-    generateSetOfStartingCentroids(startingCentroids2, generateCentroidsDataTest2->vectors, k, n, iterationNumber);
+    if (startingCentroids2 == NULL) return -1;
+    generateSetOfStartingCentroids(startingCentroids2, generateCentroidsDataTest2->vectors, kCentroids,
+                                   nFirstPoints, iterationNumber);
     return 0;
 }
 
@@ -70,31 +76,31 @@ int32_t teardownGenerateStartingCentroids(void) {
 void testGenerateStartingCentroids(void) {
 
     // using ex1.bin
-    CU_ASSERT_EQUAL(startingCentroids1[0]->vector[0], 1);
-    CU_ASSERT_EQUAL(startingCentroids1[0]->vector[1], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[0][0].vector[0], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[0][0].vector[1], 1);
 
-    CU_ASSERT_EQUAL(startingCentroids1[1]->vector[0], 1);
-    CU_ASSERT_EQUAL(startingCentroids1[1]->vector[1], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[0][1].vector[0], 2);
+    CU_ASSERT_EQUAL(startingCentroids1[0][1].vector[1], 2);
 
-    CU_ASSERT_EQUAL(startingCentroids1[2]->vector[0], 1);
-    CU_ASSERT_EQUAL(startingCentroids1[2]->vector[1], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[1][0].vector[0], 1);
+    CU_ASSERT_EQUAL(startingCentroids1[1][0].vector[1], 1);
 
-    CU_ASSERT_EQUAL(startingCentroids1[3]->vector[0], 2);
-    CU_ASSERT_EQUAL(startingCentroids1[3]->vector[1], 2);
+    CU_ASSERT_EQUAL(startingCentroids1[1][1].vector[0], 3);
+    CU_ASSERT_EQUAL(startingCentroids1[1][1].vector[1], 4);
 
 
     // using ex3.bin
-    CU_ASSERT_EQUAL(startingCentroids2[0]->vector[0], 2053);
-    CU_ASSERT_EQUAL(startingCentroids2[0]->vector[1], 981);
+    CU_ASSERT_EQUAL(startingCentroids2[0][0].vector[0], 2053);
+    CU_ASSERT_EQUAL(startingCentroids2[0][0].vector[1], 981);
 
-    CU_ASSERT_EQUAL(startingCentroids2[1]->vector[0], 2053);
-    CU_ASSERT_EQUAL(startingCentroids2[1]->vector[1], 981);
+    CU_ASSERT_EQUAL(startingCentroids2[0][1].vector[0], 515);
+    CU_ASSERT_EQUAL(startingCentroids2[0][1].vector[1], 486);
 
-    CU_ASSERT_EQUAL(startingCentroids2[2]->vector[0], 2053);
-    CU_ASSERT_EQUAL(startingCentroids2[2]->vector[1], 981);
+    CU_ASSERT_EQUAL(startingCentroids2[1][0].vector[0], 2053);
+    CU_ASSERT_EQUAL(startingCentroids2[1][0].vector[1], 981);
 
-    CU_ASSERT_EQUAL(startingCentroids2[3]->vector[0], 515);
-    CU_ASSERT_EQUAL(startingCentroids2[3]->vector[1], 486);
+    CU_ASSERT_EQUAL(startingCentroids2[1][1].vector[0], 988);
+    CU_ASSERT_EQUAL(startingCentroids2[1][1].vector[1], 519);
 }
 
 void testCombinatorial() {

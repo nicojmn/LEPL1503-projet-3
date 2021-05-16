@@ -5,27 +5,13 @@
 #include <stdbool.h>
 
 #include "kMeans.h"
+#include "buffer.h"
 #include "manageArgs.h"
 
-/** Structure use by the producer threads and consumer thread to communicate */
-typedef struct {
-    kMeans_t **kMeansInstances;
-    uint64_t *distortionValues;
-    point_t ***clustersOfInstances;
-    uint32_t *indexes;
-    uint8_t head; // free place
-    uint8_t tail; // oldest input
-} buffer_t;
-
-/**
- * @param bufferSize (because we only have one consumer thread, it's useless to create a large buffer)
- * @return the buffer used by our threads in the producer/consumer process
- */
-buffer_t *createBuffer(uint8_t bufferSize);
 
 /**
  * Free all the data related to an instance of kMeans
- * @param KMeans : the structure we want to clean
+ * @param KMeans : pointer to the structure which gather all the information of our kMeans problem
  */
 void clean(kMeans_t *KMeans);
 
