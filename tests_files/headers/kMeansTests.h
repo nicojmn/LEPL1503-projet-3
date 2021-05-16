@@ -20,6 +20,9 @@ int32_t kMeansSetup(void);
  */
 int32_t kMeansTeardown(void);
 
+/**
+ * Check program with points of two dimensions
+ */
 void testKMeansDimension2(void);
 
 
