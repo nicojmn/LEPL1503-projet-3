@@ -13,8 +13,9 @@ int32_t assignVectorSetup(void) {
     if (assignVectorKMeansDim2 == NULL) return -1;
     assignVectorKMeansDim2->dimension = (int32_t) 2;
     assignVectorKMeansDim2->points = (point_t *) malloc(3 * sizeof(point_t));
-    assignVectorKMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
     if (assignVectorKMeansDim2->points == NULL) return -1;
+    assignVectorKMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
+    if (assignVectorKMeansDim2->centroids == NULL) return -1;
     assignVectorKMeansDim2->size = 3;
     assignVectorKMeansDim2->k = 2;
     assignVectorKMeansDim2->clustersSize = (uint64_t *) malloc(2 * sizeof(uint64_t *));

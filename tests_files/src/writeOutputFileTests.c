@@ -18,8 +18,9 @@ int32_t setupCreateOutputFile(void) {
     if (outputKMeansDim2 == NULL) return -1;
     outputKMeansDim2->dimension = (int32_t) 2;
     outputKMeansDim2->points = (point_t *) malloc(7 * sizeof(point_t));
-    outputKMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
     if (outputKMeansDim2->points == NULL) return -1;
+    outputKMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
+    if (outputKMeansDim2->centroids == NULL) return -1;
     outputKMeansDim2->size = 7;
     outputKMeansDim2->k = 2;
     outputKMeansDim2->clustersSize = (uint64_t *) malloc(2 * sizeof(uint64_t *));
@@ -80,15 +81,18 @@ int32_t setupCreateOutputFile(void) {
 
     /** We record the starting centroids */
     writeOutputFileCentroids1 = (point_t **) malloc(sizeof(point_t *));
+    if (writeOutputFileCentroids1 == NULL) return -1;
     writeOutputFileCentroids1[0] = malloc(sizeof(point_t) * 2);
+    if (writeOutputFileCentroids1 == NULL) return -1;
 
     writeOutputFileCentroids1[0][0].vector = malloc(sizeof(int64_t) * 3);
+    if (writeOutputFileCentroids1[0][0].vector == NULL) return -1;
     writeOutputFileCentroids1[0][0].vector[0] = (int64_t) -2;
     writeOutputFileCentroids1[0][0].vector[1] = (int64_t) 4;
     writeOutputFileCentroids1[0][0].vector[2] = (int64_t) 3;
 
     writeOutputFileCentroids1[0][1].vector = malloc(sizeof(point_t) * 3);
-
+    if (writeOutputFileCentroids1[0][1].vector == NULL) return -1;
     writeOutputFileCentroids1[0][1].vector[0] = (int64_t) 6;
     writeOutputFileCentroids1[0][1].vector[1] = (int64_t) 2;
     writeOutputFileCentroids1[0][1].vector[2] = (int64_t) 1;
@@ -121,7 +125,6 @@ int32_t teardownCreateOutputFile(void) {
     writeOutputFile = NULL;
 
     free(writeOutputFileCentroids1);
-
     return 0;
 }
 

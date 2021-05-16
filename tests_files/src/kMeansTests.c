@@ -14,8 +14,9 @@ int32_t kMeansSetup(void) {
     if (kMeansDim2 == NULL) return -1;
     kMeansDim2->dimension = (int32_t) 2;
     kMeansDim2->points = (point_t *) malloc(3 * sizeof(point_t));
-    kMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
     if (kMeansDim2->points == NULL) return -1;
+    kMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
+    if (kMeansDim2->centroids == NULL) return -1;
     kMeansDim2->size = 3;
     kMeansDim2->k = 2;
     kMeansDim2->clustersSize = (uint64_t *) malloc(2 * sizeof(uint64_t *));

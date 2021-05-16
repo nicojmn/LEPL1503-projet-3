@@ -19,8 +19,9 @@ int32_t updateCentroidsSetup(void) {
     if (updateCentroidsKMeansDim2 == NULL) return -1;
     updateCentroidsKMeansDim2->dimension = (int32_t) 2;
     updateCentroidsKMeansDim2->points = (point_t *) malloc(3 * sizeof(point_t));
-    updateCentroidsKMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
     if (updateCentroidsKMeansDim2->points == NULL) return -1;
+    updateCentroidsKMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
+    if (updateCentroidsKMeansDim2->centroids == NULL) return -1;
     updateCentroidsKMeansDim2->size = 3;
     updateCentroidsKMeansDim2->k = 2;
     updateCentroidsKMeansDim2->clustersSize = (uint64_t *) malloc(2 * sizeof(uint64_t *));

@@ -14,8 +14,9 @@ int32_t distortionSetup(void) {
     if (distortionKMeansDim2 == NULL) return -1;
     distortionKMeansDim2->dimension = (int32_t) 2;
     distortionKMeansDim2->points = (point_t *) malloc(3 * sizeof(point_t));
-    distortionKMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
     if (distortionKMeansDim2->points == NULL) return -1;
+    distortionKMeansDim2->centroids = (point_t *) malloc(2 * sizeof(point_t));
+    if (distortionKMeansDim2->centroids == NULL) return -1;
     distortionKMeansDim2->size = 3;
     distortionKMeansDim2->k = 2;
     distortionKMeansDim2->clustersSize = (uint64_t *) malloc(2 * sizeof(uint64_t *));

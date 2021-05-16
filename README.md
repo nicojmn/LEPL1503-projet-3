@@ -14,12 +14,13 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
 ### Commande pour l'exécuter avec ses propres arguments : 
 Les arguments précédés de "+" sont optionnels.
 
-./kmeans +[−q show_clusters] +[−k n_clusters] +[−p n_combinations_points] [−n n_threads]
-+[−d distance_metric] +[−f output_file] +[input_filename]
+./kmeans +[−q show_clusters] +[−k n_clusters] +[−p n_combinations_points] +[−n n_threads]
++[−d distance_metric] +[−f output_file] [input_filename]
 
-Par défaut, les clusters ne sont pas repris dans l'output, -k vaut 2, +p vaut la même chose que -k, -n vaut 4, -d vaut
+Par défaut, les clusters sont repris dans le fichier output, -k vaut 2, -p vaut la même chose que -k, -n vaut 4, -d vaut
 "manhattan", le résultat est écrit sur la sortie standard et l'entrée standard est lue pour l'input. Nous avons ajouté
-la possibilité de mettre l'argument -t pour afficher le temps d'exécution.
+la possibilité de mettre l'argument -t pour nos tests afin de n'avoir aucun affichage le terminal (les tests s'occupe de
+l'affichage).
 
 ### Commandes ajoutées :
 
@@ -28,12 +29,13 @@ la possibilité de mettre l'argument -t pour afficher le temps d'exécution.
 3. make helgrind
 4. make performances
 
-La première effectue les tests Valgrind (tests sur la gestion de la mémoire) sur le fichier ex3.bin. La deuxième
-effectue les tests Valgrind pour les tests unitaires. La troisième effectue les tests Helgrind (test des threads) sur le
-fichier ex3.bin. La dernière lance le programme plusieurs fois sur un fichier d'entrée de 10 000 points et avec
-différents nombres de threads. Elle produit ensuite une visualisation avec matplotlib dans le dossier
-tests_files/test_performances. Notez que cette commande ne fonctionne pas sur le Raspberry car la commande time n'a pas
-d'argument sur Raspian.
+La première effectue les tests Valgrind (tests sur la gestion de la mémoire) sur le fichier ex3.bin avec et sans
+l'option
+"-q". La deuxième effectue les tests Valgrind pour les tests unitaires. La troisième effectue les tests Helgrind (test
+des threads) sur le fichier ex3.bin avec et sans "-q" et avec différents nombres de threads. La dernière lance le
+programme plusieurs fois sur un fichier d'entrée de 10 000 points et avec différents nombres de threads. Elle produit
+ensuite une visualisation avec matplotlib dans le dossier tests_files/test_performances. Notez que cette commande ne
+fonctionne pas sur le Raspberry car la commande time n'a pas d'argument sur Raspian.
 
 # Structure du projet
 
@@ -52,7 +54,7 @@ d'argument sur Raspian.
 
 # Structures utilisées
 
-Toutes nos structures sont définies dans le fichier headers/kmeansStruct.h.
+Ces structures sont définies dans le fichier headers/kmeansStruct.h.
 
 1. point_t : cette structure représente un point. Elle est composée d'un vecteur représentant les coordonnées du point
    ainsi que l'indice du centroïde le plus proche.
@@ -101,9 +103,7 @@ pourraient, par exemple, déposer leurs résultats en même temps sur un même e
 
 # Tests de performance
 
-Commandes utilisées via la terminal pour lancer notre programme:  
-*Pour lancer ces commandes, vous devez vous situer dans le repertoire contenant Makefile. Aussi, changez le fichier
-d'entrée pour tester avec différentes tailles de fichiers*
+Il vous suffit de lancer la commande suivante: (sauf si vous utilisez un raspberry comme mentionnez ci-dessus):
 
 * make performances
 
@@ -125,13 +125,6 @@ dimensions.
 * 3 threads : 0m4.90s
 * 4 threads : 0m3.54s
 * 8 threads : 0m2.73s
-
-TODO --> Modif cette explication car je sais pas pq ça a changé sur rasp
-
-Le temps d'exécution sur raspberry n'évolue plus linéairement au-delà de 2 threads producteurs. Si l'on prend en compte
-le thread consommateur et celui derrière l'exécution de main, il fait alors sens que 2 threads producteurs fournissent
-le meilleur résultat (puisqu'en réalité 4 threads sont à l'oeuvre). Sur nos machines personnelles, on observe des gains
-de performance jusqu'à 7 threads producteurs.
 
 # Questions éventuelles
 
