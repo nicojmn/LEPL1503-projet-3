@@ -11,7 +11,7 @@
 
 /**
  * Free all the data related to an instance of kMeans
- * @param KMeans : the structure we want to clean
+ * @param KMeans : pointer to the structure which gather all the information of our kMeans problem
  */
 void clean(kMeans_t *KMeans);
 
