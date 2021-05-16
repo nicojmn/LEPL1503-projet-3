@@ -20,6 +20,9 @@ int32_t setupCreateOutputFile(void);
  */
 int32_t teardownCreateOutputFile(void);
 
+/**
+ * check if output file is write correctly
+ */
 void test_createOutputFileDimension2(void);
 
 #endif
