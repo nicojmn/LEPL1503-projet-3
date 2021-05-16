@@ -18,6 +18,10 @@
 #include "readBinaryFileTests.h"
 #include "compareWithPythonTests.h"
 
+/**
+ * Main function takes all tests and compute them with help of CUnit
+ * @return 0 (and print summary of tests) or -1 if an error occurs
+ */
 int main();
 
 #endif

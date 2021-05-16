@@ -10,8 +10,16 @@
 #include "../../headers/readBinaryFile.h"
 #include "../../headers/generateStartingCentroids.h"
 
+/**
+ * Function to prepare tests (malloc(), assigning variables)
+ * @return 0 if everything goes well, -1 if an error occurs
+ */
 int32_t setupGenerateStartingCentroids(void);
 
+/**
+ * Function to clean memory after tests
+ * @return 0
+ */
 int32_t teardownGenerateStartingCentroids(void);
 
 void testGenerateStartingCentroids(void);
