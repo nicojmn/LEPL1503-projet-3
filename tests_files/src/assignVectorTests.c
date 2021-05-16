@@ -2,13 +2,14 @@
 
 kMeans_t *assignVectorKMeansDim2 = NULL;
 
-/**
- * Creation of a simulation:
- *    - in 2 dimensions
- *    - 3 points: [(1, 2), (-1, 4), (-4, 10)]
- *    - 2 centroids: [(1, 2), (-4, 10)]
- */
+
 int32_t assignVectorSetup(void) {
+    /**
+    * Creation of a simulation:
+    *    - in 2 dimensions
+    *    - 3 points: [(1, 2), (-1, 4), (-4, 10)]
+    *    - 2 centroids: [(1, 2), (-4, 10)]
+    */
     assignVectorKMeansDim2 = (kMeans_t *) malloc(sizeof(kMeans_t));
     if (assignVectorKMeansDim2 == NULL) return -1;
     assignVectorKMeansDim2->dimension = (int32_t) 2;
@@ -87,9 +88,9 @@ void testNormalAssignVectorToCentroids(void) {
 
 /** We've used the corresponding python function to get the correct value */
 void testFirstAssignVectorToCentroids(void) {
-    (assignVectorKMeansDim2->points)[0].nearestCentroidID = -1;
-    (assignVectorKMeansDim2->points)[1].nearestCentroidID = -1;
-    (assignVectorKMeansDim2->points)[2].nearestCentroidID = -1;
+    (assignVectorKMeansDim2->points)[0].nearestCentroidID = 0;
+    (assignVectorKMeansDim2->points)[1].nearestCentroidID = 0;
+    (assignVectorKMeansDim2->points)[2].nearestCentroidID = 0;
 
     squared_distance_func_t generic_func = squared_euclidean_distance;
     CU_ASSERT_TRUE(assignVectorsToCentroids(assignVectorKMeansDim2,
