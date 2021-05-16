@@ -15,12 +15,12 @@ Ce README contient toutes les informations nécessaires quant à la bonne compr�
 Les arguments précédés de "+" sont optionnels.
 
 ./kmeans +[−q show_clusters] +[−k n_clusters] +[−p n_combinations_points] +[−n n_threads]
-+[−d distance_metric] +[−f output_file] [input_filename]
++[−d distance_metric] + [−f output_file] [input_filename]
 
 Par défaut, les clusters sont repris dans le fichier output, -k vaut 2, -p vaut la même chose que -k, -n vaut 4, -d vaut
 "manhattan", le résultat est écrit sur la sortie standard et l'entrée standard est lue pour l'input. Nous avons ajouté
-la possibilité de mettre l'argument -t pour nos tests afin de n'avoir aucun affichage dans le terminal (les tests
-s'occupent de l'affichage).
+la possibilité de mettre l'argument -t pour nos tests afin de n'avoir aucun affichage le terminal (les tests s'occupe de
+l'affichage).
 
 ### Commandes ajoutées :
 
@@ -29,19 +29,19 @@ s'occupent de l'affichage).
 3. make helgrind
 4. make performances
 
-La première effectue les tests Valgrind (tests sur la gestion de la mémoire) sur le fichier ex3.bin avec et sans
-l'option "-q". La deuxième effectue les tests Valgrind pour les tests unitaires. La troisième effectue les tests
-Helgrind
-(test des threads) sur le fichier ex3.bin avec et sans "-q" et avec différents nombres de threads. La dernière lance le
-programme plusieurs fois sur un fichier d'entrée de 50 000 points en 5 dimensions et avec un nombre de threads
-producteurs allant de 1 à 8 inclus. Elle produit ensuite une visualisation avec matplotlib dans le dossier
-tests_files/test_performances. Notez que cette commande ne fonctionne pas sur le Raspberry car la commande *time* n'a
-pas d'arguments sur Raspian.
+La première effectue les tests Valgrind (tests sur la gestion de la mémoire, détection de fuites mémoires) sur le
+fichier ex3.bin avec et sans l'option
+"-q". La deuxième effectue les tests Valgrind pour les tests unitaires. La troisième effectue les tests Helgrind (test
+des threads, détection de deadlock) sur le fichier ex3.bin avec et sans "-q" et avec différents nombres de threads. La
+dernière lance le programme plusieurs fois sur un fichier d'entrée de 50 000 points en 5 dimensions et avec un nombre de
+thread producteur allant de 1 à 8 inclus. Elle produit ensuite une visualisation avec matplotlib dans le dossier
+tests_files/test_performances. Notez que cette commande ne fonctionne pas sur le Raspberry car la commande time n'a pas
+d'argument sur Raspian.
 
 # Structure du projet
 
 1. headers : ce répertoire contient tous les fichiers.h dans lesquels sont déclarées nos fonctions ainsi que leurs
-   **spécifications**.
+   **spécifications et documentation**.
 
 2. src : ce répertoire comprend tous les fichiers.c nécessaires au bon déroulement du programme (autre que le main.c).
 
@@ -49,9 +49,9 @@ pas d'arguments sur Raspian.
 
 4. output_csv : ce répertoire permet de recueillir le fichier csv de sortie du programme.
 
-5. tests_files : ce répertoire contient différents sous-dossiers reprenant tous nos fichiers utiles aux déroulements des
-   tests, notamment le dossier **src** reprenant la suite de tests. Les autres dossiers s'occupent des tests valgrind,
-   helgrind, la comparaison avec le programme python, etc.
+5. tests_files : ce répertoire contient différents sous dossiers reprenant touts nos fichiers utiles aux déroulements
+   des tests, notamment le dossier **src** reprenant la suite de tests. Les autres dossiers s'occupent des tests
+   valgrind, helgrind, la comparaison avec le programme python, etc.
 
 # Structures utilisées
 
@@ -61,34 +61,34 @@ Ces structures sont définies dans le fichier headers/kmeansStruct.h.
    ainsi que l'indice du centroïde le plus proche.
 
 2. kMeans_t : cette structure est composée de toutes les informations nécessaires au déroulement de l'algorithme de
-   Lloyd's.
+   Lloyd's. Le nom des composantes de cette structure est, selon nous, assez clair pour ne pas expliquer leur fonction.
 
 3. data_t : cette structure contient les caractéristiques du problème à traiter (dimension et nombre de points)
    ainsi que tous les points provenant du fichier binaire donné en entrée.
 
 # Utilisation des threads
 
-Nous avons implémenté une architecture producteurs-consommateurs. Avant le lancement des threads, le programme effectue
+Nous avons implémenté une architecture producteurs-consommateurs. Avant le lancement des threads le programme effectue
 deux opérations importantes.
 
 1. Extraction des données contenues dans le fichier binaire en entrée.
 
-2. Calcul des différents centroids de départs. (cette étape aurait pu se voir assigner un thread mais on s'est rendu
+2. Calcul des différents centroïdes de départs. (cette étape aurait pu se voir assigner un thread mais on s'est rendu
    compte en faisant des tests de performance que le temps pris par cette étape était négligeable)
 
-* Producteurs : Nous avons donc une liste reprenant toutes les suites de centroïdes de départ. De cette manière, à
-  chaque instance kMeans à traiter, correspond un indice. On transmet alors à chaque thread producteur les indices de
-  début et de fin (fin non comprise). Chaque thread a alors pour mission d'exécuter et résoudre toutes les instances du
-  problème kMeans compris entre les indices début et fin (non compris).
+3. Producteurs : Nous avons donc une liste reprenant toutes les suites de centroids de départ. De cette manière, à
+   chaque instance kMeans à traiter, correspond un indice. On transmet alors à chaque thread producteur les indices de
+   début et de fin (fin non comprise). Chaque thread a alors pour mission d'exécuter et résoudre toutes les instances du
+   problème kMeans compris entre les indices début et fin (non compris).
 
-* Consommateur : il n'y a qu'un seul thread consommateur qui s'occupe d'écrire dans le fichier de sortie les résultats
-  obtenus par le(s) thread(s) producteur(s).
+3. Consommateur : il n'y a qu'un seul thread consommateur qui s'occupe d'écrire dans le fichier de sortie les résultats
+   obtenus par le(s) thread(s) producteur(s).
 
 # Gestion de la concurrence
 
-Nous avons d'un côté des threads producteurs et de l'autre un thread consommateur. La communication entre ces threads
-s'opère à l'aide d'un buffer. Cependant, l'utilisation d'un même objet par plusieurs threads est délicat, pour se faire
-nous avons utilisé :
+Nous avons donc d'un côté des threads producteurs et de l'autre un thread consommateur. La communication entre ces
+threads s'opère à l'aide d'un buffer. Cependant l'utilisation d'un même objet par plusieurs threads est délicat, pour se
+faire nous avons utilisé :
 
 ### Deux sémaphores :
 
@@ -99,8 +99,8 @@ nous avons utilisé :
 ### Un mutex :
 
 Il empêche l'utilisation du buffer par plus d'un thread en simultané. Sans cet élément, deux threads producteurs
-pourraient, par exemple, déposer leurs résultats en même temps sur un même emplacement du buffer. Ce qui n'est
-évidemment pas souhaité.
+pourraient, par exemple, déposer leur résultat en même temps sur un même emplacement du buffer. Ce qui n'est évidemment
+pas souhaité.
 
 # Tests de performance
 
