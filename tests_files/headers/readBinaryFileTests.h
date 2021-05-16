@@ -19,6 +19,9 @@ int32_t setupBinaryFile(void);
  */
 int32_t teardownBinaryFile(void);
 
+/**
+ * Check if binary file is correctly read
+ */
 void testReadBinaryFile(void);
 
 #endif
