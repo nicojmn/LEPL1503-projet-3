@@ -1,7 +1,7 @@
 """
 This file checks and installs if necessary matplotlib and then compute a graph of the execution time according
 to the number of threads.
-It uses perfomances.txt to collect data for making a graph
+It uses performances.txt to collect data for making a graph
 """
 import os
 import sys
