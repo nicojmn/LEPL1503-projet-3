@@ -13,7 +13,7 @@ int32_t compareWithPythonSetup(void);
 
 /**
  * Function to clean memory after tests
- * @return
+ * @return 0
  */
 int32_t compareWithPythonTeardown(void);
 
