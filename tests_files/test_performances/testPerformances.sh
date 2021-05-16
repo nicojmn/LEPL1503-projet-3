@@ -1,5 +1,9 @@
 #!/bin/bash
 
+###########################################################################
+# This bash script run performances tests when make perfomances is called #
+###########################################################################
+
 rm -f tests_files/test_performances/performances.txt
 
 # run an instance of the problem 8 times with different number of threads to compare the execution time
