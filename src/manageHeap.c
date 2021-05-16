@@ -29,7 +29,7 @@ void fullClean(data_t *generalData, point_t **startingCentroids, uint64_t iterat
         free(startingCentroids);
     }
 
-    // close the files opened by parse_args
+    // Close the files opened by parse_args
     if (args.input_stream != stdin) {
         fclose(args.input_stream);
     }
