@@ -124,10 +124,12 @@ Nos tests ont été effectués sur un fichier ex7_dim5.bin contenant 50 000 poin
 * 4 threads : 0m3.54s
 * 8 threads : 0m2.73s
 
-On n'arrive plus à améliorer le temps d'exécution sur raspberry au-delà de 2 threads producteurs. Si l'on prend en
-compte le thread consommateur et celui derrière l'exécution de main, il fait alors sens que 2 threads producteurs
-fournissent le meilleur résultat (puisqu'en réalité 4 threads sont à l'oeuvre). Sur nos machines personnelles, on
-observe des gains de performance jusqu'à 7 threads producteurs.
+TODO --> Modif cette explication car je sais pas pq ça a changé sur rasp
+
+Le temps d'exécution sur raspberry n'évolue plus linéairement au-delà de 2 threads producteurs. Si l'on prend en compte
+le thread consommateur et celui derrière l'exécution de main, il fait alors sens que 2 threads producteurs fournissent
+le meilleur résultat (puisqu'en réalité 4 threads sont à l'oeuvre). Sur nos machines personnelles, on observe des gains
+de performance jusqu'à 7 threads producteurs.
 
 # Questions éventuelles
 
