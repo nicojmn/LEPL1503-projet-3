@@ -1,5 +1,6 @@
 #include "../headers/buffer.h"
 
+
 buffer_t *createBuffer(uint32_t bufferSize) {
     buffer_t *buffer = malloc(sizeof(buffer_t));
     if (buffer == NULL) return NULL;

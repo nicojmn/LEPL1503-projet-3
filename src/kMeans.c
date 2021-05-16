@@ -1,5 +1,6 @@
 #include "../headers/kMeans.h"
 
+
 void updateCentroids(kMeans_t *kMeans) {
 
     // Initialisation of all centroid coordinates to 0
@@ -11,7 +12,7 @@ void updateCentroids(kMeans_t *kMeans) {
     for (uint32_t i = 0; i < kMeans->k; ++i) {
         (kMeans->clustersSize)[i] = (uint64_t) 0;
     }
-    // Sum
+    // Sum the coordinate of each cluster
     for (uint64_t i = 0; i < kMeans->size; ++i) {
         uint32_t centroidID = (kMeans->points)[i].nearestCentroidID;
         for (uint32_t j = 0; j < kMeans->dimension; ++j) {
@@ -83,7 +84,7 @@ createOneInstance(int64_t **vectors, point_t **startingCentroidsID, uint32_t ins
     kMeans->size = size;
     kMeans->dimension = dimension;
 
-    // setup centroids
+    // Setup centroids
     for (uint32_t i = 0; i < kCentroids; ++i) {
         (kMeans->centroids)[i].vector = (int64_t *) malloc(dimension * sizeof(int64_t));
         if ((kMeans->centroids)[i].vector == NULL) return NULL;
@@ -91,7 +92,7 @@ createOneInstance(int64_t **vectors, point_t **startingCentroidsID, uint32_t ins
             (kMeans->centroids)[i].vector[j] = (startingCentroidsID[instanceIndex][i].vector)[j];
         }
     }
-    // setup points
+    // Setup points
     for (uint64_t i = 0; i < size; ++i) {
         (kMeans->points)[i].vector = vectors[i];
         // By default all the points are allocated to the first centroid

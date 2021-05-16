@@ -7,6 +7,7 @@
 
 #include "kMeansStruct.h"
 
+
 /**
  * Calculate a factorial number
  * @param x : a number

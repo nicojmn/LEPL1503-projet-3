@@ -1,5 +1,6 @@
 #include "../headers/generateStartingCentroids.h"
 
+
 uint64_t factorial(uint64_t x) {
     uint64_t result = 1;
     while (x > 1) {
@@ -60,7 +61,7 @@ int32_t generateSetOfStartingCentroids(point_t **startingCentroids, int64_t **ve
             j--;
         }
         indices[j]++;
-        // the operation m - 1 can occur so m must be int32_t
+        // The operation m - 1 can occur so m must be int32_t
         for (int32_t m = (j + 1); m < kCentroids; ++m) {
             indices[m] = indices[m - 1] + 1;
         }

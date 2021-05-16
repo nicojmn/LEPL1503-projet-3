@@ -3,6 +3,7 @@
 
 #include "kMeans.h"
 
+
 /** Structure use by the producer threads and consumer thread to communicate */
 typedef struct {
     kMeans_t **kMeansInstances;

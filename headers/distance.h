@@ -5,6 +5,7 @@
 
 #include "kMeansStruct.h"
 
+
 /**
  * @param x : int64_t number
  * @return : the absolute value of x
