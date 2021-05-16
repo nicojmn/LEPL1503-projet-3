@@ -33,9 +33,10 @@ La première effectue les tests Valgrind (tests sur la gestion de la mémoire) s
 l'option
 "-q". La deuxième effectue les tests Valgrind pour les tests unitaires. La troisième effectue les tests Helgrind (test
 des threads) sur le fichier ex3.bin avec et sans "-q" et avec différents nombres de threads. La dernière lance le
-programme plusieurs fois sur un fichier d'entrée de 10 000 points et avec différents nombres de threads. Elle produit
-ensuite une visualisation avec matplotlib dans le dossier tests_files/test_performances. Notez que cette commande ne
-fonctionne pas sur le Raspberry car la commande time n'a pas d'argument sur Raspian.
+programme plusieurs fois sur un fichier d'entrée de 50 000 points en 5 dimensions et avec un nombre de thread producteur
+allant de 1 à 8 inclus. Elle produit ensuite une visualisation avec matplotlib dans le dossier
+tests_files/test_performances. Notez que cette commande ne fonctionne pas sur le Raspberry car la commande time n'a pas
+d'argument sur Raspian.
 
 # Structure du projet
 
