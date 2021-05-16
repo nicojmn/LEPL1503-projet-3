@@ -20,6 +20,7 @@ point_t **generateClusters(kMeans_t *kMeans, bool quiet) {
 
     // positionsInClusters stores the place of each last point insert into a cluster
     uint64_t *positionsInClusters = malloc(sizeof(uint64_t) * kMeans->k);
+    if (positionsInClusters == NULL) return NULL;
     for (uint32_t clusterNbr = 0; clusterNbr < kMeans->k; clusterNbr++) {
         clusters[clusterNbr] = malloc(sizeof(point_t) * kMeans->clustersSize[clusterNbr]);
         if (clusters[clusterNbr] == NULL) return NULL;
