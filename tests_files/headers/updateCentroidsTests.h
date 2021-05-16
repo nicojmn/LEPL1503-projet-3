@@ -16,6 +16,9 @@ int32_t updateCentroidsSetup(void);
  */
 int32_t updateCentroidsTeardown(void);
 
+/**
+ * Check if update of centroids is done correctly
+ */
 void testUpdateCentroids(void);
 
 #endif // UPDATECENTROIDSTESTS_H
