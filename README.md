@@ -41,7 +41,7 @@ d'argument sur Raspian.
 # Structure du projet
 
 1. headers : ce répertoire contient tous les fichiers.h dans lesquels sont déclarées nos fonctions ainsi que leurs
-   **spécifications**.
+   **spécifications et documentation**.
 
 2. src : ce répertoire comprend tous les fichiers.c nécessaires au bon déroulement du programme (autre que le main.c).
 
@@ -73,7 +73,7 @@ deux opérations importantes.
 
 1. Extraction des données contenues dans le fichier binaire en entrée.
 
-2. Calcul des différents centroids de départs. (cette étape aurait pu se voir assigner un thread mais on s'est rendu
+2. Calcul des différents centroïdes de départs. (cette étape aurait pu se voir assigner un thread mais on s'est rendu
    compte en faisant des tests de performance que le temps pris par cette étape était négligeable)
 
 3. Producteurs : Nous avons donc une liste reprenant toutes les suites de centroids de départ. De cette manière, à
@@ -99,8 +99,8 @@ faire nous avons utilisé :
 ### Un mutex :
 
 Il empêche l'utilisation du buffer par plus d'un thread en simultané. Sans cet élément, deux threads producteurs
-pourraient, par exemple, déposer leurs résultats en même temps sur un même emplacement du buffer. Ce qui n'est
-évidemment pas souhaité.
+pourraient, par exemple, déposer leur résultat en même temps sur un même emplacement du buffer. Ce qui n'est évidemment
+pas souhaité.
 
 # Tests de performance
 
