@@ -1,6 +1,5 @@
 #include "../headers/tests.h"
 
-
 int main(int argc, char **argv) {
 
     /** We run valgrind on the test but we don't want to use valgrind on the comparison
@@ -13,7 +12,8 @@ int main(int argc, char **argv) {
             break;
         }
     }
-    
+
+    /** Initialize the CUnit suite */
     CU_pSuite distanceTestSuite = NULL;
     CU_pSuite distortionTestSuite = NULL;
     CU_pSuite updateCentroidsTestSuite = NULL;
@@ -46,6 +46,7 @@ int main(int argc, char **argv) {
                                          compareWithPythonTeardown);
     }
 
+    /** Check if tests suites are correctly added **/
     if (distanceTestSuite == NULL || distortionTestSuite == NULL ||
         updateCentroidsTestSuite == NULL || assignVectorSuite == NULL || kMeansSuite == NULL ||
         binaryFileSuite == NULL || csvFileSuite == NULL || generateStartingCentroidsSuite == NULL) {
