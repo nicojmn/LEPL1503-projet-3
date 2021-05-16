@@ -22,8 +22,14 @@ int32_t setupGenerateStartingCentroids(void);
  */
 int32_t teardownGenerateStartingCentroids(void);
 
+/**
+ * Function to test generation of centroids
+ */
 void testGenerateStartingCentroids(void);
 
+/**
+ * Check computation of combinatorial
+ */
 void testCombinatorial(void);
 
 #endif
